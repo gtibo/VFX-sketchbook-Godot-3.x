@@ -1,0 +1,232 @@
+[gd_scene load_steps=19 format=2]
+
+[ext_resource path="res://Meshs/sphere.obj" type="ArrayMesh" id=1]
+
+[sub_resource type="VisualShaderNodeExpression" id=1]
+size = Vector2( 778, 292 )
+expression = "float fresnel_power = 1.0;
+float edge_intensity = 1.0;
+float fill_amount = 0.1;
+
+float fresnel = pow(1.0 - dot(NORMAL, VIEW), fresnel_power) * edge_intensity;
+fresnel = fresnel + fill_amount;
+
+
+depth = texture(DEPTH_TEXTURE, SCREEN_UV).r;
+depth = depth * 2.0 - 1.0;
+depth = PROJECTION_MATRIX[3][2] / (depth + PROJECTION_MATRIX[2][2]);
+depth += VERTEX.z;
+	depth = pow(1.0 - clamp(depth, 0, 1), fresnel_power) * edge_intensity;
+	
+depth = fresnel + depth;"
+
+[sub_resource type="VisualShaderNodeScalarOp" id=2]
+default_input_values = [ 0, 0.0, 1, 2.0 ]
+operator = 3
+
+[sub_resource type="VisualShaderNodeScalarOp" id=3]
+default_input_values = [ 0, 0.0, 1, 1.0 ]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=4]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=5]
+constant = 0.4
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=6]
+constant = 0.8
+
+[sub_resource type="VisualShaderNodeColorConstant" id=7]
+constant = Color( 1, 0, 0, 1 )
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=8]
+function = 0
+
+[sub_resource type="VisualShaderNodeScalarClamp" id=9]
+
+[sub_resource type="VisualShaderNodeInput" id=10]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeVectorDecompose" id=11]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=12]
+default_input_values = [ 0, 0.0, 1, 400.0 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeInput" id=13]
+input_name = "time"
+
+[sub_resource type="VisualShaderNodeScalarOp" id=14]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=15]
+default_input_values = [ 0, 0.0, 1, 0.05 ]
+operator = 2
+
+[sub_resource type="VisualShader" id=16]
+code = "shader_type spatial;
+render_mode specular_schlick_ggx;
+
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Color:19
+	vec3 n_out19p0 = vec3(1.000000, 0.000000, 0.000000);
+	float n_out19p1 = 1.000000;
+
+// Input:3
+	vec3 n_out3p0 = vec3(UV, 0.0);
+
+// VectorDecompose:4
+	float n_out4p0 = n_out3p0.x;
+	float n_out4p1 = n_out3p0.y;
+	float n_out4p2 = n_out3p0.z;
+
+// Input:6
+	float n_out6p0 = TIME;
+
+// ScalarOp:8
+	float n_in8p1 = 0.05000;
+	float n_out8p0 = n_out6p0 * n_in8p1;
+
+// ScalarOp:7
+	float n_out7p0 = n_out4p1 + n_out8p0;
+
+// ScalarOp:5
+	float n_in5p1 = 400.00000;
+	float n_out5p0 = n_out7p0 * n_in5p1;
+
+// ScalarFunc:2
+	float n_out2p0 = sin(n_out5p0);
+
+// ScalarOp:14
+	float n_in14p1 = 2.00000;
+	float n_out14p0 = n_out2p0 / n_in14p1;
+
+// ScalarOp:15
+	float n_in15p1 = 1.00000;
+	float n_out15p0 = n_out14p0 + n_in15p1;
+
+// Expression:13
+	float n_out13p0;
+	n_out13p0 = 0.0;
+	{
+		float fresnel_power = 1.0;
+		float edge_intensity = 1.0;
+		float fill_amount = 0.1;
+		
+		float fresnel = pow(1.0 - dot(NORMAL, VIEW), fresnel_power) * edge_intensity;
+		fresnel = fresnel + fill_amount;
+		
+		
+		n_out13p0 = texture(DEPTH_TEXTURE, SCREEN_UV).r;
+		n_out13p0 = n_out13p0 * 2.0 - 1.0;
+		n_out13p0 = PROJECTION_MATRIX[3][2] / (n_out13p0 + PROJECTION_MATRIX[2][2]);
+		n_out13p0 += VERTEX.z;
+			n_out13p0 = pow(1.0 - clamp(n_out13p0, 0, 1), fresnel_power) * edge_intensity;
+			
+		n_out13p0 = fresnel + n_out13p0;
+	}
+
+// ScalarOp:16
+	float n_out16p0 = n_out15p0 * n_out13p0;
+
+// ScalarClamp:20
+	float n_in20p1 = 0.00000;
+	float n_in20p2 = 1.00000;
+	float n_out20p0 = clamp(n_out16p0, n_in20p1, n_in20p2);
+
+// Scalar:17
+	float n_out17p0 = 0.400000;
+
+// Scalar:18
+	float n_out18p0 = 0.800000;
+
+// Output:0
+	ALBEDO = n_out19p0;
+	ALPHA = n_out20p0;
+	ROUGHNESS = n_out17p0;
+	SPECULAR = n_out18p0;
+	EMISSION = vec3(n_out20p0);
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( 673, 63 )
+nodes/fragment/0/position = Vector2( 1320, 180 )
+nodes/fragment/2/node = SubResource( 8 )
+nodes/fragment/2/position = Vector2( 160, 140 )
+nodes/fragment/3/node = SubResource( 10 )
+nodes/fragment/3/position = Vector2( -480, 140 )
+nodes/fragment/4/node = SubResource( 11 )
+nodes/fragment/4/position = Vector2( -300, 140 )
+nodes/fragment/5/node = SubResource( 12 )
+nodes/fragment/5/position = Vector2( -60, 140 )
+nodes/fragment/6/node = SubResource( 13 )
+nodes/fragment/6/position = Vector2( -540, 280 )
+nodes/fragment/7/node = SubResource( 14 )
+nodes/fragment/7/position = Vector2( -181, 277 )
+nodes/fragment/8/node = SubResource( 15 )
+nodes/fragment/8/position = Vector2( -360, 280 )
+nodes/fragment/13/node = SubResource( 1 )
+nodes/fragment/13/position = Vector2( -40, 460 )
+nodes/fragment/13/size = Vector2( 778, 292 )
+nodes/fragment/13/input_ports = ""
+nodes/fragment/13/output_ports = "0,0,depth;"
+nodes/fragment/13/expression = "float fresnel_power = 1.0;
+float edge_intensity = 1.0;
+float fill_amount = 0.1;
+
+float fresnel = pow(1.0 - dot(NORMAL, VIEW), fresnel_power) * edge_intensity;
+fresnel = fresnel + fill_amount;
+
+
+depth = texture(DEPTH_TEXTURE, SCREEN_UV).r;
+depth = depth * 2.0 - 1.0;
+depth = PROJECTION_MATRIX[3][2] / (depth + PROJECTION_MATRIX[2][2]);
+depth += VERTEX.z;
+	depth = pow(1.0 - clamp(depth, 0, 1), fresnel_power) * edge_intensity;
+	
+depth = fresnel + depth;"
+nodes/fragment/14/node = SubResource( 2 )
+nodes/fragment/14/position = Vector2( 380, 120 )
+nodes/fragment/15/node = SubResource( 3 )
+nodes/fragment/15/position = Vector2( 580, 120 )
+nodes/fragment/16/node = SubResource( 4 )
+nodes/fragment/16/position = Vector2( 820, 240 )
+nodes/fragment/17/node = SubResource( 5 )
+nodes/fragment/17/position = Vector2( 1020, 340 )
+nodes/fragment/18/node = SubResource( 6 )
+nodes/fragment/18/position = Vector2( 1020, 420 )
+nodes/fragment/19/node = SubResource( 7 )
+nodes/fragment/19/position = Vector2( 1018, 168 )
+nodes/fragment/20/node = SubResource( 9 )
+nodes/fragment/20/position = Vector2( 1020, 260 )
+nodes/fragment/connections = PoolIntArray( 3, 0, 4, 0, 5, 0, 2, 0, 4, 1, 7, 0, 7, 0, 5, 0, 6, 0, 8, 0, 8, 0, 7, 1, 2, 0, 14, 0, 14, 0, 15, 0, 15, 0, 16, 0, 13, 0, 16, 1, 17, 0, 0, 3, 18, 0, 0, 4, 16, 0, 20, 0, 19, 0, 0, 0, 20, 0, 0, 1, 20, 0, 0, 5 )
+
+[sub_resource type="ShaderMaterial" id=17]
+shader = SubResource( 16 )
+
+[node name="Node2D" type="Spatial"]
+
+[node name="CSGBox" type="CSGBox" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.63701, -3.20767, 2.9818 )
+height = 0.0626243
+
+[node name="sphere" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.40916, -3.20767, 2.83204 )
+material_override = SubResource( 17 )
+mesh = ExtResource( 1 )
+material/0 = null
+
+[node name="OmniLight" type="OmniLight" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.40916, -0.885814, 0.0499535 )
