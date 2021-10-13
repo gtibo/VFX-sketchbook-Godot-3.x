@@ -1,4 +1,4 @@
-![Preview](/home/tibo/Desktop/Effects/Preview.jpg)
+![Preview](./Preview.jpg)
 # Shader playground
 
 An experimental project in which I explore the possibilities of creations relying mainly on the VisualShader of Godot.
