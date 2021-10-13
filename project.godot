@@ -13,6 +13,11 @@ config_version=4
 config/name="Effects"
 config/icon="res://icon.png"
 
+[display]
+
+window/size/width=1280
+window/size/height=720
+
 [physics]
 
 common/enable_pause_aware_picking=true
@@ -20,5 +25,5 @@ common/enable_pause_aware_picking=true
 [rendering]
 
 quality/filters/anisotropic_filter_level=8
-quality/filters/msaa=2
+quality/filters/msaa=3
 environment/default_environment="res://default_env.tres"

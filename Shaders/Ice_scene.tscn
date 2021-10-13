@@ -6,12 +6,12 @@
 [ext_resource path="res://Textures/Ice_001/Ice_001_COLOR.jpg" type="Texture" id=4]
 [ext_resource path="res://Textures/Ice_001/Ice_001_NRM.jpg" type="Texture" id=5]
 
-[sub_resource type="ProceduralSky" id=42]
+[sub_resource type="ProceduralSky" id=1]
 ground_bottom_color = Color( 0.0980392, 0.117647, 0.133333, 1 )
 
 [sub_resource type="Environment" id=2]
-background_mode = 2
-background_sky = SubResource( 42 )
+background_mode = 3
+background_sky = SubResource( 1 )
 tonemap_mode = 2
 glow_enabled = true
 glow_levels/1 = true

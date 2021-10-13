@@ -1,0 +1,321 @@
+[gd_scene load_steps=34 format=2]
+
+[ext_resource path="res://Meshs/sphere.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://HDRI/dikhololo_night_1k.hdr" type="Texture" id=2]
+
+[sub_resource type="VisualShaderNodeVectorCompose" id=1]
+
+[sub_resource type="VisualShaderNodeVectorDecompose" id=2]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=3]
+
+[sub_resource type="VisualShaderNodeScalarSmoothStep" id=4]
+output_port_for_preview = 0
+default_input_values = [ 0, 0.6, 1, 0.0, 2, 0.0 ]
+
+[sub_resource type="OpenSimplexNoise" id=5]
+
+[sub_resource type="NoiseTexture" id=6]
+seamless = true
+noise = SubResource( 5 )
+
+[sub_resource type="VisualShaderNodeTexture" id=7]
+output_port_for_preview = 0
+texture = SubResource( 6 )
+
+[sub_resource type="VisualShaderNodeVectorCompose" id=8]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=9]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=10]
+output_port_for_preview = 0
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=11]
+default_input_values = [ 0, 0.0, 1, 0.2 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=12]
+default_input_values = [ 0, 0.0, 1, 0.1 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeInput" id=13]
+output_port_for_preview = 0
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=14]
+constant = 1.0
+
+[sub_resource type="VisualShaderNodeFresnel" id=15]
+default_input_values = [ 2, false, 3, 2.0 ]
+
+[sub_resource type="VisualShaderNodeVectorScalarMix" id=16]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=17]
+default_input_values = [ 0, 1.0, 1, 2.0 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=18]
+operator = 3
+
+[sub_resource type="VisualShaderNodeScalarSmoothStep" id=19]
+default_input_values = [ 0, 0.2, 1, 0.25, 2, 0.0 ]
+
+[sub_resource type="VisualShaderNodeExpression" id=20]
+size = Vector2( 591, 365.75 )
+expression = "uv *= 4.0;
+
+vec2 i_st = floor(uv).xy;
+vec2 f_st = fract(uv).xy;
+
+
+m_dist =1.0;
+
+
+    for (int y= -1; y <= 1; y++) {
+        for (int x= -1; x <= 1; x++) {
+            // Neighbor place in the grid
+            vec2 neighbor = vec2(float(x),float(y));
+
+            // Random position from current + neighbor place in the grid
+            vec2 point = random2(i_st + neighbor);
+
+			// Animate the point
+			//point = 0.5 + 0.5*sin(time + 6.2831*point);
+
+			// Vector between the pixel and the point
+            vec2 diff = neighbor + point - f_st;
+
+            // Distance to the point
+            float dist = length(diff);
+
+            // Keep the closer distance
+            m_dist = min(m_dist, dist);
+        }
+    }"
+
+[sub_resource type="VisualShaderNodeInput" id=21]
+input_name = "time"
+
+[sub_resource type="VisualShaderNodeGlobalExpression" id=22]
+size = Vector2( 460, 226 )
+expression = "vec2 random2( vec2 p ) {
+    return fract(sin(vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3))))*43758.5453);
+}
+"
+
+[sub_resource type="OpenSimplexNoise" id=23]
+period = 180.0
+persistence = 0.0
+
+[sub_resource type="NoiseTexture" id=24]
+seamless = true
+noise = SubResource( 23 )
+
+[sub_resource type="VisualShaderNodeTexture" id=25]
+output_port_for_preview = 0
+texture = SubResource( 24 )
+
+[sub_resource type="VisualShaderNodeInput" id=26]
+input_name = "time"
+
+[sub_resource type="VisualShaderNodeInput" id=27]
+input_name = "uv"
+
+[sub_resource type="VisualShader" id=28]
+code = "shader_type spatial;
+render_mode depth_draw_alpha_prepass, cull_disabled, specular_schlick_ggx;
+
+
+
+// GlobalExpression:0
+	vec2 random2( vec2 p ) {
+	    return fract(sin(vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3))))*43758.5453);
+	}
+	
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:2
+	vec3 n_out2p0 = vec3(UV, 0.0);
+
+// Input:4
+	float n_out4p0 = TIME;
+
+// Expression:3
+	float n_out3p0;
+	n_out3p0 = 0.0;
+	{
+		n_out2p0 *= 4.0;
+		
+		vec2 i_st = floor(n_out2p0).xy;
+		vec2 f_st = fract(n_out2p0).xy;
+		
+		
+		n_out3p0 =1.0;
+		
+		
+		    for (int y= -1; y <= 1; y++) {
+		        for (int x= -1; x <= 1; x++) {
+		            // Neighbor place in the grid
+		            vec2 neighbor = vec2(float(x),float(y));
+		
+		            // Random position from current + neighbor place in the grid
+		            vec2 point = random2(i_st + neighbor);
+		
+					// Animate the point
+					//point = 0.5 + 0.5*sin(n_out4p0 + 6.2831*point);
+		
+					// Vector between the pixel and the point
+		            vec2 diff = neighbor + point - f_st;
+		
+		            // Distance to the point
+		            float dist = length(diff);
+		
+		            // Keep the closer distance
+		            n_out3p0 = min(n_out3p0, dist);
+		        }
+		    }
+	}
+
+// ScalarSmoothStep:28
+	float n_in28p0 = 0.20000;
+	float n_in28p1 = 0.25000;
+	float n_out28p0 = smoothstep(n_in28p0, n_in28p1, n_out3p0);
+
+// Scalar:20
+	float n_out20p0 = 1.000000;
+
+// Output:0
+	ALPHA = n_out28p0;
+	RIM = n_out20p0;
+	RIM_TINT = n_out20p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -429.802, 123.441 )
+modes/cull = 2
+modes/depth_draw = 3
+nodes/fragment/0/position = Vector2( 1640, 80 )
+nodes/fragment/2/node = SubResource( 13 )
+nodes/fragment/2/position = Vector2( -720, 200 )
+nodes/fragment/3/node = SubResource( 20 )
+nodes/fragment/3/position = Vector2( -200, 120 )
+nodes/fragment/3/size = Vector2( 591, 365.75 )
+nodes/fragment/3/input_ports = "0,1,uv;1,0,time;"
+nodes/fragment/3/output_ports = "0,0,m_dist;"
+nodes/fragment/3/expression = "uv *= 4.0;
+
+vec2 i_st = floor(uv).xy;
+vec2 f_st = fract(uv).xy;
+
+
+m_dist =1.0;
+
+
+    for (int y= -1; y <= 1; y++) {
+        for (int x= -1; x <= 1; x++) {
+            // Neighbor place in the grid
+            vec2 neighbor = vec2(float(x),float(y));
+
+            // Random position from current + neighbor place in the grid
+            vec2 point = random2(i_st + neighbor);
+
+			// Animate the point
+			//point = 0.5 + 0.5*sin(time + 6.2831*point);
+
+			// Vector between the pixel and the point
+            vec2 diff = neighbor + point - f_st;
+
+            // Distance to the point
+            float dist = length(diff);
+
+            // Keep the closer distance
+            m_dist = min(m_dist, dist);
+        }
+    }"
+nodes/fragment/4/node = SubResource( 21 )
+nodes/fragment/4/position = Vector2( -520, 400 )
+nodes/fragment/5/node = SubResource( 22 )
+nodes/fragment/5/position = Vector2( -240, -180 )
+nodes/fragment/5/size = Vector2( 460, 226 )
+nodes/fragment/5/input_ports = ""
+nodes/fragment/5/output_ports = ""
+nodes/fragment/5/expression = "vec2 random2( vec2 p ) {
+    return fract(sin(vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3))))*43758.5453);
+}
+"
+nodes/fragment/7/node = SubResource( 25 )
+nodes/fragment/7/position = Vector2( 500, 220 )
+nodes/fragment/8/node = SubResource( 26 )
+nodes/fragment/8/position = Vector2( -460, 620 )
+nodes/fragment/9/node = SubResource( 27 )
+nodes/fragment/9/position = Vector2( -560, 700 )
+nodes/fragment/10/node = SubResource( 1 )
+nodes/fragment/10/position = Vector2( 280, 520 )
+nodes/fragment/11/node = SubResource( 2 )
+nodes/fragment/11/position = Vector2( -260, 700 )
+nodes/fragment/12/node = SubResource( 3 )
+nodes/fragment/12/position = Vector2( -40, 560 )
+nodes/fragment/13/node = SubResource( 4 )
+nodes/fragment/13/position = Vector2( 940, 140 )
+nodes/fragment/14/node = SubResource( 7 )
+nodes/fragment/14/position = Vector2( 500, 560 )
+nodes/fragment/15/node = SubResource( 8 )
+nodes/fragment/15/position = Vector2( 280, 740 )
+nodes/fragment/16/node = SubResource( 9 )
+nodes/fragment/16/position = Vector2( 20, 800 )
+nodes/fragment/17/node = SubResource( 10 )
+nodes/fragment/17/position = Vector2( 700, 500 )
+nodes/fragment/18/node = SubResource( 11 )
+nodes/fragment/18/position = Vector2( -220, 540 )
+nodes/fragment/19/node = SubResource( 12 )
+nodes/fragment/19/position = Vector2( -260, 860 )
+nodes/fragment/20/node = SubResource( 14 )
+nodes/fragment/20/position = Vector2( 1100, 340 )
+nodes/fragment/24/node = SubResource( 15 )
+nodes/fragment/24/position = Vector2( 880, 400 )
+nodes/fragment/25/node = SubResource( 16 )
+nodes/fragment/25/position = Vector2( 1359.06, 197.4 )
+nodes/fragment/26/node = SubResource( 17 )
+nodes/fragment/26/position = Vector2( 1140, 200 )
+nodes/fragment/27/node = SubResource( 18 )
+nodes/fragment/27/position = Vector2( 760, 140 )
+nodes/fragment/28/node = SubResource( 19 )
+nodes/fragment/28/position = Vector2( 1325.2, 79.4414 )
+nodes/fragment/connections = PoolIntArray( 4, 0, 3, 1, 9, 0, 11, 0, 11, 0, 10, 0, 10, 0, 7, 0, 11, 2, 10, 2, 11, 1, 12, 0, 12, 0, 10, 1, 15, 0, 14, 0, 11, 1, 15, 1, 11, 0, 16, 0, 16, 0, 15, 0, 7, 0, 17, 0, 14, 0, 17, 1, 8, 0, 18, 0, 18, 0, 12, 1, 8, 0, 19, 0, 19, 0, 16, 1, 20, 0, 0, 10, 20, 0, 0, 11, 13, 0, 25, 2, 26, 0, 25, 1, 2, 0, 3, 0, 27, 0, 13, 2, 17, 0, 27, 1, 3, 0, 27, 0, 3, 0, 28, 2, 28, 0, 0, 1 )
+
+[sub_resource type="ShaderMaterial" id=29]
+shader = SubResource( 28 )
+
+[sub_resource type="PanoramaSky" id=30]
+panorama = ExtResource( 2 )
+
+[sub_resource type="Environment" id=31]
+background_mode = 2
+background_sky = SubResource( 30 )
+glow_enabled = true
+glow_levels/1 = true
+glow_levels/2 = true
+glow_levels/4 = true
+glow_levels/6 = true
+glow_levels/7 = true
+
+[node name="Spatial" type="Spatial"]
+
+[node name="sphere" type="MeshInstance" parent="."]
+material_override = SubResource( 29 )
+mesh = ExtResource( 1 )
+material/0 = null
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 31 )

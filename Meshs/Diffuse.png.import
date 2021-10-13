@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/Ice_001_NRM.jpg-19e94d8a3a8913d559ca39938662401e.s3tc.stex"
-path.etc2="res://.import/Ice_001_NRM.jpg-19e94d8a3a8913d559ca39938662401e.etc2.stex"
+path.s3tc="res://.import/Diffuse.png-1598e430d45342203d0c65a98e25efe8.s3tc.stex"
+path.etc2="res://.import/Diffuse.png-1598e430d45342203d0c65a98e25efe8.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Textures/Ice_001/Ice_001_NRM.jpg"
-dest_files=[ "res://.import/Ice_001_NRM.jpg-19e94d8a3a8913d559ca39938662401e.s3tc.stex", "res://.import/Ice_001_NRM.jpg-19e94d8a3a8913d559ca39938662401e.etc2.stex" ]
+source_file="res://Meshs/Diffuse.png"
+dest_files=[ "res://.import/Diffuse.png-1598e430d45342203d0c65a98e25efe8.s3tc.stex", "res://.import/Diffuse.png-1598e430d45342203d0c65a98e25efe8.etc2.stex" ]
 
 [params]
 
@@ -20,12 +20,12 @@ compress/mode=2
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
-compress/normal_map=1
+compress/normal_map=0
 flags/repeat=true
 flags/filter=true
 flags/mipmaps=true
 flags/anisotropic=false
-flags/srgb=2
+flags/srgb=1
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
