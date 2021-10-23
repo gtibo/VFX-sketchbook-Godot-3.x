@@ -1,0 +1,226 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://Effects/portal/scripts/main.gd" type="Script" id=1]
+[ext_resource path="res://Effects/portal/materials/ring_effect.tres" type="Material" id=2]
+[ext_resource path="res://Effects/portal/materials/air_effect_2.tres" type="Material" id=3]
+[ext_resource path="res://Effects/portal/materials/air_effect.tres" type="Material" id=4]
+[ext_resource path="res://Effects/portal/materials/portal_inside.tres" type="Material" id=5]
+[ext_resource path="res://Effects/portal/meshes/air.obj" type="ArrayMesh" id=6]
+
+[sub_resource type="ProceduralSky" id=1]
+sky_top_color = Color( 0.94902, 0.231373, 0.113725, 1 )
+sky_horizon_color = Color( 0.533333, 0.184314, 0.137255, 1 )
+ground_bottom_color = Color( 0.533333, 0.184314, 0.137255, 1 )
+ground_horizon_color = Color( 0.533333, 0.184314, 0.137255, 1 )
+sun_energy = 0.0
+
+[sub_resource type="Environment" id=2]
+background_mode = 1
+background_sky = SubResource( 1 )
+background_color = Color( 0.968627, 0.396078, 0.172549, 1 )
+fog_enabled = true
+fog_color = Color( 0.968627, 0.396078, 0.172549, 1 )
+fog_depth_end = 60.0
+fog_height_min = 1.0
+fog_height_max = -60.0
+tonemap_mode = 2
+glow_enabled = true
+glow_levels/1 = true
+glow_levels/2 = true
+glow_levels/4 = true
+glow_levels/6 = true
+glow_levels/7 = true
+
+[sub_resource type="Environment" id=3]
+background_mode = 1
+background_sky = SubResource( 1 )
+background_color = Color( 0.2, 0.239216, 0.85098, 1 )
+fog_enabled = true
+fog_color = Color( 0.2, 0.239216, 0.85098, 1 )
+fog_sun_color = Color( 1, 0.752941, 0.552941, 1 )
+fog_depth_end = 60.0
+tonemap_mode = 2
+glow_levels/1 = true
+glow_levels/2 = true
+glow_levels/4 = true
+glow_levels/6 = true
+glow_levels/7 = true
+
+[sub_resource type="SpatialMaterial" id=4]
+albedo_color = Color( 0.0941176, 0.0980392, 0.117647, 1 )
+
+[sub_resource type="QuadMesh" id=5]
+size = Vector2( 4, 4 )
+
+[sub_resource type="QuadMesh" id=6]
+size = Vector2( 4.5, 4.5 )
+
+[sub_resource type="SpatialMaterial" id=7]
+albedo_color = Color( 0.113725, 0.113725, 0.121569, 1 )
+
+[node name="Spatial" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="Camera" type="Camera" parent="."]
+cull_mask = 1016801
+environment = SubResource( 2 )
+current = true
+
+[node name="Viewport" type="Viewport" parent="."]
+size = Vector2( 256, 256 )
+size_override_stretch = true
+msaa = 1
+keep_3d_linear = true
+
+[node name="CameraTarget" type="Camera" parent="Viewport"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -3 )
+cull_mask = 1016802
+environment = SubResource( 3 )
+current = true
+
+[node name="Target" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -200 )
+
+[node name="DirectionalLight2" type="DirectionalLight" parent="Target"]
+transform = Transform( 0.856069, 0.427273, -0.290832, 0, 0.562689, 0.826669, 0.516862, -0.707685, 0.481701, -9.78148, 0, -5.9057 )
+visible = false
+layers = 2
+light_cull_mask = 4294935520
+shadow_enabled = true
+
+[node name="CSGSphere" type="CSGSphere" parent="Target"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5056, -12.515, -39.1402 )
+layers = 2
+material_override = SubResource( 4 )
+radius = 16.1283
+radial_segments = 32
+rings = 16
+
+[node name="CSGSphere2" type="CSGSphere" parent="Target"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 27.5172, -24.306, 38.773 )
+layers = 2
+material_override = SubResource( 4 )
+radius = 29.8782
+radial_segments = 32
+rings = 16
+
+[node name="CSGSphere6" type="CSGSphere" parent="Target"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -23.7026, 26.4988, 16.1879 )
+layers = 2
+material_override = SubResource( 4 )
+radius = 11.6134
+radial_segments = 32
+rings = 16
+
+[node name="CSGSphere3" type="CSGSphere" parent="Target"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -22.0094, -5.4339, 11.4797 )
+layers = 2
+material_override = SubResource( 4 )
+radius = 8.5046
+radial_segments = 32
+rings = 16
+
+[node name="CSGSphere5" type="CSGSphere" parent="Target"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -38.3734, 0, -16.1742 )
+layers = 2
+material_override = SubResource( 4 )
+radius = 12.985
+radial_segments = 32
+rings = 16
+
+[node name="CSGSphere4" type="CSGSphere" parent="Target"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 24.5632, 9.96629, -18.4857 )
+layers = 2
+material_override = SubResource( 4 )
+radius = 14.719
+radial_segments = 32
+rings = 16
+
+[node name="CSGBox" type="CSGBox" parent="Target"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.077, 0 )
+layers = 2
+material_override = SubResource( 4 )
+width = 100.0
+height = 0.2
+depth = 100.0
+
+[node name="Portal" type="Spatial" parent="."]
+transform = Transform( 1.8, 0, 0, 0, 1.8, 0, 0, 0, 1.8, 0, 0, 0 )
+
+[node name="Hole" type="MeshInstance" parent="Portal"]
+material_override = ExtResource( 5 )
+cast_shadow = 0
+mesh = SubResource( 5 )
+material/0 = null
+
+[node name="Ring" type="MeshInstance" parent="Portal"]
+material_override = ExtResource( 2 )
+mesh = SubResource( 6 )
+material/0 = null
+
+[node name="Effects" type="Spatial" parent="."]
+
+[node name="air" type="MeshInstance" parent="Effects"]
+transform = Transform( 3.5, 0, 0, 0, 3.5, 0, 0, 0, 3.5, 0, 0, 0 )
+material_override = ExtResource( 4 )
+mesh = ExtResource( 6 )
+material/0 = null
+
+[node name="air2" type="MeshInstance" parent="Effects"]
+transform = Transform( -0.102265, 1.40756, 3.74277, -3.99869, -0.0359972, -0.0957199, -5.40167e-07, -3.74399, 1.40802, 0, 0, 0 )
+material_override = ExtResource( 3 )
+mesh = ExtResource( 6 )
+material/0 = null
+
+[node name="orange_world" type="Spatial" parent="."]
+
+[node name="CSGBox8" type="CSGBox" parent="orange_world"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.07731, 0 )
+material_override = SubResource( 7 )
+width = 100.0
+height = 0.2
+depth = 100.0
+
+[node name="CSGBox2" type="CSGBox" parent="orange_world"]
+transform = Transform( 0.997285, 0.0736386, 0, -0.0736386, 0.997285, 0, 0, 0, 1, 8.08736, -3.10429, 0 )
+material_override = SubResource( 7 )
+width = 3.02506
+height = 11.8685
+depth = 3.33495
+
+[node name="CSGBox6" type="CSGBox" parent="orange_world"]
+transform = Transform( 0.997285, 0.0736386, 0, -0.0736386, 0.997285, 0, 0, 0, 1, 18.6314, -3.10429, 12.2637 )
+material_override = SubResource( 7 )
+width = 3.02506
+height = 11.8685
+depth = 3.33495
+
+[node name="CSGBox7" type="CSGBox" parent="orange_world"]
+transform = Transform( 0.997285, 0.0736386, 0, -0.0736386, 0.997285, 0, 0, 0, 1, -12.258, -0.823443, 12.2637 )
+material_override = SubResource( 7 )
+width = 3.02506
+height = 11.8685
+depth = 3.33495
+
+[node name="CSGBox3" type="CSGBox" parent="orange_world"]
+transform = Transform( 0.0743184, -0.269728, 0.960064, -0.0638881, 0.959461, 0.274504, -0.995186, -0.0817374, 0.0540732, -4.99053, -2.73033, -5.61791 )
+material_override = SubResource( 7 )
+height = 11.8685
+
+[node name="CSGBox4" type="CSGBox" parent="orange_world"]
+transform = Transform( 0.792809, 0.257346, 0.552474, -0.0130175, 0.913425, -0.406798, -0.609332, 0.315322, 0.727521, 12.1529, -2.73033, 5.5675 )
+material_override = SubResource( 7 )
+width = 11.0972
+height = 11.8685
+
+[node name="CSGBox5" type="CSGBox" parent="orange_world"]
+transform = Transform( -0.660944, 0.0383265, 0.749456, 0.23242, 0.960044, 0.155875, -0.713537, 0.277213, -0.643443, -18.035, -3.82092, 6.29851 )
+material_override = SubResource( 7 )
+width = 4.62619
+height = 15.3357
+
+[node name="DirectionalLight" type="DirectionalLight" parent="orange_world"]
+transform = Transform( 0.746522, -3.92911e-07, -0.665361, 0.371921, 0.829184, 0.417288, 0.551706, -0.558976, 0.619004, 0, 6.69399, 0 )
+light_color = Color( 1, 0.584314, 0.423529, 1 )
+light_cull_mask = 4294951921
+shadow_enabled = true

@@ -1,0 +1,156 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://Effects/laser/materials/red_impact.tres" type="Material" id=1]
+[ext_resource path="res://Effects/laser/scripts/Laser.gd" type="Script" id=2]
+[ext_resource path="res://Effects/laser/materials/outer_laser_mat.tres" type="Material" id=3]
+[ext_resource path="res://HDRI/dikhololo_night_1k.hdr" type="Texture" id=4]
+[ext_resource path="res://Effects/laser/scripts/Path.gd" type="Script" id=5]
+[ext_resource path="res://Effects/laser/meshs/tube_impact.obj" type="ArrayMesh" id=6]
+[ext_resource path="res://Effects/laser/meshs/tube.obj" type="ArrayMesh" id=7]
+[ext_resource path="res://Effects/laser/materials/blue_impact.tres" type="Material" id=8]
+[ext_resource path="res://Effects/laser/materials/inner_laser_mat.tres" type="Material" id=9]
+
+[sub_resource type="PanoramaSky" id=1]
+panorama = ExtResource( 4 )
+
+[sub_resource type="Environment" id=2]
+background_mode = 3
+background_sky = SubResource( 1 )
+background_color = Color( 0.0862745, 0.0862745, 0.0901961, 1 )
+background_energy = 0.1
+glow_enabled = true
+glow_levels/1 = true
+glow_levels/2 = true
+glow_levels/4 = true
+glow_levels/6 = true
+glow_levels/7 = true
+
+[sub_resource type="SphereShape" id=3]
+
+[sub_resource type="Curve3D" id=4]
+_data = {
+"points": PoolVector3Array( -1.04407, 0, -0.259009, 1.04407, 0, 0.259009, -0.545474, 0, 1.71847, 0.477469, 0, 0.855466, -0.477469, 0, -0.855466, 1.46096, 0, 0.29231, 0.322023, 0, 0.34446, -0.322023, 0, -0.34446, -0.91684, 0, 0.55795, -0.779731, 0, 0.384, 0.779731, 0, -0.384, -0.412844, 0, -1.11982, -0.075868, 0, 0.941297, 0.075868, 0, -0.941297, 1.70632, 0, -1.1401, 0.60639, 0, -1.00761, -0.60639, 0, 1.00761, -1.73746, 0.00156498, -0.965076, -1.04407, 0, -0.259009, 1.04407, 0, 0.259009, -0.545474, 0, 1.71847 ),
+"tilts": PoolRealArray( 0, 0, 0, 0, 0, 0, 0 )
+}
+
+[sub_resource type="BoxShape" id=5]
+extents = Vector3( 4, 0.1, 4 )
+
+[node name="Spatial" type="Spatial"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 2 )
+
+[node name="StaticBody2" type="StaticBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.71046 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="StaticBody2"]
+shape = SubResource( 3 )
+
+[node name="CSGSphere" type="CSGSphere" parent="StaticBody2"]
+radial_segments = 32
+rings = 16
+
+[node name="StaticBody3" type="StaticBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.04382, -0.605482, 0.0525701 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="StaticBody3"]
+shape = SubResource( 3 )
+
+[node name="CSGSphere" type="CSGSphere" parent="StaticBody3"]
+radial_segments = 32
+rings = 16
+
+[node name="StaticBody4" type="StaticBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.93281, -0.421783, -0.29758 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="StaticBody4"]
+shape = SubResource( 3 )
+
+[node name="CSGSphere" type="CSGSphere" parent="StaticBody4"]
+radial_segments = 32
+rings = 16
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 0.812725, -0.101176, 0.573796, 0, 0.984808, 0.173648, -0.582648, -0.141128, 0.800378, 1.72989, 0.950663, 2.09216 )
+fov = 50.0
+
+[node name="Laser" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.670949, 1.28934, 0.401854 )
+script = ExtResource( 2 )
+target_path = NodePath("../Path/PathFollow")
+
+[node name="RayCast" type="RayCast" parent="Laser"]
+enabled = true
+
+[node name="Body" type="Spatial" parent="Laser"]
+
+[node name="Container" type="Spatial" parent="Laser/Body"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
+
+[node name="Inner" type="MeshInstance" parent="Laser/Body/Container"]
+material_override = ExtResource( 9 )
+cast_shadow = 0
+mesh = ExtResource( 7 )
+material/0 = null
+
+[node name="Outer" type="MeshInstance" parent="Laser/Body/Container"]
+material_override = ExtResource( 3 )
+cast_shadow = 0
+mesh = ExtResource( 7 )
+material/0 = null
+
+[node name="light" type="OmniLight" parent="Laser"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.08736, 0 )
+light_color = Color( 1, 0.419608, 0.137255, 1 )
+shadow_enabled = true
+omni_range = 2.6
+omni_attenuation = 10.0
+
+[node name="Impact" type="Spatial" parent="Laser"]
+
+[node name="Container" type="Spatial" parent="Laser/Impact"]
+transform = Transform( 0.6, 0, 0, 0, -4.37114e-08, 0.6, 0, -1, -2.62268e-08, 0, 0, 0 )
+
+[node name="tube_impact" type="MeshInstance" parent="Laser/Impact/Container"]
+transform = Transform( 1, 0, 0, 0, 1, -1.77636e-15, 0, 0, 1, 0, 0, 0 )
+material_override = ExtResource( 8 )
+mesh = ExtResource( 6 )
+material/0 = null
+
+[node name="tube_impact2" type="MeshInstance" parent="Laser/Impact/Container"]
+transform = Transform( 1, 0, 0, 0, 1.5, -1.77636e-15, 0, 0, 1, 0, 0.02739, 0 )
+material_override = ExtResource( 1 )
+mesh = ExtResource( 6 )
+material/0 = null
+
+[node name="Path" type="Path" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0928414, -0.943007, -0.0198945 )
+curve = SubResource( 4 )
+script = ExtResource( 5 )
+
+[node name="PathFollow" type="PathFollow" parent="Path"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.545474, 0, 1.71847 )
+
+[node name="Tween" type="Tween" parent="Path"]
+
+[node name="StaticBody" type="StaticBody" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
+shape = SubResource( 5 )
+
+[node name="CSGBox" type="CSGBox" parent="StaticBody"]
+width = 8.0
+height = 0.2
+depth = 8.0
+
+[connection signal="tween_all_completed" from="Path/Tween" to="Path" method="_on_Tween_tween_all_completed"]

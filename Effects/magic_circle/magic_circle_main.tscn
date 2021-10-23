@@ -1,0 +1,238 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://Effects/magic_circle/materials/circle_mat.tres" type="Material" id=1]
+[ext_resource path="res://Effects/magic_circle/materials/circle_ring_mat.tres" type="Material" id=2]
+[ext_resource path="res://Effects/magic_circle/materials/circle_wind_mat.tres" type="Material" id=3]
+[ext_resource path="res://Effects/magic_circle/scripts/magic_circle.gd" type="Script" id=4]
+[ext_resource path="res://HDRI/courtyard_1k.hdr" type="Texture" id=5]
+[ext_resource path="res://Effects/magic_circle/meshes/magic_circle_mesh.obj" type="ArrayMesh" id=6]
+[ext_resource path="res://Effects/magic_circle/components/Box.tscn" type="PackedScene" id=7]
+
+[sub_resource type="PanoramaSky" id=1]
+panorama = ExtResource( 5 )
+
+[sub_resource type="Environment" id=2]
+background_mode = 3
+background_sky = SubResource( 1 )
+ambient_light_sky_contribution = 0.5
+tonemap_mode = 2
+glow_enabled = true
+glow_levels/1 = true
+glow_levels/2 = true
+glow_levels/4 = true
+glow_levels/6 = true
+glow_levels/7 = true
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_color = Color( 0.101961, 0.101961, 0.113725, 1 )
+
+[sub_resource type="BoxShape" id=4]
+extents = Vector3( 10, 0.1, 10 )
+
+[sub_resource type="Animation" id=5]
+resource_name = "Appear"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("magic_circle_mesh:material/0:shader_param/Drawing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.8 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ -0.5, 1.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("magic_circle_mesh:material/1:shader_param/height")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.4, 0.6 ),
+"transitions": PoolRealArray( 2, 1, -2 ),
+"update": 0,
+"values": [ 1.0, 1.0, 0.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("magic_circle_mesh:material/1:shader_param/Resolution")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.3, 0.9 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 1.0, 10.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("OmniLight:light_energy")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.4, 0.6, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.0, 2.0, 0.2 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("magic_circle_mesh:material/2:shader_param/Force")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.4, 0.7, 1 ),
+"transitions": PoolRealArray( 1, 1, 2, 0.5 ),
+"update": 0,
+"values": [ 0.0, 0.0, 1.2, 0.9 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("magic_circle_mesh:material/0:shader_param/Deformation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.8 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.2, 0.0 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("magic_circle_mesh:material/0:shader_param/Emission")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 0.6, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.9, 1.2, 0.9 ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "Invoke"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath("magic_circle_mesh:material/2:shader_param/Force")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.9, 1.2, 0.9 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("magic_circle_mesh:material/0:shader_param/Deformation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.1, 0.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("magic_circle_mesh:material/0:shader_param/Emission")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.4, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.9, 2.0, 0.9 ]
+}
+
+[node name="Magic_circle" type="Spatial"]
+script = ExtResource( 4 )
+to_invoke = ExtResource( 7 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 2 )
+
+[node name="StaticBody" type="StaticBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.104474, 0 )
+
+[node name="CSGBox" type="CSGBox" parent="StaticBody"]
+width = 20.0
+height = 0.2
+depth = 20.0
+material = SubResource( 3 )
+
+[node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
+shape = SubResource( 4 )
+
+[node name="OmniLight" type="OmniLight" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.224571, 0 )
+light_color = Color( 0.615686, 1, 0.972549, 1 )
+light_energy = 0.2
+omni_attenuation = 2.0
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 0.707107, 0.449756, -0.545637, 0, 0.771647, 0.636051, 0.707107, -0.449756, 0.545637, -2, 2.5, 2 )
+visible = false
+fov = 40.0
+
+[node name="magic_circle_mesh" type="MeshInstance" parent="."]
+mesh = ExtResource( 6 )
+material/0 = ExtResource( 1 )
+material/1 = ExtResource( 2 )
+material/2 = ExtResource( 3 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Appear = SubResource( 5 )
+anims/Invoke = SubResource( 6 )
+
+[node name="Target" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.891603, 0 )
+
+[node name="Control" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+margin_left = 11.1118
+margin_top = 12.6992
+margin_right = 98.1118
+margin_bottom = 62.6992
+custom_constants/separation = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Open" type="Button" parent="Control/VBoxContainer"]
+margin_right = 87.0
+margin_bottom = 20.0
+text = "Open Circle"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Invoke" type="Button" parent="Control/VBoxContainer"]
+margin_top = 30.0
+margin_right = 87.0
+margin_bottom = 50.0
+text = "Invoke"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="Control/VBoxContainer/Open" to="." method="_on_Open_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/Invoke" to="." method="_on_Invoke_pressed"]

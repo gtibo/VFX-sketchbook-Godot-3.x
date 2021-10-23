@@ -1,0 +1,120 @@
+[gd_resource type="ShaderMaterial" load_steps=12 format=2]
+
+[sub_resource type="VisualShaderNodeScalarSmoothStep" id=20]
+output_port_for_preview = 0
+default_input_values = [ 0, 1.0, 1, 0.5, 2, 0.0 ]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=21]
+output_port_for_preview = 0
+operator = 2
+
+[sub_resource type="VisualShaderNodeVectorOp" id=27]
+default_input_values = [ 0, Vector3( 0, 0, 0 ), 1, Vector3( 2, 2, 2 ) ]
+operator = 2
+
+[sub_resource type="Gradient" id=34]
+colors = PoolColorArray( 0.0941176, 0.321569, 1, 1, 1, 0.176471, 0.909804, 1 )
+
+[sub_resource type="GradientTexture" id=35]
+gradient = SubResource( 34 )
+
+[sub_resource type="VisualShaderNodeTexture" id=36]
+texture = SubResource( 35 )
+
+[sub_resource type="VisualShaderNodeVectorCompose" id=37]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=44]
+output_port_for_preview = 0
+default_input_values = [ 0, 0.0, 1, 0.1 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeVectorDecompose" id=40]
+
+[sub_resource type="VisualShaderNodeInput" id=41]
+input_name = "uv"
+
+[sub_resource type="VisualShader" id=43]
+code = "shader_type spatial;
+render_mode cull_disabled, specular_schlick_ggx, world_vertex_coords;
+
+uniform sampler2D tex_frg_47;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:7
+	vec3 n_out7p0 = vec3(UV, 0.0);
+
+// VectorDecompose:6
+	float n_out6p0 = n_out7p0.x;
+	float n_out6p1 = n_out7p0.y;
+	float n_out6p2 = n_out7p0.z;
+
+// ScalarSmoothStep:33
+	float n_in33p0 = 1.00000;
+	float n_in33p1 = 0.50000;
+	float n_out33p0 = smoothstep(n_in33p0, n_in33p1, n_out6p1);
+
+// ScalarOp:34
+	float n_out34p0 = n_out6p1 * n_out33p0;
+
+// ScalarOp:49
+	float n_in49p1 = 0.10000;
+	float n_out49p0 = n_out34p0 * n_in49p1;
+
+// VectorCompose:48
+	float n_in48p1 = 0.00000;
+	float n_in48p2 = 0.00000;
+	vec3 n_out48p0 = vec3(n_out6p1, n_in48p1, n_in48p2);
+
+// Texture:47
+	vec4 tex_frg_47_read = texture(tex_frg_47, n_out48p0.xy);
+	vec3 n_out47p0 = tex_frg_47_read.rgb;
+	float n_out47p1 = tex_frg_47_read.a;
+
+// VectorOp:4
+	vec3 n_in4p1 = vec3(2.00000, 2.00000, 2.00000);
+	vec3 n_out4p0 = n_out47p0 * n_in4p1;
+
+// Output:0
+	ALPHA = n_out49p0;
+	EMISSION = n_out4p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( 675.249, 531.559 )
+modes/cull = 2
+flags/world_vertex_coords = true
+nodes/vertex/0/position = Vector2( 1400, 200 )
+nodes/fragment/0/position = Vector2( 2060, 360 )
+nodes/fragment/4/node = SubResource( 27 )
+nodes/fragment/4/position = Vector2( 1260, 340 )
+nodes/fragment/6/node = SubResource( 40 )
+nodes/fragment/6/position = Vector2( 560, 440 )
+nodes/fragment/7/node = SubResource( 41 )
+nodes/fragment/7/position = Vector2( 280, 440 )
+nodes/fragment/33/node = SubResource( 20 )
+nodes/fragment/33/position = Vector2( 960, 800 )
+nodes/fragment/34/node = SubResource( 21 )
+nodes/fragment/34/position = Vector2( 1320, 620 )
+nodes/fragment/47/node = SubResource( 36 )
+nodes/fragment/47/position = Vector2( 1020, 340 )
+nodes/fragment/48/node = SubResource( 37 )
+nodes/fragment/48/position = Vector2( 820, 360 )
+nodes/fragment/49/node = SubResource( 44 )
+nodes/fragment/49/position = Vector2( 1580, 620 )
+nodes/fragment/connections = PoolIntArray( 7, 0, 6, 0, 4, 0, 0, 5, 47, 0, 4, 0, 6, 1, 48, 0, 48, 0, 47, 0, 49, 0, 0, 1, 6, 1, 34, 0, 34, 0, 49, 0, 33, 0, 34, 1, 6, 1, 33, 2 )
+nodes/light/0/position = Vector2( 480, 120 )
+
+[resource]
+shader = SubResource( 43 )

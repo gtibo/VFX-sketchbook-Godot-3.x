@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/impact.obj-79eb1f61d099a9b76a277be646e04baa.mesh"
+
+[deps]
+
+files=[ "res://.import/impact.obj-79eb1f61d099a9b76a277be646e04baa.mesh" ]
+
+source_file="res://Effects/meteor/meshes/impact.obj"
+dest_files=[ "res://.import/impact.obj-79eb1f61d099a9b76a277be646e04baa.mesh", "res://.import/impact.obj-79eb1f61d099a9b76a277be646e04baa.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

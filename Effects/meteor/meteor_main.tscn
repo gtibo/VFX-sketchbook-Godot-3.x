@@ -1,0 +1,44 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Effects/meteor/scripts/meteor_main.gd" type="Script" id=1]
+[ext_resource path="res://Effects/meteor/scripts/Meteor.gd" type="Script" id=2]
+[ext_resource path="res://Effects/meteor/materials/meteor_impact.tres" type="Material" id=3]
+[ext_resource path="res://Effects/meteor/components/Stalker.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Effects/meteor/components/trail.tscn" type="PackedScene" id=6]
+[ext_resource path="res://HDRI/dikhololo_night_1k.hdr" type="Texture" id=7]
+
+[sub_resource type="PanoramaSky" id=1]
+panorama = ExtResource( 7 )
+
+[sub_resource type="Environment" id=2]
+background_mode = 3
+background_sky = SubResource( 1 )
+background_color = Color( 0.0392157, 0.0470588, 0.0901961, 1 )
+tonemap_mode = 2
+glow_enabled = true
+glow_levels/1 = true
+glow_levels/2 = true
+glow_levels/4 = true
+glow_levels/6 = true
+glow_levels/7 = true
+glow_intensity = 1.0
+glow_bloom = 0.2
+adjustment_brightness = 1.46
+
+[node name="Spatial" type="Spatial"]
+script = ExtResource( 1 )
+scene_to_load = ExtResource( 5 )
+trail_scene = ExtResource( 6 )
+second_trail_mat = ExtResource( 3 )
+
+[node name="Meteor" type="Spatial" parent="."]
+script = ExtResource( 2 )
+
+[node name="Camera" type="Camera" parent="Meteor"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6 )
+current = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 2 )
+
+[node name="Container" type="Spatial" parent="."]

@@ -1,0 +1,307 @@
+[gd_resource type="ShaderMaterial" load_steps=25 format=2]
+
+[sub_resource type="VisualShaderNodeInput" id=1]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeScalarOp" id=2]
+output_port_for_preview = 0
+default_input_values = [ 0, 1.0, 1, 0.0 ]
+operator = 1
+
+[sub_resource type="VisualShaderNodeVectorOp" id=3]
+output_port_for_preview = 0
+
+[sub_resource type="VisualShaderNodeExpression" id=4]
+output_port_for_preview = 0
+size = Vector2( 767, 513 )
+expression = "// From : https://mmmovania.blogspot.com/2011/11/twirl-filter-in-glsl.html
+// By : MMMovania
+float angle = atan(uv.y,uv.x) - angle_offset * 2.0;
+float radius = length(uv);
+angle += radius * amount;
+shifted = radius * vec3(cos(angle), sin(angle), 1.0);"
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=5]
+constant = 20.0
+
+[sub_resource type="VisualShaderNodeVectorOp" id=6]
+default_input_values = [ 0, Vector3( 0, 0, 0 ), 1, Vector3( 0.5, 0.5, 0 ) ]
+operator = 1
+
+[sub_resource type="VisualShaderNodeInput" id=7]
+input_name = "time"
+
+[sub_resource type="VisualShaderNodeVectorOp" id=8]
+output_port_for_preview = 0
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=9]
+default_input_values = [ 0, 0.0, 1, 2.0 ]
+operator = 3
+
+[sub_resource type="VisualShaderNodeScalarOp" id=10]
+default_input_values = [ 0, 0.0, 1, 0.05 ]
+operator = 1
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=11]
+uniform_name = "Opening"
+
+[sub_resource type="VisualShaderNodeScalarSmoothStep" id=12]
+output_port_for_preview = 0
+default_input_values = [ 0, 0.5, 1, 0.4, 2, 0.0 ]
+
+[sub_resource type="VisualShaderNodeVectorScalarMix" id=13]
+output_port_for_preview = 0
+
+[sub_resource type="VisualShaderNodeScalarInterp" id=14]
+default_input_values = [ 0, 1.0, 1, 1.0, 2, 1.0 ]
+
+[sub_resource type="VisualShaderNodeColorConstant" id=15]
+constant = Color( 0.051249, 0.01091, 0.107422, 1 )
+
+[sub_resource type="VisualShaderNodeColorOp" id=16]
+operator = 4
+
+[sub_resource type="VisualShaderNodeTextureUniform" id=17]
+output_port_for_preview = 1
+uniform_name = "TextureUniform"
+
+[sub_resource type="VisualShaderNodeInput" id=18]
+input_name = "screen_uv"
+
+[sub_resource type="VisualShaderNodeVectorDistance" id=19]
+default_input_values = [ 0, Vector3( 0.5, 0.5, 0 ), 1, Vector3( 0.5, 0.5, 0 ) ]
+
+[sub_resource type="VisualShaderNodeInput" id=20]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeScalarSmoothStep" id=21]
+output_port_for_preview = 0
+default_input_values = [ 0, 0.5, 1, 0.4, 2, 0.0 ]
+
+[sub_resource type="VisualShaderNodeExpression" id=22]
+size = Vector2( 506, 259 )
+expression = "MODELVIEW_MATRIX = INV_CAMERA_MATRIX * mat4(CAMERA_MATRIX[0],CAMERA_MATRIX[1],CAMERA_MATRIX[2],WORLD_MATRIX[3]);"
+
+[sub_resource type="VisualShader" id=23]
+code = "shader_type spatial;
+render_mode specular_schlick_ggx, unshaded, shadows_disabled, ambient_light_disabled;
+
+uniform float Opening;
+uniform sampler2D TextureUniform;
+
+
+
+void vertex() {
+// Expression:2
+	float n_out2p0;
+	n_out2p0 = 0.0;
+	{
+		MODELVIEW_MATRIX = INV_CAMERA_MATRIX * mat4(CAMERA_MATRIX[0],CAMERA_MATRIX[1],CAMERA_MATRIX[2],WORLD_MATRIX[3]);
+	}
+
+// Output:0
+	ROUGHNESS = n_out2p0;
+
+}
+
+void fragment() {
+// Color:36
+	vec3 n_out36p0 = vec3(0.051249, 0.010910, 0.107422);
+	float n_out36p1 = 1.000000;
+
+// Input:6
+	vec3 n_out6p0 = vec3(SCREEN_UV, 0.0);
+
+// ScalarUniform:30
+	float n_out30p0 = Opening;
+
+// ScalarOp:28
+	float n_in28p1 = 2.00000;
+	float n_out28p0 = n_out30p0 / n_in28p1;
+
+// Input:8
+	vec3 n_out8p0 = vec3(UV, 0.0);
+
+// Distance:7
+	vec3 n_in7p1 = vec3(0.50000, 0.50000, 0.00000);
+	float n_out7p0 = distance(n_out8p0, n_in7p1);
+
+// ScalarSmoothStep:31
+	float n_in31p1 = 0.40000;
+	float n_out31p0 = smoothstep(n_out28p0, n_in31p1, n_out7p0);
+
+// ScalarOp:19
+	float n_in19p0 = 1.00000;
+	float n_out19p0 = n_in19p0 - n_out31p0;
+
+// Input:13
+	vec3 n_out13p0 = vec3(UV, 0.0);
+
+// VectorOp:24
+	vec3 n_in24p1 = vec3(0.50000, 0.50000, 0.00000);
+	vec3 n_out24p0 = n_out13p0 - n_in24p1;
+
+// Scalar:23
+	float n_out23p0 = 20.000000;
+
+// Input:25
+	float n_out25p0 = TIME;
+
+// Expression:22
+	vec3 n_out22p0;
+	n_out22p0 = vec3(0.0, 0.0, 0.0);
+	{
+		// From : https://mmmovania.blogspot.com/2011/11/twirl-filter-in-glsl.html
+		// By : MMMovania
+		float angle = atan(n_out24p0.y,n_out24p0.x) - n_out25p0 * 2.0;
+		float radius = length(n_out24p0);
+		angle += radius * n_out23p0;
+		n_out22p0 = radius * vec3(cos(angle), sin(angle), 1.0);
+	}
+
+// VectorOp:26
+	vec3 n_out26p0 = vec3(n_out19p0) * n_out22p0;
+
+// VectorOp:20
+	vec3 n_out20p0 = n_out6p0 + n_out26p0;
+
+// TextureUniform:5
+	vec3 n_out5p0;
+	float n_out5p1;
+	{
+		vec4 n_tex_read = texture(TextureUniform, n_out20p0.xy);
+		n_out5p0 = n_tex_read.rgb;
+		n_out5p1 = n_tex_read.a;
+	}
+
+// ColorOp:37
+	vec3 n_out37p0;
+	{
+		float base = n_out36p0.x;
+		float blend = n_out5p0.x;
+		if (base < 0.5) {
+			n_out37p0.x = 2.0 * base * blend;
+		} else {
+			n_out37p0.x = 1.0 - 2.0 * (1.0 - blend) * (1.0 - base);
+		}
+	}
+	{
+		float base = n_out36p0.y;
+		float blend = n_out5p0.y;
+		if (base < 0.5) {
+			n_out37p0.y = 2.0 * base * blend;
+		} else {
+			n_out37p0.y = 1.0 - 2.0 * (1.0 - blend) * (1.0 - base);
+		}
+	}
+	{
+		float base = n_out36p0.z;
+		float blend = n_out5p0.z;
+		if (base < 0.5) {
+			n_out37p0.z = 2.0 * base * blend;
+		} else {
+			n_out37p0.z = 1.0 - 2.0 * (1.0 - blend) * (1.0 - base);
+		}
+	}
+
+// ScalarMix:35
+	float n_in35p0 = 1.00000;
+	float n_in35p2 = 1.00000;
+	float n_out35p0 = mix(n_in35p0, n_out31p0, n_in35p2);
+
+// VectorScalarMix:33
+	vec3 n_out33p0 = mix(n_out37p0, n_out5p0, n_out35p0);
+
+// ScalarOp:29
+	float n_in29p1 = 0.05000;
+	float n_out29p0 = n_out28p0 - n_in29p1;
+
+// ScalarSmoothStep:9
+	float n_out9p0 = smoothstep(n_out28p0, n_out29p0, n_out7p0);
+
+// Output:0
+	ALBEDO = n_out33p0;
+	ALPHA = n_out9p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+flags/ambient_light_disabled = true
+flags/shadows_disabled = true
+flags/unshaded = true
+nodes/vertex/0/position = Vector2( 820, 40 )
+nodes/vertex/2/node = SubResource( 22 )
+nodes/vertex/2/position = Vector2( 280, 40 )
+nodes/vertex/2/size = Vector2( 506, 259 )
+nodes/vertex/2/input_ports = ""
+nodes/vertex/2/output_ports = "0,0,output0;"
+nodes/vertex/2/expression = "MODELVIEW_MATRIX = INV_CAMERA_MATRIX * mat4(CAMERA_MATRIX[0],CAMERA_MATRIX[1],CAMERA_MATRIX[2],WORLD_MATRIX[3]);"
+nodes/vertex/connections = PoolIntArray( 2, 0, 0, 8 )
+nodes/fragment/0/position = Vector2( 980, 100 )
+nodes/fragment/5/node = SubResource( 17 )
+nodes/fragment/5/position = Vector2( 460, 280 )
+nodes/fragment/6/node = SubResource( 18 )
+nodes/fragment/6/position = Vector2( -80, 200 )
+nodes/fragment/7/node = SubResource( 19 )
+nodes/fragment/7/position = Vector2( -1020, -280 )
+nodes/fragment/8/node = SubResource( 20 )
+nodes/fragment/8/position = Vector2( -1180, -280 )
+nodes/fragment/9/node = SubResource( 21 )
+nodes/fragment/9/position = Vector2( -520, -300 )
+nodes/fragment/13/node = SubResource( 1 )
+nodes/fragment/13/position = Vector2( -1800, 600 )
+nodes/fragment/19/node = SubResource( 2 )
+nodes/fragment/19/position = Vector2( -300, -60 )
+nodes/fragment/20/node = SubResource( 3 )
+nodes/fragment/20/position = Vector2( 240, 280 )
+nodes/fragment/22/node = SubResource( 4 )
+nodes/fragment/22/position = Vector2( -1280, 600 )
+nodes/fragment/22/size = Vector2( 767, 513 )
+nodes/fragment/22/input_ports = "0,1,uv;1,0,amount;2,0,angle_offset;"
+nodes/fragment/22/output_ports = "0,1,shifted;"
+nodes/fragment/22/expression = "// From : https://mmmovania.blogspot.com/2011/11/twirl-filter-in-glsl.html
+// By : MMMovania
+float angle = atan(uv.y,uv.x) - angle_offset * 2.0;
+float radius = length(uv);
+angle += radius * amount;
+shifted = radius * vec3(cos(angle), sin(angle), 1.0);"
+nodes/fragment/23/node = SubResource( 5 )
+nodes/fragment/23/position = Vector2( -1620, 720 )
+nodes/fragment/24/node = SubResource( 6 )
+nodes/fragment/24/position = Vector2( -1580, 600 )
+nodes/fragment/25/node = SubResource( 7 )
+nodes/fragment/25/position = Vector2( -1780, 800 )
+nodes/fragment/26/node = SubResource( 8 )
+nodes/fragment/26/position = Vector2( -80, 320 )
+nodes/fragment/28/node = SubResource( 9 )
+nodes/fragment/28/position = Vector2( -880, -420 )
+nodes/fragment/29/node = SubResource( 10 )
+nodes/fragment/29/position = Vector2( -760, -220 )
+nodes/fragment/30/node = SubResource( 11 )
+nodes/fragment/30/position = Vector2( -1180, -400 )
+nodes/fragment/31/node = SubResource( 12 )
+nodes/fragment/31/position = Vector2( -440, -680 )
+nodes/fragment/33/node = SubResource( 13 )
+nodes/fragment/33/position = Vector2( 760, 180 )
+nodes/fragment/35/node = SubResource( 14 )
+nodes/fragment/35/position = Vector2( 460, 160 )
+nodes/fragment/36/node = SubResource( 15 )
+nodes/fragment/36/position = Vector2( 480, 60 )
+nodes/fragment/37/node = SubResource( 16 )
+nodes/fragment/37/position = Vector2( 760, 0 )
+nodes/fragment/connections = PoolIntArray( 8, 0, 7, 0, 7, 0, 9, 2, 6, 0, 20, 0, 20, 0, 5, 0, 13, 0, 24, 0, 25, 0, 22, 2, 24, 0, 22, 0, 19, 0, 26, 0, 26, 0, 20, 1, 22, 0, 26, 1, 28, 0, 29, 0, 29, 0, 9, 1, 28, 0, 9, 0, 30, 0, 28, 0, 9, 0, 0, 1, 23, 0, 22, 1, 7, 0, 31, 2, 28, 0, 31, 0, 5, 0, 33, 1, 33, 0, 0, 0, 31, 0, 35, 1, 35, 0, 33, 2, 36, 0, 37, 0, 5, 0, 37, 1, 37, 0, 33, 0, 31, 0, 19, 1 )
+
+[sub_resource type="ViewportTexture" id=24]
+viewport_path = NodePath("Viewport")
+
+[resource]
+resource_local_to_scene = true
+render_priority = 1
+shader = SubResource( 23 )
+shader_param/Opening = 1.0
+shader_param/TextureUniform = SubResource( 24 )

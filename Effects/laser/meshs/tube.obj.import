@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/tube.obj-5fada64ae99382e007aef567ce5e0bfd.mesh"
+
+[deps]
+
+files=[ "res://.import/tube.obj-5fada64ae99382e007aef567ce5e0bfd.mesh" ]
+
+source_file="res://Effects/laser/meshs/tube.obj"
+dest_files=[ "res://.import/tube.obj-5fada64ae99382e007aef567ce5e0bfd.mesh", "res://.import/tube.obj-5fada64ae99382e007aef567ce5e0bfd.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

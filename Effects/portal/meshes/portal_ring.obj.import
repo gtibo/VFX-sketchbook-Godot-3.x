@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/portal_ring.obj-c7d914f4424f6e97dfadf470bdd92186.mesh"
+
+[deps]
+
+files=[ "res://.import/portal_ring.obj-c7d914f4424f6e97dfadf470bdd92186.mesh" ]
+
+source_file="res://Effects/portal/meshes/portal_ring.obj"
+dest_files=[ "res://.import/portal_ring.obj-c7d914f4424f6e97dfadf470bdd92186.mesh", "res://.import/portal_ring.obj-c7d914f4424f6e97dfadf470bdd92186.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

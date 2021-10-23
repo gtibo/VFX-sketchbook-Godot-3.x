@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/star.obj-185a43003668fa2912107a7863c31222.mesh"
+
+[deps]
+
+files=[ "res://.import/star.obj-185a43003668fa2912107a7863c31222.mesh" ]
+
+source_file="res://Effects/meteor/meshes/star.obj"
+dest_files=[ "res://.import/star.obj-185a43003668fa2912107a7863c31222.mesh", "res://.import/star.obj-185a43003668fa2912107a7863c31222.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Effects/meteor/materials/trail_mat.tres" type="Material" id=1]
+[ext_resource path="res://Effects/meteor/scripts/trail.gd" type="Script" id=2]
+
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.209091 ), 0.0, 0.0, 0, 0 ]
+
+[node name="Trail" type="ImmediateGeometry"]
+material_override = ExtResource( 1 )
+generate_lightmap = false
+script = ExtResource( 2 )
+__meta__ = {
+"_editor_description_": ""
+}
+profile = SubResource( 1 )

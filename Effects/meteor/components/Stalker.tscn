@@ -1,0 +1,65 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Effects/meteor/scripts/Stalker.gd" type="Script" id=1]
+[ext_resource path="res://Effects/meteor/meshes/star.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://Effects/meteor/materials/star_material.tres" type="Material" id=3]
+
+[sub_resource type="SpatialMaterial" id=2]
+flags_do_not_receive_shadows = true
+emission_enabled = true
+emission = Color( 1, 0.92549, 0.631373, 1 )
+emission_energy = 4.0
+emission_operator = 0
+emission_on_uv2 = false
+
+[sub_resource type="Curve" id=3]
+_data = [ Vector2( 0, 0 ), 0.0, 4.22028, 0, 0, Vector2( 0.509859, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=4]
+curve = SubResource( 3 )
+
+[sub_resource type="ParticlesMaterial" id=5]
+emission_shape = 2
+emission_box_extents = Vector3( 0, 0.4, 0.4 )
+direction = Vector3( -1, 0, 0 )
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 10.0
+initial_velocity_random = 1.0
+scale = 0.1
+scale_random = 0.1
+scale_curve = SubResource( 4 )
+
+[sub_resource type="SphereMesh" id=6]
+radius = 0.1
+height = 0.2
+radial_segments = 8
+rings = 4
+
+[sub_resource type="SphereShape" id=1]
+
+[node name="Stalker" type="Spatial"]
+script = ExtResource( 1 )
+targe_path = NodePath("../../Meteor")
+
+[node name="Head" type="Spatial" parent="."]
+
+[node name="Particles" type="Particles" parent="Head"]
+material_override = SubResource( 2 )
+lifetime = 0.5
+randomness = 1.0
+local_coords = false
+process_material = SubResource( 5 )
+draw_pass_1 = SubResource( 6 )
+
+[node name="Star" type="MeshInstance" parent="Head"]
+transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
+mesh = ExtResource( 2 )
+material/0 = ExtResource( 3 )
+
+[node name="Zone" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="Zone"]
+shape = SubResource( 1 )
+
+[connection signal="area_entered" from="Zone" to="." method="_on_Zone_area_entered"]
+[connection signal="area_exited" from="Zone" to="." method="_on_Zone_area_exited"]

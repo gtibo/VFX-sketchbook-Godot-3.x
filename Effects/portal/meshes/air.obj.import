@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/air.obj-db89eae91bfbad937446ee6082bca240.mesh"
+
+[deps]
+
+files=[ "res://.import/air.obj-db89eae91bfbad937446ee6082bca240.mesh" ]
+
+source_file="res://Effects/portal/meshes/air.obj"
+dest_files=[ "res://.import/air.obj-db89eae91bfbad937446ee6082bca240.mesh", "res://.import/air.obj-db89eae91bfbad937446ee6082bca240.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

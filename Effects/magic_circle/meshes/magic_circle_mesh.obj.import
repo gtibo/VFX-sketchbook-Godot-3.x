@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/magic_circle_mesh.obj-31fd21c7f3701e2dc5b8553752bfb2c1.mesh"
+
+[deps]
+
+files=[ "res://.import/magic_circle_mesh.obj-31fd21c7f3701e2dc5b8553752bfb2c1.mesh" ]
+
+source_file="res://Effects/magic_circle/meshes/magic_circle_mesh.obj"
+dest_files=[ "res://.import/magic_circle_mesh.obj-31fd21c7f3701e2dc5b8553752bfb2c1.mesh", "res://.import/magic_circle_mesh.obj-31fd21c7f3701e2dc5b8553752bfb2c1.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true
