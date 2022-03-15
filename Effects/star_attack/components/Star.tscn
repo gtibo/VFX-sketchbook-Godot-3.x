@@ -1,10 +1,10 @@
 [gd_scene load_steps=24 format=2]
 
-[ext_resource path="res://Effects/star_attack/Star.gd" type="Script" id=1]
+[ext_resource path="res://Effects/star_attack/components/Star.gd" type="Script" id=1]
 [ext_resource path="res://addons/Trail/trail_3d.gd" type="Script" id=2]
-[ext_resource path="res://Effects/star_attack/Trail_mat.tres" type="Material" id=3]
-[ext_resource path="res://Effects/star_attack/Impact.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Effects/star_attack/Star.png" type="Texture" id=5]
+[ext_resource path="res://Effects/star_attack/materials/Trail_mat.tres" type="Material" id=3]
+[ext_resource path="res://Effects/star_attack/components/Impact.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Effects/star_attack/textures/Star.png" type="Texture" id=5]
 
 [sub_resource type="SphereShape" id=1]
 

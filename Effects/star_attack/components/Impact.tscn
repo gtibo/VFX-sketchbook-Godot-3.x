@@ -1,8 +1,8 @@
 [gd_scene load_steps=46 format=2]
 
-[ext_resource path="res://Effects/star_attack/impact.obj" type="ArrayMesh" id=1]
-[ext_resource path="res://Effects/star_attack/Impact.gd" type="Script" id=2]
-[ext_resource path="res://Effects/star_attack/impact_top.obj" type="ArrayMesh" id=3]
+[ext_resource path="res://Effects/star_attack/meshes/impact.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://Effects/star_attack/components/Impact.gd" type="Script" id=2]
+[ext_resource path="res://Effects/star_attack/meshes/impact_top.obj" type="ArrayMesh" id=3]
 
 [sub_resource type="VisualShaderNodeVectorOp" id=32]
 operator = 2
