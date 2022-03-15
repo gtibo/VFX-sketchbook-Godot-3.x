@@ -374,7 +374,7 @@ mesh = ExtResource( 1 )
 material/0 = null
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
-transform = Transform( 0.776849, 0.0149781, 0.629508, 0, 0.999717, -0.0237866, -0.629687, 0.0184786, 0.77663, -3.43528, 0, 0 )
+transform = Transform( 1, 0, 0, 0, 0.682534, 0.730854, 0, -0.730854, 0.682534, -3.43528, 0, 0 )
 
 [node name="CSGBox" type="CSGBox" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.48829 )

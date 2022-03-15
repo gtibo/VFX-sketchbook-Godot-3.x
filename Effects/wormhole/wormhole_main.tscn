@@ -1,11 +1,11 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Effects/wormhole/meshes/wormhole.obj" type="ArrayMesh" id=1]
-[ext_resource path="res://Effects/wormhole/materials/wormhole_mat.tres" type="Material" id=2]
-[ext_resource path="res://HDRI/dikhololo_night_1k.hdr" type="Texture" id=3]
+[ext_resource path="res://Effects/wormhole/materials/wormhole_mat.tres" type="Material" id=1]
+[ext_resource path="res://HDRI/dikhololo_night_1k.hdr" type="Texture" id=2]
+[ext_resource path="res://Effects/wormhole/meshes/wormhole.obj" type="ArrayMesh" id=3]
 
 [sub_resource type="PanoramaSky" id=1]
-panorama = ExtResource( 3 )
+panorama = ExtResource( 2 )
 
 [sub_resource type="Environment" id=2]
 background_mode = 2
@@ -25,6 +25,6 @@ environment = SubResource( 2 )
 
 [node name="wormhole" type="MeshInstance" parent="."]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
-material_override = ExtResource( 2 )
-mesh = ExtResource( 1 )
+material_override = ExtResource( 1 )
+mesh = ExtResource( 3 )
 material/0 = null

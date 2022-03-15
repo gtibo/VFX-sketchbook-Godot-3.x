@@ -82,7 +82,7 @@ current = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -200 )
 
 [node name="DirectionalLight2" type="DirectionalLight" parent="Target"]
-transform = Transform( 0.856069, 0.427273, -0.290832, 0, 0.562689, 0.826669, 0.516862, -0.707685, 0.481701, -9.78148, 0, -5.9057 )
+transform = Transform( 0.856069, 0.427273, -0.290833, 0, 0.562689, 0.826669, 0.516862, -0.707685, 0.481701, -9.78148, 0, -5.9057 )
 visible = false
 layers = 2
 light_cull_mask = 4294935520

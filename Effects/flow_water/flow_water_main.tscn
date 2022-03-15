@@ -54,7 +54,7 @@ surfaces/0 = {
 "vertex_count": 1139
 }
 
-[node name="Strange_matter" type="Spatial"]
+[node name="flow" type="Spatial"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 2 )

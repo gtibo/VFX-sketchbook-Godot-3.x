@@ -105,7 +105,7 @@ default_input_values = [ 0, 0.0, 1, 0.1 ]
 operator = 2
 
 [sub_resource type="VisualShaderNodeExpression" id=29]
-size = Vector2( 1140, 214 )
+size = Vector2( 1386, 208 )
 expression = "MODELVIEW_MATRIX = INV_CAMERA_MATRIX * mat4(CAMERA_MATRIX[0],CAMERA_MATRIX[1],CAMERA_MATRIX[2],WORLD_MATRIX[3]);"
 
 [sub_resource type="VisualShader" id=30]
@@ -247,12 +247,12 @@ void light() {
 
 }
 "
-graph_offset = Vector2( 669, -371 )
+graph_offset = Vector2( 209, 89 )
 flags/shadows_disabled = true
-nodes/vertex/0/position = Vector2( 680, 120 )
+nodes/vertex/0/position = Vector2( 646, 114 )
 nodes/vertex/2/node = SubResource( 29 )
-nodes/vertex/2/position = Vector2( -760, 160 )
-nodes/vertex/2/size = Vector2( 1140, 214 )
+nodes/vertex/2/position = Vector2( -893, 171 )
+nodes/vertex/2/size = Vector2( 1386, 208 )
 nodes/vertex/2/input_ports = ""
 nodes/vertex/2/output_ports = "0,0,output0;"
 nodes/vertex/2/expression = "MODELVIEW_MATRIX = INV_CAMERA_MATRIX * mat4(CAMERA_MATRIX[0],CAMERA_MATRIX[1],CAMERA_MATRIX[2],WORLD_MATRIX[3]);"

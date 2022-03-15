@@ -231,10 +231,11 @@ void light() {
 
 }
 "
+graph_offset = Vector2( 304, 1 )
 flags/ambient_light_disabled = true
 flags/shadows_disabled = true
 flags/unshaded = true
-nodes/vertex/0/position = Vector2( 820, 40 )
+nodes/vertex/0/position = Vector2( 1026, -133 )
 nodes/vertex/2/node = SubResource( 22 )
 nodes/vertex/2/position = Vector2( 280, 40 )
 nodes/vertex/2/size = Vector2( 506, 259 )

@@ -1,0 +1,177 @@
+[gd_scene load_steps=24 format=2]
+
+[ext_resource path="res://Effects/star_attack/Star.gd" type="Script" id=1]
+[ext_resource path="res://addons/Trail/trail_3d.gd" type="Script" id=2]
+[ext_resource path="res://Effects/star_attack/Trail_mat.tres" type="Material" id=3]
+[ext_resource path="res://Effects/star_attack/Impact.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Effects/star_attack/Star.png" type="Texture" id=5]
+
+[sub_resource type="SphereShape" id=1]
+
+[sub_resource type="Curve" id=2]
+_data = [ Vector2( 0, 0 ), 0.0, 5.54199, 0, 0, Vector2( 0.5, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="QuadMesh" id=6]
+
+[sub_resource type="VisualShaderNodeTexture" id=8]
+texture = ExtResource( 5 )
+
+[sub_resource type="OpenSimplexNoise" id=9]
+
+[sub_resource type="NoiseTexture" id=10]
+seamless = true
+noise = SubResource( 9 )
+
+[sub_resource type="VisualShaderNodeTexture" id=11]
+texture = SubResource( 10 )
+
+[sub_resource type="VisualShaderNodeVectorScalarMix" id=12]
+
+[sub_resource type="VisualShaderNodeColorConstant" id=13]
+constant = Color( 0.197769, 0.973633, 0.278083, 1 )
+
+[sub_resource type="VisualShaderNodeColorConstant" id=14]
+constant = Color( 0.197769, 0.973633, 0.950902, 1 )
+
+[sub_resource type="VisualShaderNodeExpression" id=7]
+size = Vector2( 410, 277 )
+expression = "MODELVIEW_MATRIX = INV_CAMERA_MATRIX * mat4(CAMERA_MATRIX[0],CAMERA_MATRIX[1],CAMERA_MATRIX[2],WORLD_MATRIX[3]);"
+
+[sub_resource type="VisualShader" id=4]
+code = "shader_type spatial;
+render_mode specular_schlick_ggx;
+
+uniform sampler2D tex_frg_2;
+uniform sampler2D tex_frg_3;
+
+
+
+void vertex() {
+// Expression:2
+	float n_out2p0;
+	n_out2p0 = 0.0;
+	{
+		MODELVIEW_MATRIX = INV_CAMERA_MATRIX * mat4(CAMERA_MATRIX[0],CAMERA_MATRIX[1],CAMERA_MATRIX[2],WORLD_MATRIX[3]);
+	}
+
+// Output:0
+	ROUGHNESS = n_out2p0;
+
+}
+
+void fragment() {
+// Texture:2
+	vec4 tex_frg_2_read = texture(tex_frg_2, UV.xy);
+	vec3 n_out2p0 = tex_frg_2_read.rgb;
+	float n_out2p1 = tex_frg_2_read.a;
+
+// Color:5
+	vec3 n_out5p0 = vec3(0.197769, 0.973633, 0.278083);
+	float n_out5p1 = 1.000000;
+
+// Color:6
+	vec3 n_out6p0 = vec3(0.197769, 0.973633, 0.950902);
+	float n_out6p1 = 1.000000;
+
+// Texture:3
+	vec4 tex_frg_3_read = texture(tex_frg_3, UV.xy);
+	vec3 n_out3p0 = tex_frg_3_read.rgb;
+	float n_out3p1 = tex_frg_3_read.a;
+
+// VectorScalarMix:4
+	vec3 n_out4p0 = mix(n_out5p0, n_out6p0, dot(n_out3p0, vec3(0.333333, 0.333333, 0.333333)));
+
+// Output:0
+	ALPHA = dot(n_out2p0, vec3(0.333333, 0.333333, 0.333333));
+	EMISSION = n_out4p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -78, 106.25 )
+nodes/vertex/0/position = Vector2( 570, 114 )
+nodes/vertex/2/node = SubResource( 7 )
+nodes/vertex/2/position = Vector2( 19, 152 )
+nodes/vertex/2/size = Vector2( 410, 277 )
+nodes/vertex/2/input_ports = ""
+nodes/vertex/2/output_ports = "0,0,output0;"
+nodes/vertex/2/expression = "MODELVIEW_MATRIX = INV_CAMERA_MATRIX * mat4(CAMERA_MATRIX[0],CAMERA_MATRIX[1],CAMERA_MATRIX[2],WORLD_MATRIX[3]);"
+nodes/vertex/connections = PoolIntArray( 2, 0, 0, 8 )
+nodes/fragment/2/node = SubResource( 8 )
+nodes/fragment/2/position = Vector2( 19, -76 )
+nodes/fragment/3/node = SubResource( 11 )
+nodes/fragment/3/position = Vector2( -190, 532 )
+nodes/fragment/4/node = SubResource( 12 )
+nodes/fragment/4/position = Vector2( 133, 247 )
+nodes/fragment/5/node = SubResource( 13 )
+nodes/fragment/5/position = Vector2( -133, 171 )
+nodes/fragment/6/node = SubResource( 14 )
+nodes/fragment/6/position = Vector2( -152, 323 )
+nodes/fragment/connections = PoolIntArray( 2, 0, 0, 1, 3, 0, 4, 2, 4, 0, 0, 5, 5, 0, 4, 0, 6, 0, 4, 1 )
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 4 )
+
+[sub_resource type="Curve" id=17]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.5, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=18]
+curve = SubResource( 17 )
+
+[sub_resource type="ParticlesMaterial" id=15]
+lifetime_randomness = 1.0
+direction = Vector3( 0, -1, 0 )
+spread = 180.0
+gravity = Vector3( 0, -0.2, 0 )
+initial_velocity = 0.5
+scale = 0.1
+scale_curve = SubResource( 18 )
+color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="SpatialMaterial" id=19]
+emission_enabled = true
+emission = Color( 0.435294, 1, 0.537255, 1 )
+emission_energy = 2.0
+emission_operator = 0
+emission_on_uv2 = false
+
+[sub_resource type="SphereMesh" id=20]
+material = SubResource( 19 )
+radius = 0.1
+height = 0.2
+radial_segments = 8
+rings = 4
+
+[node name="Star" type="Area" groups=["stalker"]]
+script = ExtResource( 1 )
+impact = ExtResource( 4 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 1 )
+
+[node name="Trail3D" type="ImmediateGeometry" parent="."]
+material_override = ExtResource( 3 )
+script = ExtResource( 2 )
+width_profile = SubResource( 2 )
+
+[node name="OmniLight" type="OmniLight" parent="."]
+light_color = Color( 0.431373, 1, 0.584314, 1 )
+light_energy = 0.2
+omni_attenuation = 2.0
+
+[node name="Head" type="MeshInstance" parent="."]
+mesh = SubResource( 6 )
+material/0 = SubResource( 5 )
+
+[node name="Particles" type="Particles" parent="."]
+amount = 16
+local_coords = false
+process_material = SubResource( 15 )
+draw_pass_1 = SubResource( 20 )
+
+[connection signal="area_entered" from="." to="." method="_on_Area_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_Area_area_exited"]

@@ -4,7 +4,7 @@
 [ext_resource path="res://Effects/meteor/meshes/star.obj" type="ArrayMesh" id=2]
 [ext_resource path="res://Effects/meteor/materials/star_material.tres" type="Material" id=3]
 
-[sub_resource type="SpatialMaterial" id=2]
+[sub_resource type="SpatialMaterial" id=1]
 flags_do_not_receive_shadows = true
 emission_enabled = true
 emission = Color( 1, 0.92549, 0.631373, 1 )
@@ -12,13 +12,13 @@ emission_energy = 4.0
 emission_operator = 0
 emission_on_uv2 = false
 
-[sub_resource type="Curve" id=3]
+[sub_resource type="Curve" id=2]
 _data = [ Vector2( 0, 0 ), 0.0, 4.22028, 0, 0, Vector2( 0.509859, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=4]
-curve = SubResource( 3 )
+[sub_resource type="CurveTexture" id=3]
+curve = SubResource( 2 )
 
-[sub_resource type="ParticlesMaterial" id=5]
+[sub_resource type="ParticlesMaterial" id=4]
 emission_shape = 2
 emission_box_extents = Vector3( 0, 0.4, 0.4 )
 direction = Vector3( -1, 0, 0 )
@@ -27,15 +27,15 @@ initial_velocity = 10.0
 initial_velocity_random = 1.0
 scale = 0.1
 scale_random = 0.1
-scale_curve = SubResource( 4 )
+scale_curve = SubResource( 3 )
 
-[sub_resource type="SphereMesh" id=6]
+[sub_resource type="SphereMesh" id=5]
 radius = 0.1
 height = 0.2
 radial_segments = 8
 rings = 4
 
-[sub_resource type="SphereShape" id=1]
+[sub_resource type="SphereShape" id=6]
 
 [node name="Stalker" type="Spatial"]
 script = ExtResource( 1 )
@@ -44,12 +44,12 @@ targe_path = NodePath("../../Meteor")
 [node name="Head" type="Spatial" parent="."]
 
 [node name="Particles" type="Particles" parent="Head"]
-material_override = SubResource( 2 )
+material_override = SubResource( 1 )
 lifetime = 0.5
 randomness = 1.0
 local_coords = false
-process_material = SubResource( 5 )
-draw_pass_1 = SubResource( 6 )
+process_material = SubResource( 4 )
+draw_pass_1 = SubResource( 5 )
 
 [node name="Star" type="MeshInstance" parent="Head"]
 transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
@@ -59,7 +59,7 @@ material/0 = ExtResource( 3 )
 [node name="Zone" type="Area" parent="."]
 
 [node name="CollisionShape" type="CollisionShape" parent="Zone"]
-shape = SubResource( 1 )
+shape = SubResource( 6 )
 
 [connection signal="area_entered" from="Zone" to="." method="_on_Zone_area_entered"]
 [connection signal="area_exited" from="Zone" to="." method="_on_Zone_area_exited"]
