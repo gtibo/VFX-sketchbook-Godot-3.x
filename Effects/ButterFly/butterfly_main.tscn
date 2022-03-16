@@ -1,0 +1,485 @@
+[gd_scene load_steps=36 format=2]
+
+[ext_resource path="res://Effects/ButterFly/butterfly.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Effects/ButterFly/suzy_points.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://Effects/ButterFly/butterfly_main.gd" type="Script" id=3]
+[ext_resource path="res://Effects/ButterFly/suzy.obj" type="ArrayMesh" id=4]
+[ext_resource path="res://HDRI/courtyard_1k.hdr" type="Texture" id=5]
+[ext_resource path="res://Meshs/room.obj" type="ArrayMesh" id=6]
+
+[sub_resource type="Curve3D" id=34]
+_data = {
+"points": PoolVector3Array( -0.0171393, -0.780487, 0.99635, 0.0171393, 0.780487, -0.99635, 0, 0, 0, -0.845938, 0.296082, -0.596316, 0.845938, -0.296082, 0.596316, 2.00024, 0.690033, -0.386166, 0.471506, 0.57077, -0.346695, -0.471506, -0.57077, 0.346695, 1.86156, -0.736694, 1.58307, 0.00327146, -1.666, 1.43052, -0.00327146, 1.666, -1.43052, 0, 0, 0 ),
+"tilts": PoolRealArray( 0, 0, 0, 0 )
+}
+
+[sub_resource type="VisualShaderNodeInput" id=41]
+output_port_for_preview = 0
+input_name = "color"
+
+[sub_resource type="VisualShaderNodeColorConstant" id=25]
+constant = Color( 0.347062, 0.633843, 1, 1 )
+
+[sub_resource type="VisualShaderNodeColorConstant" id=26]
+constant = Color( 0.875046, 0.362012, 0.18406, 1 )
+
+[sub_resource type="VisualShaderNodeScalarSmoothStep" id=28]
+default_input_values = [ 0, 0.2, 1, 0.8, 2, 0.0 ]
+
+[sub_resource type="VisualShaderNodeVectorOp" id=29]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=30]
+uniform_name = "Brightness"
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=35]
+constant = 0.8
+
+[sub_resource type="VisualShaderNodeGlobalExpression" id=3]
+size = Vector2( 751.811, 595.824 )
+expression = "vec2 random(vec2 uv) {
+	return vec2(fract(sin(dot(uv.xy,
+		vec2(12.9898,78.233))) * 43758.5453123));
+}
+
+float worley(vec2 uv, float columns, float rows) {
+	
+	vec2 index_uv = floor(vec2(uv.x * columns, uv.y * rows));
+	vec2 fract_uv = fract(vec2(uv.x * columns, uv.y * rows));
+	
+	float minimum_dist = 1.0;  
+	
+	for (int y= -1; y <= 1; y++) {
+		for (int x= -1; x <= 1; x++) {
+			vec2 neighbor = vec2(float(x),float(y));
+			vec2 point = random(index_uv + neighbor);
+			
+			vec2 diff = neighbor + point - fract_uv;
+			float dist = length(diff);
+			minimum_dist = min(minimum_dist, dist);
+		}
+	}
+	return minimum_dist;
+}"
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=36]
+constant = 0.4
+
+[sub_resource type="VisualShaderNodeScalarSmoothStep" id=37]
+default_input_values = [ 0, 0.8, 1, 0.7, 2, 0.0 ]
+
+[sub_resource type="VisualShaderNodeVectorOp" id=38]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=22]
+default_input_values = [ 0, 0.0, 1, 1.0 ]
+
+[sub_resource type="VisualShaderNodeScalarSmoothStep" id=23]
+default_input_values = [ 0, 1.0, 1, 0.0, 2, 0.0 ]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=33]
+default_input_values = [ 0, 0.0, 1, 0.4 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeExpression" id=42]
+size = Vector2( 658, 306 )
+expression = "value = worley(input_uv.xy + seed.xy,2.5,2.5);"
+
+[sub_resource type="VisualShaderNodeInput" id=43]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeVectorOp" id=44]
+default_input_values = [ 0, Vector3( 0, 0, 0 ), 1, Vector3( 1, 1, 1 ) ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeInput" id=45]
+input_name = "vertex"
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=46]
+uniform_name = "Progress"
+
+[sub_resource type="VisualShaderNodeScalarSmoothStep" id=20]
+default_input_values = [ 0, 0.4, 1, 0.6, 2, 0.0 ]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=21]
+default_input_values = [ 0, 0.0, 1, 0.5 ]
+operator = 1
+
+[sub_resource type="VisualShader" id=4]
+code = "shader_type spatial;
+render_mode depth_draw_alpha_prepass, specular_schlick_ggx;
+
+uniform float Progress;
+uniform float Brightness;
+
+
+// GlobalExpression:0
+	vec2 random(vec2 uv) {
+		return vec2(fract(sin(dot(uv.xy,
+			vec2(12.9898,78.233))) * 43758.5453123));
+	}
+	
+	float worley(vec2 uv, float columns, float rows) {
+		
+		vec2 index_uv = floor(vec2(uv.x * columns, uv.y * rows));
+		vec2 fract_uv = fract(vec2(uv.x * columns, uv.y * rows));
+		
+		float minimum_dist = 1.0;  
+		
+		for (int y= -1; y <= 1; y++) {
+			for (int x= -1; x <= 1; x++) {
+				vec2 neighbor = vec2(float(x),float(y));
+				vec2 point = random(index_uv + neighbor);
+				
+				vec2 diff = neighbor + point - fract_uv;
+				float dist = length(diff);
+				minimum_dist = min(minimum_dist, dist);
+			}
+		}
+		return minimum_dist;
+	}
+
+void vertex() {
+// Input:5
+	vec3 n_out5p0 = VERTEX;
+
+// ScalarUniform:7
+	float n_out7p0 = Progress;
+
+// ScalarOp:9
+	float n_in9p1 = 0.50000;
+	float n_out9p0 = n_out7p0 - n_in9p1;
+
+// Input:3
+	vec3 n_out3p0 = vec3(UV, 0.0);
+
+// Expression:2
+	float n_out2p0;
+	n_out2p0 = 0.0;
+	{
+		n_out2p0 = worley(n_out3p0.xy + n_out3p0.xy,2.5,2.5);
+	}
+
+// ScalarSmoothStep:8
+	float n_out8p0 = smoothstep(n_out9p0, n_out7p0, n_out2p0);
+
+// ScalarOp:12
+	float n_in12p1 = 0.40000;
+	float n_out12p0 = n_out8p0 * n_in12p1;
+
+// ScalarOp:10
+	float n_in10p1 = 1.00000;
+	float n_out10p0 = n_out12p0 + n_in10p1;
+
+// VectorOp:4
+	vec3 n_out4p0 = n_out5p0 * vec3(n_out10p0);
+
+// ScalarSmoothStep:11
+	float n_in11p0 = 1.00000;
+	float n_in11p1 = 0.00000;
+	float n_out11p0 = smoothstep(n_in11p0, n_in11p1, n_out8p0);
+
+// Output:0
+	VERTEX = n_out4p0;
+	COLOR.rgb = vec3(n_out11p0);
+
+}
+
+void fragment() {
+// Color:13
+	vec3 n_out13p0 = vec3(0.875046, 0.362012, 0.184060);
+	float n_out13p1 = 1.000000;
+
+// Input:10
+	vec3 n_out10p0 = COLOR.rgb;
+
+// ScalarSmoothStep:15
+	float n_in15p0 = 0.20000;
+	float n_in15p1 = 0.80000;
+	float n_out15p0 = smoothstep(n_in15p0, n_in15p1, dot(n_out10p0, vec3(0.333333, 0.333333, 0.333333)));
+
+// Scalar:19
+	float n_out19p0 = 0.800000;
+
+// Scalar:20
+	float n_out20p0 = 0.400000;
+
+// Color:12
+	vec3 n_out12p0 = vec3(0.347062, 0.633843, 1.000000);
+	float n_out12p1 = 1.000000;
+
+// ScalarUniform:18
+	float n_out18p0 = Brightness;
+
+// VectorOp:17
+	vec3 n_out17p0 = n_out12p0 * vec3(n_out18p0);
+
+// ScalarSmoothStep:21
+	float n_in21p0 = 0.80000;
+	float n_in21p1 = 0.70000;
+	float n_out21p0 = smoothstep(n_in21p0, n_in21p1, dot(n_out10p0, vec3(0.333333, 0.333333, 0.333333)));
+
+// VectorOp:22
+	vec3 n_out22p0 = n_out17p0 * vec3(n_out21p0);
+
+// Output:0
+	ALBEDO = n_out13p0;
+	ALPHA = n_out15p0;
+	METALLIC = n_out19p0;
+	ROUGHNESS = n_out20p0;
+	EMISSION = n_out22p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( 94.1521, 346.988 )
+modes/depth_draw = 3
+nodes/vertex/0/position = Vector2( 1240, 20 )
+nodes/vertex/2/node = SubResource( 42 )
+nodes/vertex/2/position = Vector2( -360, 60 )
+nodes/vertex/2/size = Vector2( 658, 306 )
+nodes/vertex/2/input_ports = "0,1,seed;1,1,input_uv;"
+nodes/vertex/2/output_ports = "0,0,value;"
+nodes/vertex/2/expression = "value = worley(input_uv.xy + seed.xy,2.5,2.5);"
+nodes/vertex/3/node = SubResource( 43 )
+nodes/vertex/3/position = Vector2( -540, 80 )
+nodes/vertex/4/node = SubResource( 44 )
+nodes/vertex/4/position = Vector2( 920, -100 )
+nodes/vertex/5/node = SubResource( 45 )
+nodes/vertex/5/position = Vector2( 560, -240 )
+nodes/vertex/7/node = SubResource( 46 )
+nodes/vertex/7/position = Vector2( 40, -40 )
+nodes/vertex/8/node = SubResource( 20 )
+nodes/vertex/8/position = Vector2( 380, 140 )
+nodes/vertex/9/node = SubResource( 21 )
+nodes/vertex/9/position = Vector2( 300, -120 )
+nodes/vertex/10/node = SubResource( 22 )
+nodes/vertex/10/position = Vector2( 720, 20 )
+nodes/vertex/11/node = SubResource( 23 )
+nodes/vertex/11/position = Vector2( 924.152, 135.488 )
+nodes/vertex/12/node = SubResource( 33 )
+nodes/vertex/12/position = Vector2( 480, 0 )
+nodes/vertex/connections = PoolIntArray( 3, 0, 2, 0, 3, 0, 2, 1, 2, 0, 8, 2, 7, 0, 9, 0, 5, 0, 4, 0, 7, 0, 8, 1, 4, 0, 0, 0, 9, 0, 8, 0, 8, 0, 11, 2, 11, 0, 0, 6, 10, 0, 4, 1, 8, 0, 12, 0, 12, 0, 10, 0 )
+nodes/fragment/0/position = Vector2( 1120, 20 )
+nodes/fragment/2/node = SubResource( 3 )
+nodes/fragment/2/position = Vector2( -920, 240 )
+nodes/fragment/2/size = Vector2( 751.811, 595.824 )
+nodes/fragment/2/input_ports = ""
+nodes/fragment/2/output_ports = ""
+nodes/fragment/2/expression = "vec2 random(vec2 uv) {
+	return vec2(fract(sin(dot(uv.xy,
+		vec2(12.9898,78.233))) * 43758.5453123));
+}
+
+float worley(vec2 uv, float columns, float rows) {
+	
+	vec2 index_uv = floor(vec2(uv.x * columns, uv.y * rows));
+	vec2 fract_uv = fract(vec2(uv.x * columns, uv.y * rows));
+	
+	float minimum_dist = 1.0;  
+	
+	for (int y= -1; y <= 1; y++) {
+		for (int x= -1; x <= 1; x++) {
+			vec2 neighbor = vec2(float(x),float(y));
+			vec2 point = random(index_uv + neighbor);
+			
+			vec2 diff = neighbor + point - fract_uv;
+			float dist = length(diff);
+			minimum_dist = min(minimum_dist, dist);
+		}
+	}
+	return minimum_dist;
+}"
+nodes/fragment/10/node = SubResource( 41 )
+nodes/fragment/10/position = Vector2( 60, 40 )
+nodes/fragment/12/node = SubResource( 25 )
+nodes/fragment/12/position = Vector2( 500, 300 )
+nodes/fragment/13/node = SubResource( 26 )
+nodes/fragment/13/position = Vector2( 880, -80 )
+nodes/fragment/15/node = SubResource( 28 )
+nodes/fragment/15/position = Vector2( 340, 20 )
+nodes/fragment/17/node = SubResource( 29 )
+nodes/fragment/17/position = Vector2( 720, 300 )
+nodes/fragment/18/node = SubResource( 30 )
+nodes/fragment/18/position = Vector2( 500, 400 )
+nodes/fragment/19/node = SubResource( 35 )
+nodes/fragment/19/position = Vector2( 600, 120 )
+nodes/fragment/20/node = SubResource( 36 )
+nodes/fragment/20/position = Vector2( 840, 80 )
+nodes/fragment/21/node = SubResource( 37 )
+nodes/fragment/21/position = Vector2( 340, 140 )
+nodes/fragment/22/node = SubResource( 38 )
+nodes/fragment/22/position = Vector2( 900, 200 )
+nodes/fragment/connections = PoolIntArray( 13, 0, 0, 0, 10, 0, 15, 2, 12, 0, 17, 0, 15, 0, 0, 1, 18, 0, 17, 1, 19, 0, 0, 2, 20, 0, 0, 3, 10, 0, 21, 2, 17, 0, 22, 0, 21, 0, 22, 1, 22, 0, 0, 5 )
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 4 )
+shader_param/Progress = 1.5
+shader_param/Brightness = 0.0
+
+[sub_resource type="PanoramaSky" id=2]
+panorama = ExtResource( 5 )
+
+[sub_resource type="Environment" id=1]
+background_mode = 3
+background_sky = SubResource( 2 )
+background_color = Color( 0.0431373, 0.0431373, 0.0431373, 1 )
+ambient_light_sky_contribution = 0.5
+fog_color = Color( 0.0862745, 0.0941176, 0.101961, 1 )
+fog_depth_begin = 1.0
+fog_depth_end = 4.0
+tonemap_mode = 2
+dof_blur_far_distance = 13.17
+dof_blur_far_amount = 0.4
+dof_blur_near_distance = 3.0
+dof_blur_near_quality = 2
+glow_enabled = true
+glow_levels/1 = true
+glow_levels/2 = true
+glow_levels/4 = true
+glow_levels/6 = true
+glow_levels/7 = true
+glow_intensity = 0.4
+adjustment_brightness = 1.1
+adjustment_contrast = 1.1
+adjustment_saturation = 1.1
+
+[sub_resource type="Animation" id=31]
+resource_name = "Appear"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Path/PathFollow/suzy:material/0:shader_param/Progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 1.5, 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Path/PathFollow/suzy:material/0:shader_param/Brightness")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 4.0 ]
+}
+
+[sub_resource type="Animation" id=32]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Path/PathFollow/suzy:material/0:shader_param/Progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1.5 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Path/PathFollow/suzy:material/0:shader_param/Brightness")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="SpatialMaterial" id=47]
+params_cull_mode = 1
+albedo_color = Color( 0.0392157, 0.0392157, 0.0392157, 1 )
+metallic_specular = 0.25
+
+[node name="butterfly_main" type="Spatial"]
+script = ExtResource( 3 )
+butterfly = ExtResource( 1 )
+emitter_path = NodePath("Path/PathFollow/Emitter")
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 0.784495, -0.107685, 0.610714, 0, 0.984808, 0.173648, -0.620135, -0.136226, 0.772577, 2.5, 0.5, 2.5 )
+
+[node name="Path_tween" type="Tween" parent="."]
+
+[node name="Path" type="Path" parent="."]
+curve = SubResource( 34 )
+
+[node name="PathFollow" type="PathFollow" parent="Path"]
+rotation_mode = 0
+
+[node name="suzy" type="MeshInstance" parent="Path/PathFollow"]
+transform = Transform( 0.999999, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+mesh = ExtResource( 4 )
+skeleton = NodePath("../../..")
+material/0 = SubResource( 5 )
+
+[node name="Emitter" type="MeshInstance" parent="Path/PathFollow"]
+transform = Transform( 0.999999, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+visible = false
+mesh = ExtResource( 2 )
+skeleton = NodePath("../../..")
+material/0 = null
+
+[node name="Boids" type="Spatial" parent="."]
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 0.596183, 0.635678, -0.490387, 0, 0.610809, 0.791778, 0.802849, -0.472045, 0.364154, -4.43563, 0, 0 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Appear = SubResource( 31 )
+anims/RESET = SubResource( 32 )
+
+[node name="Control" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -94.0
+margin_top = -64.0
+margin_right = 94.0
+margin_bottom = -24.0
+custom_constants/separation = 12
+alignment = 1
+
+[node name="Toggle" type="Button" parent="Control/HBoxContainer"]
+margin_left = 19.0
+margin_right = 72.0
+margin_bottom = 40.0
+text = "Toggle"
+
+[node name="Move" type="Button" parent="Control/HBoxContainer"]
+margin_left = 84.0
+margin_right = 168.0
+margin_bottom = 40.0
+text = "Move Away"
+
+[node name="room" type="MeshInstance" parent="."]
+mesh = ExtResource( 6 )
+material/0 = SubResource( 47 )
+
+[connection signal="pressed" from="Control/HBoxContainer/Toggle" to="." method="_on_Toggle_pressed"]
+[connection signal="pressed" from="Control/HBoxContainer/Move" to="." method="_on_Move_pressed"]

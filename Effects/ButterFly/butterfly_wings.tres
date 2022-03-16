@@ -1,0 +1,206 @@
+[gd_resource type="ShaderMaterial" load_steps=22 format=2]
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=29]
+constant = 1.0
+
+[sub_resource type="VisualShaderNodeInput" id=14]
+output_port_for_preview = 0
+input_name = "binormal"
+
+[sub_resource type="Gradient" id=16]
+colors = PoolColorArray( 1, 0.811765, 0.368627, 1, 1, 0.305882, 0.0941176, 1 )
+
+[sub_resource type="GradientTexture" id=17]
+gradient = SubResource( 16 )
+
+[sub_resource type="VisualShaderNodeTexture" id=18]
+texture = SubResource( 17 )
+
+[sub_resource type="VisualShaderNodeVectorOp" id=25]
+operator = 2
+
+[sub_resource type="VisualShaderNodeVectorDecompose" id=27]
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=28]
+constant = 0.3
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=30]
+constant = 0.3
+
+[sub_resource type="VisualShaderNodeScalarOp" id=11]
+default_input_values = [ 0, 0.0, 1, 10.0 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=22]
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=23]
+uniform_name = "TimeOffset"
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=24]
+uniform_name = "FlapSpeed"
+
+[sub_resource type="VisualShaderNodeExpression" id=3]
+size = Vector2( 644, 276 )
+expression = "float x = UV.x - .5;
+y_displacement = cos(abs(x)-time+.04) - cos(time);"
+
+[sub_resource type="VisualShaderNodeInput" id=6]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeInput" id=7]
+input_name = "time"
+
+[sub_resource type="VisualShaderNodeInput" id=8]
+input_name = "vertex"
+
+[sub_resource type="VisualShaderNodeVectorOp" id=9]
+
+[sub_resource type="VisualShaderNodeVectorCompose" id=10]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=12]
+default_input_values = [ 0, 0.0, 1, 0.1 ]
+operator = 2
+
+[sub_resource type="VisualShader" id=13]
+code = "shader_type spatial;
+render_mode cull_disabled, specular_schlick_ggx;
+
+uniform float TimeOffset;
+uniform float FlapSpeed;
+uniform sampler2D tex_frg_4;
+
+
+
+void vertex() {
+// Input:6
+	vec3 n_out6p0 = VERTEX;
+
+// Input:3
+	vec3 n_out3p0 = vec3(UV, 0.0);
+
+// Input:4
+	float n_out4p0 = TIME;
+
+// ScalarUniform:12
+	float n_out12p0 = TimeOffset;
+
+// ScalarOp:11
+	float n_out11p0 = n_out4p0 + n_out12p0;
+
+// ScalarUniform:13
+	float n_out13p0 = FlapSpeed;
+
+// ScalarOp:10
+	float n_out10p0 = n_out11p0 * n_out13p0;
+
+// Expression:2
+	float n_out2p0;
+	n_out2p0 = 0.0;
+	{
+		float x = n_out3p0.x - .5;
+		n_out2p0 = cos(abs(x)-n_out10p0+.04) - cos(n_out10p0);
+	}
+
+// ScalarOp:9
+	float n_in9p1 = 0.10000;
+	float n_out9p0 = n_out2p0 * n_in9p1;
+
+// VectorCompose:8
+	float n_in8p0 = 0.00000;
+	float n_in8p2 = 0.00000;
+	vec3 n_out8p0 = vec3(n_in8p0, n_out9p0, n_in8p2);
+
+// VectorOp:7
+	vec3 n_out7p0 = n_out6p0 + n_out8p0;
+
+// Output:0
+	VERTEX = n_out7p0;
+
+}
+
+void fragment() {
+// Input:2
+	vec3 n_out2p0 = BINORMAL;
+
+// Texture:4
+	vec4 tex_frg_4_read = texture(tex_frg_4, n_out2p0.xy);
+	vec3 n_out4p0 = tex_frg_4_read.rgb;
+	float n_out4p1 = tex_frg_4_read.a;
+
+// Scalar:8
+	float n_out8p0 = 0.300000;
+
+// Scalar:10
+	float n_out10p0 = 1.000000;
+
+// Scalar:9
+	float n_out9p0 = 0.300000;
+
+// VectorOp:5
+	vec3 n_out5p0 = n_out4p0 * vec3(n_out9p0);
+
+// Output:0
+	ALBEDO = n_out4p0;
+	ROUGHNESS = n_out8p0;
+	SPECULAR = n_out10p0;
+	EMISSION = n_out5p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( 264, 267 )
+modes/cull = 2
+nodes/vertex/0/position = Vector2( 1160, -60 )
+nodes/vertex/2/node = SubResource( 3 )
+nodes/vertex/2/position = Vector2( -380, 100 )
+nodes/vertex/2/size = Vector2( 644, 276 )
+nodes/vertex/2/input_ports = "0,1,UV;1,0,time;"
+nodes/vertex/2/output_ports = "0,0,y_displacement;"
+nodes/vertex/2/expression = "float x = UV.x - .5;
+y_displacement = cos(abs(x)-time+.04) - cos(time);"
+nodes/vertex/3/node = SubResource( 6 )
+nodes/vertex/3/position = Vector2( -640, 160 )
+nodes/vertex/4/node = SubResource( 7 )
+nodes/vertex/4/position = Vector2( -1060, 260 )
+nodes/vertex/6/node = SubResource( 8 )
+nodes/vertex/6/position = Vector2( 400, -40 )
+nodes/vertex/7/node = SubResource( 9 )
+nodes/vertex/7/position = Vector2( 740, 80 )
+nodes/vertex/8/node = SubResource( 10 )
+nodes/vertex/8/position = Vector2( 460, 120 )
+nodes/vertex/9/node = SubResource( 12 )
+nodes/vertex/9/position = Vector2( 280, 180 )
+nodes/vertex/10/node = SubResource( 11 )
+nodes/vertex/10/position = Vector2( -620, 280 )
+nodes/vertex/11/node = SubResource( 22 )
+nodes/vertex/11/position = Vector2( -860, 280 )
+nodes/vertex/12/node = SubResource( 23 )
+nodes/vertex/12/position = Vector2( -1060, 340 )
+nodes/vertex/13/node = SubResource( 24 )
+nodes/vertex/13/position = Vector2( -1040, 440 )
+nodes/vertex/connections = PoolIntArray( 3, 0, 2, 0, 6, 0, 7, 0, 7, 0, 0, 0, 8, 0, 7, 1, 2, 0, 9, 0, 10, 0, 2, 1, 9, 0, 8, 1, 11, 0, 10, 0, 4, 0, 11, 0, 12, 0, 11, 1, 13, 0, 10, 1 )
+nodes/fragment/0/position = Vector2( 860, 260 )
+nodes/fragment/2/node = SubResource( 14 )
+nodes/fragment/2/position = Vector2( -60, 220 )
+nodes/fragment/4/node = SubResource( 18 )
+nodes/fragment/4/position = Vector2( 560, 200 )
+nodes/fragment/5/node = SubResource( 25 )
+nodes/fragment/5/position = Vector2( 540, 480 )
+nodes/fragment/7/node = SubResource( 27 )
+nodes/fragment/7/position = Vector2( 260, 300 )
+nodes/fragment/8/node = SubResource( 28 )
+nodes/fragment/8/position = Vector2( 280, 400 )
+nodes/fragment/9/node = SubResource( 30 )
+nodes/fragment/9/position = Vector2( 260, 540 )
+nodes/fragment/10/node = SubResource( 29 )
+nodes/fragment/10/position = Vector2( 280, 460 )
+nodes/fragment/connections = PoolIntArray( 8, 0, 0, 3, 2, 0, 4, 0, 4, 0, 5, 0, 5, 0, 0, 5, 9, 0, 5, 1, 10, 0, 0, 4, 4, 0, 0, 0 )
+
+[resource]
+shader = SubResource( 13 )
+shader_param/TimeOffset = 0.0
+shader_param/FlapSpeed = 15.0
