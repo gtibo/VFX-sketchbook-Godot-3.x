@@ -8,9 +8,20 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Resource",
+"class": "vignette_data",
+"language": "GDScript",
+"path": "res://Viewer/vignette_data_builder.gd"
+} ]
+_global_script_class_icons={
+"vignette_data": ""
+}
+
 [application]
 
 config/name="shader playground"
+run/main_scene="res://Viewer/viewer_main.tscn"
 config/icon="res://icon.png"
 
 [display]
