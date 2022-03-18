@@ -13,8 +13,10 @@ func _ready():
 		new_vignette.setup(data.title, data.icon)
 		vignette_holder.add_child(new_vignette)
 		new_vignette.connect("pressed", self, "select_scene", [new_vignette, data.main_scene])
-
+	$CanvasLayer/AnimationPlayer.play("FadeIn")
 func select_scene(vignette, main_scene):
+	$CanvasLayer/AnimationPlayer.play_backwards("FadeIn")
+	yield($CanvasLayer/AnimationPlayer, "animation_finished")
 	for child in $Holder.get_children():
 		$Holder.remove_child(child)
 	$Holder.add_child(main_scene.instance())
@@ -22,7 +24,9 @@ func select_scene(vignette, main_scene):
 	if current_selected && current_selected != vignette:
 		current_selected.set_state(false)
 	current_selected = vignette
-
+	yield(get_tree(), "idle_frame")
+	$CanvasLayer/AnimationPlayer.play("FadeIn")
+	
 func dir_contents(path):
 	var files = []
 	var dir = Directory.new()

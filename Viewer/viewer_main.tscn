@@ -1,16 +1,69 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Viewer/viewer_vignette.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Viewer/list_icon.png" type="Texture" id=2]
 [ext_resource path="res://Viewer/viewer_main.gd" type="Script" id=3]
 [ext_resource path="res://Viewer/Pannel.gd" type="Script" id=4]
 
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0, 0, 0, 0.705882 )
+border_width_left = 1
+border_width_right = 1
+
+[sub_resource type="Theme" id=4]
+VScrollBar/styles/scroll = SubResource( 3 )
+
+[sub_resource type="Animation" id=1]
+resource_name = "FadeIn"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("TransitionLayer:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("TransitionLayer:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("TransitionLayer:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+
 [node name="viewer_main" type="Node"]
 script = ExtResource( 3 )
-vignette_holder = NodePath("Pannel/HBoxContainer/MarginContainer/VIgnetteHolder")
+vignette_holder = NodePath("CanvasLayer/Pannel/HBoxContainer/MarginContainer/ScrollContainer/VIgnetteHolder")
 vignette_scene = ExtResource( 1 )
 
-[node name="Holder" type="Node" parent="."]
+[node name="Holder" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
 
 [node name="background" type="ColorRect" parent="Holder"]
 anchor_right = 1.0
@@ -28,7 +81,16 @@ margin_right = 48.5
 margin_bottom = 7.0
 text = "VFX playground"
 
-[node name="Pannel" type="ColorRect" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="TransitionLayer" type="ColorRect" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 1 )
+
+[node name="Pannel" type="ColorRect" parent="CanvasLayer"]
 anchor_right = 0.25
 anchor_bottom = 1.0
 rect_min_size = Vector2( 320, 0 )
@@ -40,33 +102,35 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Pannel"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Pannel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-mouse_filter = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="Pannel/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Pannel/HBoxContainer"]
 margin_right = 284.0
 margin_bottom = 720.0
-mouse_filter = 2
 size_flags_horizontal = 3
 
-[node name="VIgnetteHolder" type="VBoxContainer" parent="Pannel/HBoxContainer/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Pannel/HBoxContainer/MarginContainer"]
 margin_right = 284.0
 margin_bottom = 720.0
-mouse_filter = 2
+theme = SubResource( 4 )
+follow_focus = true
+scroll_horizontal_enabled = false
+
+[node name="VIgnetteHolder" type="VBoxContainer" parent="CanvasLayer/Pannel/HBoxContainer/MarginContainer/ScrollContainer"]
+margin_right = 284.0
 size_flags_horizontal = 3
 custom_constants/separation = 0
 
-[node name="Anchor" type="Control" parent="Pannel/HBoxContainer"]
+[node name="Anchor" type="Control" parent="CanvasLayer/Pannel/HBoxContainer"]
 margin_left = 288.0
 margin_right = 320.0
 margin_bottom = 720.0
 rect_min_size = Vector2( 32, 0 )
-mouse_filter = 2
 size_flags_vertical = 3
 
-[node name="TextureRect" type="TextureRect" parent="Pannel/HBoxContainer/Anchor"]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Pannel/HBoxContainer/Anchor"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -79,7 +143,11 @@ texture = ExtResource( 2 )
 expand = true
 stretch_mode = 1
 
-[node name="Tween" type="Tween" parent="Pannel"]
+[node name="Tween" type="Tween" parent="CanvasLayer/Pannel"]
 
-[connection signal="mouse_entered" from="Pannel" to="Pannel" method="_on_Pannel_mouse_entered"]
-[connection signal="mouse_exited" from="Pannel" to="Pannel" method="_on_Pannel_mouse_exited"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer"]
+anims/FadeIn = SubResource( 1 )
+anims/RESET = SubResource( 2 )
+
+[connection signal="mouse_entered" from="Holder" to="CanvasLayer/Pannel" method="_on_Holder_mouse_entered"]
+[connection signal="mouse_entered" from="CanvasLayer/Pannel/HBoxContainer/Anchor" to="CanvasLayer/Pannel" method="_on_Anchor_mouse_entered"]

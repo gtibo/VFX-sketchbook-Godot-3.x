@@ -1,7 +1,8 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Viewer/viewer_vignette.gd" type="Script" id=1]
 [ext_resource path="res://Viewer/vignettes/Screenshot from 2022-03-16 21-43-16.png" type="Texture" id=2]
+[ext_resource path="res://RedHatDisplay-Medium.ttf" type="DynamicFontData" id=3]
 
 [sub_resource type="VisualShaderNodeVectorOp" id=8]
 default_input_values = [ 0, Vector3( 0, 0, 0 ), 1, Vector3( 0.5, 0.5, 0 ) ]
@@ -165,6 +166,10 @@ shader = SubResource( 5 )
 shader_param/Scale = 1.0
 shader_param/GrayScale = 1.0
 
+[sub_resource type="DynamicFont" id=17]
+size = 18
+font_data = ExtResource( 3 )
+
 [node name="TextureButton" type="TextureButton"]
 material = SubResource( 6 )
 margin_right = 147.0
@@ -181,12 +186,15 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = -56.0
-margin_top = -7.0
-margin_right = -16.0
-margin_bottom = 7.0
+margin_left = -140.0
+margin_top = -15.0
+margin_right = -25.0
+margin_bottom = 15.0
 grow_horizontal = 0
-text = "Vignette tittle"
+custom_fonts/font = SubResource( 17 )
+text = "Vignette title"
+align = 2
+valign = 1
 
 [node name="Tween" type="Tween" parent="."]
 
