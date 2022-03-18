@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://HDRI/hilly_terrain_01_1k.exr" type="Texture" id=1]
 [ext_resource path="res://Effects/flow_water/meshes/tree.glb" type="PackedScene" id=2]
 [ext_resource path="res://Effects/flow_water/materials/water_mat.tres" type="Material" id=3]
 [ext_resource path="res://Effects/flow_water/materials/RiverMat.material" type="Material" id=4]
+[ext_resource path="res://Components/CameraRig.tscn" type="PackedScene" id=5]
 
 [sub_resource type="PanoramaSky" id=1]
 panorama = ExtResource( 1 )
@@ -95,3 +96,8 @@ transform = Transform( 1.1, 0, 0, 0, 1.09766, 0.0716369, 0, -0.0716369, 1.09766,
 
 [node name="tree3" parent="." instance=ExtResource( 2 )]
 transform = Transform( 0.803144, -0.0045128, 0.891594, 0, 1.19998, 0.00607372, -0.891606, -0.00406506, 0.803133, -1.94406, -0.0405909, 2.41523 )
+
+[node name="CameraRig" parent="." instance=ExtResource( 5 )]
+transform = Transform( -0.643483, -0.492029, 0.586377, 0, 0.766044, 0.642788, -0.765461, 0.413623, -0.492936, 0, 0, 0 )
+target = NodePath("../river_bed")
+max_distance = 6.0

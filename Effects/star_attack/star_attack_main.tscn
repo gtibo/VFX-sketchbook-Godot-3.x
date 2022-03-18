@@ -1,10 +1,11 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Effects/star_attack/components/Projectile.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Effects/star_attack/components/Out.gd" type="Script" id=2]
 [ext_resource path="res://HDRI/dikhololo_night_1k.hdr" type="Texture" id=3]
 [ext_resource path="res://Effects/star_attack/components/Star.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Textures/grid.png" type="Texture" id=5]
+[ext_resource path="res://Components/CameraRig.tscn" type="PackedScene" id=6]
 
 [sub_resource type="PanoramaSky" id=1]
 panorama = ExtResource( 3 )
@@ -132,9 +133,6 @@ shader = SubResource( 19 )
 
 [node name="Spatial" type="Spatial"]
 
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.978148, 0.207912, 0, -0.207912, 0.978148, 0, 7, 12 )
-
 [node name="Out" type="CSGBox" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.59685, 0 )
 visible = false
@@ -196,6 +194,14 @@ text = "À la folie"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="CameraRig" parent="." instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 0.906308, 0.422618, 0, -0.422618, 0.906308, 0, 0, 0 )
+target = NodePath("../CameraTarget")
+max_distance = 18.0
+
+[node name="CameraTarget" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0 )
 
 [connection signal="pressed" from="CanvasLayer/HBoxContainer/1" to="Out" method="_on_Button_pressed"]
 [connection signal="pressed" from="CanvasLayer/HBoxContainer/2" to="Out" method="_on_2_pressed"]

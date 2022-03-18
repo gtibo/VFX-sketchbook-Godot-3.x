@@ -368,7 +368,7 @@ environment = SubResource( 2 )
 [node name="Spatial" type="Spatial" parent="."]
 
 [node name="ice" type="MeshInstance" parent="Spatial"]
-transform = Transform( -0.98085, 0, 0.194765, 0, 1, 0, -0.194765, 0, -0.98085, -0.161679, -0.123998, -0.128984 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.161679, -0.123998, -0.128984 )
 material_override = SubResource( 40 )
 mesh = ExtResource( 1 )
 material/0 = null
