@@ -1,0 +1,87 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Effects/ButterFly/Components/butterfly.gd" type="Script" id=1]
+[ext_resource path="res://Effects/ButterFly/Materials/butterfly_wings.tres" type="Material" id=2]
+[ext_resource path="res://Effects/ButterFly/Meshes/butterfly.obj" type="ArrayMesh" id=3]
+
+[sub_resource type="SphereShape" id=2]
+radius = 0.1
+
+[sub_resource type="Animation" id=31]
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body/butterfly:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body/butterfly:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Body/butterfly:material/0:shader_param/Brightness")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+
+[node name="Butterfly" type="Spatial" groups=["Boid"]]
+script = ExtResource( 1 )
+wing_material = ExtResource( 2 )
+
+[node name="Body" type="Spatial" parent="."]
+
+[node name="CSGCylinder" type="CSGCylinder" parent="Body"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
+visible = false
+radius = 0.0269808
+height = 0.26224
+sides = 3
+cone = true
+smooth_faces = false
+
+[node name="CSGSphere" type="CSGSphere" parent="Body"]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0 )
+visible = false
+radius = 0.0592355
+
+[node name="butterfly" type="MeshInstance" parent="Body"]
+mesh = ExtResource( 3 )
+material/0 = null
+material/1 = null
+
+[node name="Zone" type="Area" parent="."]
+
+[node name="ZoneShape" type="CollisionShape" parent="Zone"]
+shape = SubResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Appear = SubResource( 31 )
+anims/RESET = SubResource( 4 )
+
+[connection signal="area_entered" from="Zone" to="." method="_on_Zone_area_entered"]
+[connection signal="area_exited" from="Zone" to="." method="_on_Zone_area_exited"]
