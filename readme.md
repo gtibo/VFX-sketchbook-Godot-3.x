@@ -1,7 +1,5 @@
 ![Preview](./Preview.jpg)
 # Shader playground
 
-An experimental project in which I explore the possibilities of creations relying mainly on the VisualShader of Godot.
-This project is public for anyone interested in taking a look at it. :)
-
-#### [License](https://choosealicense.com/licenses/lgpl-3.0/)
+An experimental project in which I explore the creation of visual effects based mainly on Godot's VisualShader.
+This project is public for anyone interested in looking into it :)
