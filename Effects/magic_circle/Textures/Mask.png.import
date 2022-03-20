@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/Gradient.png-4ccb1e8df1c208ad2f7fdaca2df645d7.s3tc.stex"
-path.etc2="res://.import/Gradient.png-4ccb1e8df1c208ad2f7fdaca2df645d7.etc2.stex"
+path.s3tc="res://.import/Mask.png-8bd8c09c2523dcb5cc714465dc85b273.s3tc.stex"
+path.etc2="res://.import/Mask.png-8bd8c09c2523dcb5cc714465dc85b273.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Textures/Gradient.png"
-dest_files=[ "res://.import/Gradient.png-4ccb1e8df1c208ad2f7fdaca2df645d7.s3tc.stex", "res://.import/Gradient.png-4ccb1e8df1c208ad2f7fdaca2df645d7.etc2.stex" ]
+source_file="res://Effects/magic_circle/Textures/Mask.png"
+dest_files=[ "res://.import/Mask.png-8bd8c09c2523dcb5cc714465dc85b273.s3tc.stex", "res://.import/Mask.png-8bd8c09c2523dcb5cc714465dc85b273.etc2.stex" ]
 
 [params]
 
@@ -30,6 +30,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=false

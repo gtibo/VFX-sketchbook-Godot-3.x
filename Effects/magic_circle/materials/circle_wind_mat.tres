@@ -217,4 +217,4 @@ nodes/fragment/connections = PoolIntArray( 3, 0, 5, 0, 5, 0, 8, 1, 8, 0, 6, 0, 5
 
 [resource]
 shader = SubResource( 23 )
-shader_param/Force = 0.9
+shader_param/Force = 0.0

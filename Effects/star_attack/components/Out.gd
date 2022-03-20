@@ -24,10 +24,5 @@ func shoot(count):
 		f.target = p
 		projectile_container.add_child(f)
 
-
-func _on_Button_pressed():
-	shoot(8)
-func _on_2_pressed():
-	shoot(24)
-func _on_3_pressed():
-	shoot(48)
+func emit():
+	shoot(round(rand_range(8,20)))

@@ -179,7 +179,7 @@ shape = SubResource( 4 )
 [node name="OmniLight" type="OmniLight" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.224571, 0 )
 light_color = Color( 0.615686, 1, 0.972549, 1 )
-light_energy = 0.2
+light_energy = 0.0
 omni_attenuation = 2.0
 
 [node name="Camera" type="Camera" parent="."]

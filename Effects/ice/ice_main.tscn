@@ -61,7 +61,7 @@ texture = SubResource( 12 )
 
 [sub_resource type="VisualShaderNodeExpression" id=14]
 output_port_for_preview = 0
-size = Vector2( 642, 346 )
+size = Vector2( 793.96, 399.32 )
 expression = "output = textureLod(SCREEN_TEXTURE,coord.xy, 2.0+fresnel*20.0).rgb;
 "
 
@@ -284,7 +284,7 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -531, -242.37 )
+graph_offset = Vector2( -1054.23, -440.362 )
 modes/depth_draw = 1
 nodes/fragment/0/position = Vector2( 1020, 80 )
 nodes/fragment/2/node = SubResource( 13 )
@@ -306,12 +306,12 @@ nodes/fragment/13/position = Vector2( -1140, -120 )
 nodes/fragment/14/node = SubResource( 8 )
 nodes/fragment/14/position = Vector2( -180, 260 )
 nodes/fragment/15/node = SubResource( 9 )
-nodes/fragment/15/position = Vector2( 240, -160 )
+nodes/fragment/15/position = Vector2( 340, -160 )
 nodes/fragment/17/node = SubResource( 10 )
 nodes/fragment/17/position = Vector2( 800, 300 )
 nodes/fragment/21/node = SubResource( 14 )
 nodes/fragment/21/position = Vector2( -520, -600 )
-nodes/fragment/21/size = Vector2( 642, 346 )
+nodes/fragment/21/size = Vector2( 793.96, 399.32 )
 nodes/fragment/21/input_ports = "0,0,fresnel;1,1,coord;"
 nodes/fragment/21/output_ports = "0,1,output;"
 nodes/fragment/21/expression = "output = textureLod(SCREEN_TEXTURE,coord.xy, 2.0+fresnel*20.0).rgb;
