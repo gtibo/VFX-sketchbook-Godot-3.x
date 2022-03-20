@@ -1,0 +1,125 @@
+[gd_resource type="ShaderMaterial" load_steps=13 format=2]
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=84]
+constant = 0.5
+
+[sub_resource type="VisualShaderNodeInput" id=90]
+input_name = "screen_uv"
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=51]
+constant = 0.9
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=52]
+constant = 0.2
+
+[sub_resource type="VisualShaderNodeColorUniform" id=67]
+uniform_name = "ColorUniform"
+
+[sub_resource type="OpenSimplexNoise" id=75]
+period = 256.0
+
+[sub_resource type="NoiseTexture" id=76]
+seamless = true
+noise = SubResource( 75 )
+
+[sub_resource type="VisualShaderNodeTexture" id=77]
+output_port_for_preview = 0
+texture = SubResource( 76 )
+
+[sub_resource type="VisualShaderNodeScalarSmoothStep" id=81]
+default_input_values = [ 0, 0.5, 1, 0.5, 2, 0.0 ]
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=82]
+uniform_name = "Progress"
+
+[sub_resource type="VisualShaderNodeScalarOp" id=83]
+default_input_values = [ 0, 0.01, 1, 0.0 ]
+
+[sub_resource type="VisualShader" id=49]
+code = "shader_type spatial;
+render_mode depth_draw_alpha_prepass, specular_schlick_ggx;
+
+uniform vec4 ColorUniform : hint_color;
+uniform float Progress;
+uniform sampler2D tex_frg_5;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// ColorUniform:4
+	vec3 n_out4p0 = ColorUniform.rgb;
+	float n_out4p1 = ColorUniform.a;
+
+// ScalarUniform:8
+	float n_out8p0 = Progress;
+
+// ScalarOp:9
+	float n_in9p0 = 0.01000;
+	float n_out9p0 = n_in9p0 + n_out8p0;
+
+// Input:11
+	vec3 n_out11p0 = vec3(SCREEN_UV, 0.0);
+
+// Texture:5
+	vec4 tex_frg_5_read = texture(tex_frg_5, n_out11p0.xy);
+	vec3 n_out5p0 = tex_frg_5_read.rgb;
+	float n_out5p1 = tex_frg_5_read.a;
+
+// ScalarSmoothStep:7
+	float n_out7p0 = smoothstep(n_out8p0, n_out9p0, dot(n_out5p0, vec3(0.333333, 0.333333, 0.333333)));
+
+// Scalar:2
+	float n_out2p0 = 0.900000;
+
+// Scalar:3
+	float n_out3p0 = 0.200000;
+
+// Scalar:10
+	float n_out10p0 = 0.500000;
+
+// Output:0
+	ALBEDO = n_out4p0;
+	ALPHA = n_out7p0;
+	METALLIC = n_out2p0;
+	ROUGHNESS = n_out3p0;
+	ALPHA_SCISSOR = n_out10p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -1191, 28 )
+modes/depth_draw = 3
+nodes/fragment/2/node = SubResource( 51 )
+nodes/fragment/2/position = Vector2( 40, 220 )
+nodes/fragment/3/node = SubResource( 52 )
+nodes/fragment/3/position = Vector2( 40, 300 )
+nodes/fragment/4/node = SubResource( 67 )
+nodes/fragment/4/position = Vector2( 140, -20 )
+nodes/fragment/5/node = SubResource( 77 )
+nodes/fragment/5/position = Vector2( -640, 80 )
+nodes/fragment/7/node = SubResource( 81 )
+nodes/fragment/7/position = Vector2( -60, 80 )
+nodes/fragment/8/node = SubResource( 82 )
+nodes/fragment/8/position = Vector2( -460, -140 )
+nodes/fragment/9/node = SubResource( 83 )
+nodes/fragment/9/position = Vector2( -280, 40 )
+nodes/fragment/10/node = SubResource( 84 )
+nodes/fragment/10/position = Vector2( 40, 520 )
+nodes/fragment/11/node = SubResource( 90 )
+nodes/fragment/11/position = Vector2( -1080, 260 )
+nodes/fragment/connections = PoolIntArray( 3, 0, 0, 3, 8, 0, 7, 0, 8, 0, 9, 1, 9, 0, 7, 1, 7, 0, 0, 1, 5, 0, 7, 2, 4, 0, 0, 0, 10, 0, 0, 18, 2, 0, 0, 2, 11, 0, 5, 0 )
+
+[resource]
+render_priority = 1
+shader = SubResource( 49 )
+shader_param/ColorUniform = Color( 0.431373, 0.431373, 0.431373, 1 )
+shader_param/Progress = 0.0
