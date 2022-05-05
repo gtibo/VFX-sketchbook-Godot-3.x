@@ -1,0 +1,527 @@
+[gd_resource type="ShaderMaterial" load_steps=47 format=2]
+
+[sub_resource type="VisualShaderNodeFresnel" id=7]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=8]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=9]
+
+[sub_resource type="VisualShaderNodeInput" id=10]
+input_name = "time"
+
+[sub_resource type="VisualShaderNodeScalarOp" id=11]
+default_input_values = [ 0, 0.0, 1, 0.02 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeColorUniform" id=12]
+uniform_name = "EmissionColor"
+
+[sub_resource type="VisualShaderNodeVectorOp" id=13]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=15]
+uniform_name = "EmissionStrength"
+
+[sub_resource type="VisualShaderNodeScalarClamp" id=31]
+default_input_values = [ 0, 0.0, 1, 0.5, 2, 1.0 ]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=32]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarClamp" id=68]
+default_input_values = [ 0, 0.0, 1, 0.6, 2, 1.0 ]
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=69]
+function = 17
+
+[sub_resource type="VisualShaderNodeScalarOp" id=71]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=75]
+default_input_values = [ 0, 0.0, 1, 2.0 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeInput" id=76]
+input_name = "color"
+
+[sub_resource type="VisualShaderNodeScalarOp" id=78]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=79]
+uniform_name = "Opacity"
+
+[sub_resource type="VisualShaderNodeVectorScalarMix" id=80]
+
+[sub_resource type="VisualShaderNodeFresnel" id=81]
+
+[sub_resource type="VisualShaderNodeColorUniform" id=82]
+uniform_name = "EmissionColor2"
+
+[sub_resource type="VisualShaderNodeScalarOp" id=83]
+default_input_values = [ 0, 0.0, 1, 60.0 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=84]
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=85]
+function = 0
+
+[sub_resource type="VisualShaderNodeScalarOp" id=86]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarClamp" id=87]
+default_input_values = [ 0, 0.0, 1, 0.9, 2, 1.0 ]
+
+[sub_resource type="VisualShaderNodeVectorDecompose" id=18]
+
+[sub_resource type="VisualShaderNodeExpression" id=102]
+size = Vector2( 612.32, 206.16 )
+expression = "w = clamp(waves(y), 0.0, 1.0);
+"
+
+[sub_resource type="VisualShaderNodeVectorDecompose" id=103]
+
+[sub_resource type="VisualShaderNodeInput" id=104]
+input_name = "color"
+
+[sub_resource type="VisualShaderNodeExpression" id=105]
+size = Vector2( 612.32, 206.16 )
+expression = "w = wave(y, TIME * .5, contraction);
+"
+
+[sub_resource type="VisualShaderNodeScalarSmoothStep" id=108]
+default_input_values = [ 0, 0.4, 1, 0.5, 2, 0.0 ]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=109]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=110]
+default_input_values = [ 0, 0.0, 1, 1.0 ]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=111]
+default_input_values = [ 0, 0.0, 1, 0.2 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=19]
+default_input_values = [ 0, 0.0, 1, 60.0 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeInput" id=41]
+input_name = "vertex"
+
+[sub_resource type="VisualShaderNodeVectorCompose" id=43]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=58]
+default_input_values = [ 0, 2.0, 1, 0.1 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=59]
+uniform_name = "Deformation"
+
+[sub_resource type="VisualShaderNodeGlobalExpression" id=100]
+size = Vector2( 863.648, 426.41 )
+expression = "uniform float contraction : hint_range(0, 10);
+uniform float speed : hint_range(0, 10);
+
+
+float wave(float y, float time, float c){
+	return (sin((y + time * speed) * c));
+}
+
+float waves(float y){
+	float wave1 = wave(y, TIME, contraction) * 0.2;
+	float wave2 = wave(y, -TIME * .2 + 1.0, contraction * 2.0) * .4;
+	return wave1 * wave2;
+}"
+
+[sub_resource type="VisualShaderNodeExpression" id=101]
+size = Vector2( 590.629, 286.858 )
+expression = "w = round(waves(y) * pow(10.0, 1)) / pow(10.0, 1)"
+
+[sub_resource type="VisualShaderNodeExpression" id=106]
+size = Vector2( 590.629, 286.858 )
+expression = "w = round(wave(y * 2.0, TIME, contraction * 2.0) * pow(10.0, 1)) / pow(10.0, 1)"
+
+[sub_resource type="VisualShaderNodeScalarOp" id=107]
+default_input_values = [ 0, 2.0, 1, 0.1 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeVectorOp" id=37]
+
+[sub_resource type="VisualShaderNodeExpression" id=40]
+size = Vector2( 706.68, 302.16 )
+expression = "VERTEX_WORLD = (PROJECTION_MATRIX * vec4(VERTEX, 1.0)).xyz;
+VERTEX_WORLD_Y = VERTEX_WORLD.y * 1.0;"
+
+[sub_resource type="VisualShader" id=2]
+code = "shader_type spatial;
+render_mode specular_schlick_ggx, world_vertex_coords, ambient_light_disabled;
+
+uniform float Deformation;
+uniform vec4 EmissionColor : hint_color;
+uniform vec4 EmissionColor2 : hint_color;
+uniform float Opacity;
+uniform float EmissionStrength;
+
+
+// GlobalExpression:0
+	uniform float contraction : hint_range(0, 10);
+	uniform float speed : hint_range(0, 10);
+	
+	
+	float wave(float y, float time, float c){
+		return (sin((y + time * speed) * c));
+	}
+	
+	float waves(float y){
+		float wave1 = wave(y, TIME, contraction) * 0.2;
+		float wave2 = wave(y, -TIME * .2 + 1.0, contraction * 2.0) * .4;
+		return wave1 * wave2;
+	}
+
+void vertex() {
+// Input:10
+	vec3 n_out10p0 = VERTEX;
+
+// Expression:9
+	float n_out9p0;
+	vec3 n_out9p1;
+	n_out9p0 = 0.0;
+	n_out9p1 = vec3(0.0, 0.0, 0.0);
+	{
+		n_out9p1 = (PROJECTION_MATRIX * vec4(VERTEX, 1.0)).xyz;
+		n_out9p0 = n_out9p1.y * 1.0;
+	}
+
+// Expression:48
+	float n_out48p0;
+	n_out48p0 = 0.0;
+	{
+		n_out48p0 = round(wave(n_out9p0 * 2.0, TIME, contraction * 2.0) * pow(10.0, 1)) / pow(10.0, 1)
+	}
+
+// Expression:47
+	float n_out47p0;
+	n_out47p0 = 0.0;
+	{
+		n_out47p0 = round(waves(n_out9p0) * pow(10.0, 1)) / pow(10.0, 1)
+	}
+
+// ScalarUniform:28
+	float n_out28p0 = Deformation;
+
+// ScalarOp:27
+	float n_out27p0 = n_out47p0 * n_out28p0;
+
+// ScalarOp:49
+	float n_out49p0 = n_out48p0 * n_out27p0;
+
+// VectorCompose:12
+	float n_in12p1 = 0.00000;
+	vec3 n_out12p0 = vec3(n_out49p0, n_in12p1, n_out49p0);
+
+// VectorOp:6
+	vec3 n_out6p0 = n_out10p0 + n_out12p0;
+
+// Output:0
+	VERTEX = n_out6p0;
+	COLOR.rgb = n_out9p1;
+
+}
+
+void fragment() {
+// ColorUniform:18
+	vec3 n_out18p0 = EmissionColor.rgb;
+	float n_out18p1 = EmissionColor.a;
+
+// ColorUniform:45
+	vec3 n_out45p0 = EmissionColor2.rgb;
+	float n_out45p1 = EmissionColor2.a;
+
+// Fresnel:44
+	float n_in44p3 = 1.00000;
+	float n_out44p0 = pow(1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0), n_in44p3);
+
+// VectorScalarMix:43
+	vec3 n_out43p0 = mix(n_out18p0, n_out45p0, n_out44p0);
+
+// ScalarUniform:42
+	float n_out42p0 = Opacity;
+
+// Input:64
+	vec3 n_out64p0 = COLOR.rgb;
+
+// VectorDecompose:63
+	float n_out63p0 = n_out64p0.x;
+	float n_out63p1 = n_out64p0.y;
+	float n_out63p2 = n_out64p0.z;
+
+// Expression:65
+	float n_out65p0;
+	n_out65p0 = 0.0;
+	{
+		n_out65p0 = wave(n_out63p1, TIME * .5, contraction);
+		
+	}
+
+// ScalarClamp:27
+	float n_in27p1 = 0.50000;
+	float n_in27p2 = 1.00000;
+	float n_out27p0 = clamp(n_out65p0, n_in27p1, n_in27p2);
+
+// Expression:61
+	float n_out61p0;
+	n_out61p0 = 0.0;
+	{
+		n_out61p0 = clamp(waves(n_out63p1), 0.0, 1.0);
+		
+	}
+
+// ScalarOp:39
+	float n_in39p1 = 2.00000;
+	float n_out39p0 = n_out61p0 * n_in39p1;
+
+// ScalarOp:35
+	float n_out35p0 = n_out27p0 + n_out39p0;
+
+// Input:40
+	vec3 n_out40p0 = COLOR.rgb;
+
+// VectorDecompose:6
+	float n_out6p0 = n_out40p0.x;
+	float n_out6p1 = n_out40p0.y;
+	float n_out6p2 = n_out40p0.z;
+
+// Input:16
+	float n_out16p0 = TIME;
+
+// ScalarOp:17
+	float n_in17p1 = 0.02000;
+	float n_out17p0 = n_out16p0 * n_in17p1;
+
+// ScalarOp:15
+	float n_out15p0 = n_out6p1 + n_out17p0;
+
+// ScalarOp:8
+	float n_in8p1 = 60.00000;
+	float n_out8p0 = n_out15p0 * n_in8p1;
+
+// ScalarFunc:33
+	float n_out33p0 = fract(n_out8p0);
+
+// ScalarClamp:32
+	float n_in32p1 = 0.60000;
+	float n_in32p2 = 1.00000;
+	float n_out32p0 = clamp(n_out33p0, n_in32p1, n_in32p2);
+
+// ScalarOp:47
+	float n_out47p0 = n_out6p0 + n_out17p0;
+
+// ScalarOp:46
+	float n_in46p1 = 60.00000;
+	float n_out46p0 = n_out47p0 * n_in46p1;
+
+// ScalarFunc:48
+	float n_out48p0 = sin(n_out46p0);
+
+// ScalarClamp:51
+	float n_in51p1 = 0.90000;
+	float n_in51p2 = 1.00000;
+	float n_out51p0 = clamp(n_out48p0, n_in51p1, n_in51p2);
+
+// ScalarOp:50
+	float n_out50p0 = n_out32p0 * n_out51p0;
+
+// Fresnel:13
+	float n_in13p3 = 1.00000;
+	float n_out13p0 = pow(1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0), n_in13p3);
+
+// ScalarOp:14
+	float n_out14p0 = n_out50p0 * n_out13p0;
+
+// ScalarOp:28
+	float n_out28p0 = n_out35p0 * n_out14p0;
+
+// ScalarOp:41
+	float n_out41p0 = n_out42p0 * n_out28p0;
+
+// ScalarUniform:20
+	float n_out20p0 = EmissionStrength;
+
+// ScalarSmoothStep:66
+	float n_in66p0 = 0.40000;
+	float n_in66p1 = 0.50000;
+	float n_out66p0 = smoothstep(n_in66p0, n_in66p1, n_out41p0);
+
+// ScalarOp:70
+	float n_in70p1 = 0.20000;
+	float n_out70p0 = n_out66p0 * n_in70p1;
+
+// ScalarOp:69
+	float n_in69p1 = 1.00000;
+	float n_out69p0 = n_out70p0 + n_in69p1;
+
+// ScalarOp:68
+	float n_out68p0 = n_out20p0 * n_out69p0;
+
+// VectorOp:19
+	vec3 n_out19p0 = n_out43p0 * vec3(n_out68p0);
+
+// Output:0
+	ALBEDO = n_out43p0;
+	ALPHA = n_out41p0;
+	EMISSION = n_out19p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( 126.713, -26.4703 )
+flags/ambient_light_disabled = true
+flags/world_vertex_coords = true
+nodes/vertex/0/position = Vector2( 1780, -40 )
+nodes/vertex/6/node = SubResource( 37 )
+nodes/vertex/6/position = Vector2( 1240, 20 )
+nodes/vertex/9/node = SubResource( 40 )
+nodes/vertex/9/position = Vector2( -1640, 140 )
+nodes/vertex/9/size = Vector2( 706.68, 302.16 )
+nodes/vertex/9/input_ports = ""
+nodes/vertex/9/output_ports = "0,0,VERTEX_WORLD_Y;1,1,VERTEX_WORLD;"
+nodes/vertex/9/expression = "VERTEX_WORLD = (PROJECTION_MATRIX * vec4(VERTEX, 1.0)).xyz;
+VERTEX_WORLD_Y = VERTEX_WORLD.y * 1.0;"
+nodes/vertex/10/node = SubResource( 41 )
+nodes/vertex/10/position = Vector2( 1040, -80 )
+nodes/vertex/12/node = SubResource( 43 )
+nodes/vertex/12/position = Vector2( 1000, 180 )
+nodes/vertex/27/node = SubResource( 58 )
+nodes/vertex/27/position = Vector2( 520, 220 )
+nodes/vertex/28/node = SubResource( 59 )
+nodes/vertex/28/position = Vector2( 340, 420 )
+nodes/vertex/46/node = SubResource( 100 )
+nodes/vertex/46/position = Vector2( -960, 560 )
+nodes/vertex/46/size = Vector2( 863.648, 426.41 )
+nodes/vertex/46/input_ports = ""
+nodes/vertex/46/output_ports = ""
+nodes/vertex/46/expression = "uniform float contraction : hint_range(0, 10);
+uniform float speed : hint_range(0, 10);
+
+
+float wave(float y, float time, float c){
+	return (sin((y + time * speed) * c));
+}
+
+float waves(float y){
+	float wave1 = wave(y, TIME, contraction) * 0.2;
+	float wave2 = wave(y, -TIME * .2 + 1.0, contraction * 2.0) * .4;
+	return wave1 * wave2;
+}"
+nodes/vertex/47/node = SubResource( 101 )
+nodes/vertex/47/position = Vector2( -520, 280 )
+nodes/vertex/47/size = Vector2( 590.629, 286.858 )
+nodes/vertex/47/input_ports = "0,0,y;"
+nodes/vertex/47/output_ports = "0,0,w;"
+nodes/vertex/47/expression = "w = round(waves(y) * pow(10.0, 1)) / pow(10.0, 1)"
+nodes/vertex/48/node = SubResource( 106 )
+nodes/vertex/48/position = Vector2( -540, -180 )
+nodes/vertex/48/size = Vector2( 590.629, 286.858 )
+nodes/vertex/48/input_ports = "0,0,y;"
+nodes/vertex/48/output_ports = "0,0,w;"
+nodes/vertex/48/expression = "w = round(wave(y * 2.0, TIME, contraction * 2.0) * pow(10.0, 1)) / pow(10.0, 1)"
+nodes/vertex/49/node = SubResource( 107 )
+nodes/vertex/49/position = Vector2( 740, 180 )
+nodes/vertex/connections = PoolIntArray( 6, 0, 0, 0, 10, 0, 6, 0, 12, 0, 6, 1, 9, 1, 0, 6, 9, 0, 47, 0, 9, 0, 48, 0, 49, 0, 12, 0, 28, 0, 27, 1, 27, 0, 49, 1, 47, 0, 27, 0, 49, 0, 12, 2, 48, 0, 49, 0 )
+nodes/fragment/0/position = Vector2( 3080, 280 )
+nodes/fragment/6/node = SubResource( 18 )
+nodes/fragment/6/position = Vector2( -180, 40 )
+nodes/fragment/8/node = SubResource( 19 )
+nodes/fragment/8/position = Vector2( 320, 260 )
+nodes/fragment/13/node = SubResource( 7 )
+nodes/fragment/13/position = Vector2( 840, 600 )
+nodes/fragment/14/node = SubResource( 8 )
+nodes/fragment/14/position = Vector2( 1320, 340 )
+nodes/fragment/15/node = SubResource( 9 )
+nodes/fragment/15/position = Vector2( 100, 340 )
+nodes/fragment/16/node = SubResource( 10 )
+nodes/fragment/16/position = Vector2( -320, 380 )
+nodes/fragment/17/node = SubResource( 11 )
+nodes/fragment/17/position = Vector2( -120, 380 )
+nodes/fragment/18/node = SubResource( 12 )
+nodes/fragment/18/position = Vector2( 1780, 520 )
+nodes/fragment/19/node = SubResource( 13 )
+nodes/fragment/19/position = Vector2( 2780, 500 )
+nodes/fragment/20/node = SubResource( 15 )
+nodes/fragment/20/position = Vector2( 2360, 320 )
+nodes/fragment/27/node = SubResource( 31 )
+nodes/fragment/27/position = Vector2( 1120, 60 )
+nodes/fragment/28/node = SubResource( 32 )
+nodes/fragment/28/position = Vector2( 1660, 240 )
+nodes/fragment/32/node = SubResource( 68 )
+nodes/fragment/32/position = Vector2( 800, 240 )
+nodes/fragment/33/node = SubResource( 69 )
+nodes/fragment/33/position = Vector2( 540, 280 )
+nodes/fragment/35/node = SubResource( 71 )
+nodes/fragment/35/position = Vector2( 1420, 60 )
+nodes/fragment/39/node = SubResource( 75 )
+nodes/fragment/39/position = Vector2( 1120, -120 )
+nodes/fragment/40/node = SubResource( 76 )
+nodes/fragment/40/position = Vector2( -360, 40 )
+nodes/fragment/41/node = SubResource( 78 )
+nodes/fragment/41/position = Vector2( 1920, 240 )
+nodes/fragment/42/node = SubResource( 79 )
+nodes/fragment/42/position = Vector2( 1660, 160 )
+nodes/fragment/43/node = SubResource( 80 )
+nodes/fragment/43/position = Vector2( 2220, 620 )
+nodes/fragment/44/node = SubResource( 81 )
+nodes/fragment/44/position = Vector2( 1780, 720 )
+nodes/fragment/45/node = SubResource( 82 )
+nodes/fragment/45/position = Vector2( 1780, 620 )
+nodes/fragment/46/node = SubResource( 83 )
+nodes/fragment/46/position = Vector2( 320, 400 )
+nodes/fragment/47/node = SubResource( 84 )
+nodes/fragment/47/position = Vector2( 100, 480 )
+nodes/fragment/48/node = SubResource( 85 )
+nodes/fragment/48/position = Vector2( 540, 420 )
+nodes/fragment/50/node = SubResource( 86 )
+nodes/fragment/50/position = Vector2( 1020, 280 )
+nodes/fragment/51/node = SubResource( 87 )
+nodes/fragment/51/position = Vector2( 780, 400 )
+nodes/fragment/61/node = SubResource( 102 )
+nodes/fragment/61/position = Vector2( 700, -440 )
+nodes/fragment/61/size = Vector2( 612.32, 206.16 )
+nodes/fragment/61/input_ports = "0,0,y;"
+nodes/fragment/61/output_ports = "0,0,w;"
+nodes/fragment/61/expression = "w = clamp(waves(y), 0.0, 1.0);
+"
+nodes/fragment/63/node = SubResource( 103 )
+nodes/fragment/63/position = Vector2( 400, -440 )
+nodes/fragment/64/node = SubResource( 104 )
+nodes/fragment/64/position = Vector2( 200, -520 )
+nodes/fragment/65/node = SubResource( 105 )
+nodes/fragment/65/position = Vector2( 360, -160 )
+nodes/fragment/65/size = Vector2( 612.32, 206.16 )
+nodes/fragment/65/input_ports = "0,0,y;"
+nodes/fragment/65/output_ports = "0,0,w;"
+nodes/fragment/65/expression = "w = wave(y, TIME * .5, contraction);
+"
+nodes/fragment/66/node = SubResource( 108 )
+nodes/fragment/66/position = Vector2( 2100, 380 )
+nodes/fragment/68/node = SubResource( 109 )
+nodes/fragment/68/position = Vector2( 2580, 400 )
+nodes/fragment/69/node = SubResource( 110 )
+nodes/fragment/69/position = Vector2( 2360, 400 )
+nodes/fragment/70/node = SubResource( 111 )
+nodes/fragment/70/position = Vector2( 2240, 480 )
+nodes/fragment/connections = PoolIntArray( 13, 0, 14, 1, 6, 1, 15, 0, 15, 0, 8, 0, 16, 0, 17, 0, 17, 0, 15, 1, 8, 0, 33, 0, 39, 0, 35, 1, 35, 0, 28, 0, 14, 0, 28, 1, 40, 0, 6, 0, 28, 0, 41, 1, 18, 0, 43, 0, 44, 0, 43, 2, 43, 0, 19, 0, 45, 0, 43, 1, 33, 0, 32, 0, 47, 0, 46, 0, 46, 0, 48, 0, 17, 0, 47, 1, 6, 0, 47, 0, 32, 0, 50, 0, 50, 0, 14, 0, 48, 0, 51, 0, 51, 0, 50, 1, 64, 0, 63, 0, 63, 1, 61, 0, 42, 0, 41, 0, 61, 0, 39, 0, 27, 0, 35, 0, 63, 1, 65, 0, 65, 0, 27, 0, 43, 0, 0, 0, 41, 0, 66, 2, 20, 0, 68, 0, 68, 0, 19, 1, 19, 0, 0, 5, 69, 0, 68, 1, 66, 0, 70, 0, 70, 0, 69, 0, 41, 0, 0, 1 )
+
+[resource]
+shader = SubResource( 2 )
+shader_param/Deformation = 0.1
+shader_param/EmissionColor = Color( 0.148438, 1, 0.342726, 1 )
+shader_param/EmissionColor2 = Color( 0.760784, 1, 0.411765, 1 )
+shader_param/Opacity = 1.0
+shader_param/EmissionStrength = 2.0
+shader_param/contraction = 1.0
+shader_param/speed = 2.0

@@ -1,0 +1,854 @@
+[gd_scene load_steps=59 format=2]
+
+[ext_resource path="res://Meshs/suzy.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://default_theme.tres" type="Theme" id=2]
+[ext_resource path="res://HDRI/photo_studio_loft_hall_4k.hdr" type="Texture" id=3]
+[ext_resource path="res://Effects/hologram/hologram_mat.tres" type="Material" id=4]
+[ext_resource path="res://Effects/hologram/Lines.gd" type="Script" id=5]
+[ext_resource path="res://Effects/hologram/Spin.gd" type="Script" id=6]
+[ext_resource path="res://Components/CameraRig.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Effects/hologram/main_hologram.gd" type="Script" id=8]
+
+[sub_resource type="PanoramaSky" id=22]
+panorama = ExtResource( 3 )
+
+[sub_resource type="Environment" id=23]
+background_mode = 3
+background_sky = SubResource( 22 )
+background_color = Color( 0.0745098, 0.0745098, 0.0784314, 1 )
+tonemap_mode = 2
+dof_blur_near_distance = 8.0
+glow_enabled = true
+
+[sub_resource type="VisualShaderNodeScalarOp" id=97]
+default_input_values = [ 0, 0.0, 1, 1.0 ]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=98]
+default_input_values = [ 0, 0.0, 1, 2.0 ]
+operator = 3
+
+[sub_resource type="VisualShaderNodeScalarOp" id=99]
+default_input_values = [ 0, 0.0, 1, 0.1 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=102]
+
+[sub_resource type="VisualShaderNodeVectorOp" id=103]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=104]
+uniform_name = "EmissionStrength"
+
+[sub_resource type="VisualShaderNodeScalarOp" id=105]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=106]
+uniform_name = "Intensity"
+
+[sub_resource type="VisualShaderNodeInput" id=107]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeVectorDecompose" id=108]
+
+[sub_resource type="VisualShaderNodeInput" id=91]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeScalarOp" id=109]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=110]
+default_input_values = [ 0, 0.0, 1, 4.0 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=111]
+function = 0
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=112]
+function = 12
+
+[sub_resource type="VisualShaderNodeScalarOp" id=113]
+default_input_values = [ 0, 0.0, 1, 10.0 ]
+
+[sub_resource type="VisualShaderNodeInput" id=114]
+input_name = "time"
+
+[sub_resource type="VisualShaderNodeScalarOp" id=115]
+
+[sub_resource type="VisualShaderNodeVectorDecompose" id=92]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=94]
+default_input_values = [ 0, 0.0, 1, 0.01 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeColorUniform" id=95]
+uniform_name = "EmissionColor"
+
+[sub_resource type="VisualShaderNodeScalarSmoothStep" id=96]
+default_input_values = [ 0, 0.5, 1, 1.0, 2, 0.0 ]
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=100]
+function = 0
+
+[sub_resource type="VisualShaderNodeInput" id=101]
+input_name = "time"
+
+[sub_resource type="VisualShaderNodeScalarOp" id=125]
+default_input_values = [ 0, 1.0, 1, 0.0 ]
+operator = 1
+
+[sub_resource type="VisualShaderNodeVectorDecompose" id=126]
+
+[sub_resource type="VisualShaderNodeInput" id=127]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=128]
+function = 0
+
+[sub_resource type="VisualShaderNodeScalarOp" id=129]
+default_input_values = [ 0, 2.0, 1, 0.0 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=130]
+uniform_name = "Deformation"
+
+[sub_resource type="VisualShaderNodeScalarOp" id=131]
+
+[sub_resource type="VisualShaderNodeInput" id=132]
+input_name = "time"
+
+[sub_resource type="VisualShaderNodeInput" id=117]
+input_name = "vertex"
+
+[sub_resource type="VisualShaderNodeVectorOp" id=118]
+
+[sub_resource type="VisualShaderNodeInput" id=119]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeVectorDecompose" id=120]
+
+[sub_resource type="VisualShaderNodeVectorCompose" id=121]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=124]
+default_input_values = [ 0, 2.0, 1, 0.0 ]
+operator = 2
+
+[sub_resource type="VisualShader" id=89]
+code = "shader_type spatial;
+render_mode specular_schlick_ggx;
+
+uniform float Deformation;
+uniform float Intensity;
+uniform vec4 EmissionColor : hint_color;
+uniform float EmissionStrength;
+
+
+
+void vertex() {
+// Input:2
+	vec3 n_out2p0 = VERTEX;
+
+// Input:12
+	vec3 n_out12p0 = vec3(UV, 0.0);
+
+// VectorDecompose:11
+	float n_out11p0 = n_out12p0.x;
+	float n_out11p1 = n_out12p0.y;
+	float n_out11p2 = n_out12p0.z;
+
+// Input:17
+	float n_out17p0 = TIME;
+
+// ScalarOp:16
+	float n_out16p0 = n_out11p0 + n_out17p0;
+
+// ScalarFunc:13
+	float n_out13p0 = sin(n_out16p0);
+
+// Input:4
+	vec3 n_out4p0 = vec3(UV, 0.0);
+
+// VectorDecompose:5
+	float n_out5p0 = n_out4p0.x;
+	float n_out5p1 = n_out4p0.y;
+	float n_out5p2 = n_out4p0.z;
+
+// ScalarOp:10
+	float n_in10p0 = 1.00000;
+	float n_out10p0 = n_in10p0 - n_out5p1;
+
+// ScalarOp:9
+	float n_out9p0 = n_out13p0 * n_out10p0;
+
+// ScalarUniform:15
+	float n_out15p0 = Deformation;
+
+// ScalarOp:14
+	float n_out14p0 = n_out9p0 * n_out15p0;
+
+// VectorCompose:6
+	vec3 n_out6p0 = vec3(n_out14p0, n_out14p0, n_out14p0);
+
+// VectorOp:3
+	vec3 n_out3p0 = n_out2p0 + n_out6p0;
+
+// Output:0
+	VERTEX = n_out3p0;
+
+}
+
+void fragment() {
+// Input:18
+	vec3 n_out18p0 = vec3(UV, 0.0);
+
+// VectorDecompose:19
+	float n_out19p0 = n_out18p0.x;
+	float n_out19p1 = n_out18p0.y;
+	float n_out19p2 = n_out18p0.z;
+
+// Input:26
+	float n_out26p0 = TIME;
+
+// ScalarOp:27
+	float n_out27p0 = n_out19p0 + n_out26p0;
+
+// ScalarOp:25
+	float n_out25p0 = n_out19p1 + n_out27p0;
+
+// ScalarOp:22
+	float n_in22p1 = 4.00000;
+	float n_out22p0 = n_out25p0 * n_in22p1;
+
+// ScalarFunc:23
+	float n_out23p0 = sin(n_out22p0);
+
+// ScalarFunc:24
+	float n_out24p0 = abs(n_out23p0);
+
+// Input:2
+	vec3 n_out2p0 = vec3(UV, 0.0);
+
+// VectorDecompose:3
+	float n_out3p0 = n_out2p0.x;
+	float n_out3p1 = n_out2p0.y;
+	float n_out3p2 = n_out2p0.z;
+
+// Input:9
+	float n_out9p0 = TIME;
+
+// ScalarOp:13
+	float n_out13p0 = n_out3p0 + n_out9p0;
+
+// ScalarFunc:8
+	float n_out8p0 = sin(n_out13p0);
+
+// ScalarOp:10
+	float n_in10p1 = 1.00000;
+	float n_out10p0 = n_out8p0 + n_in10p1;
+
+// ScalarOp:11
+	float n_in11p1 = 2.00000;
+	float n_out11p0 = n_out10p0 / n_in11p1;
+
+// ScalarSmoothStep:7
+	float n_in7p1 = 1.00000;
+	float n_out7p0 = smoothstep(n_out11p0, n_in7p1, n_out3p1);
+
+// ScalarUniform:17
+	float n_out17p0 = Intensity;
+
+// ScalarOp:16
+	float n_out16p0 = n_out7p0 * n_out17p0;
+
+// ScalarOp:12
+	float n_in12p1 = 0.10000;
+	float n_out12p0 = n_out11p0 * n_in12p1;
+
+// ScalarOp:5
+	float n_out5p0 = n_out16p0 * n_out12p0;
+
+// ScalarOp:21
+	float n_out21p0 = n_out24p0 * n_out5p0;
+
+// ColorUniform:6
+	vec3 n_out6p0 = EmissionColor.rgb;
+	float n_out6p1 = EmissionColor.a;
+
+// ScalarUniform:15
+	float n_out15p0 = EmissionStrength;
+
+// VectorOp:14
+	vec3 n_out14p0 = n_out6p0 * vec3(n_out15p0);
+
+// Output:0
+	ALPHA = n_out21p0;
+	EMISSION = n_out14p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -229.08, 2.08884 )
+nodes/vertex/0/position = Vector2( 600, 0 )
+nodes/vertex/2/node = SubResource( 117 )
+nodes/vertex/2/position = Vector2( 200, 40 )
+nodes/vertex/3/node = SubResource( 118 )
+nodes/vertex/3/position = Vector2( 440, 80 )
+nodes/vertex/4/node = SubResource( 119 )
+nodes/vertex/4/position = Vector2( -760, 260 )
+nodes/vertex/5/node = SubResource( 120 )
+nodes/vertex/5/position = Vector2( -580, 260 )
+nodes/vertex/6/node = SubResource( 121 )
+nodes/vertex/6/position = Vector2( 300, 220 )
+nodes/vertex/9/node = SubResource( 124 )
+nodes/vertex/9/position = Vector2( -140, 180 )
+nodes/vertex/10/node = SubResource( 125 )
+nodes/vertex/10/position = Vector2( -340, 200 )
+nodes/vertex/11/node = SubResource( 126 )
+nodes/vertex/11/position = Vector2( -400, -20 )
+nodes/vertex/12/node = SubResource( 127 )
+nodes/vertex/12/position = Vector2( -580, -20 )
+nodes/vertex/13/node = SubResource( 128 )
+nodes/vertex/13/position = Vector2( -84.0798, 62.0888 )
+nodes/vertex/14/node = SubResource( 129 )
+nodes/vertex/14/position = Vector2( 60, 240 )
+nodes/vertex/15/node = SubResource( 130 )
+nodes/vertex/15/position = Vector2( -89.0798, 384.089 )
+nodes/vertex/16/node = SubResource( 131 )
+nodes/vertex/16/position = Vector2( -180, -80 )
+nodes/vertex/17/node = SubResource( 132 )
+nodes/vertex/17/position = Vector2( -360, -100 )
+nodes/vertex/connections = PoolIntArray( 2, 0, 3, 0, 3, 0, 0, 0, 4, 0, 5, 0, 5, 1, 10, 1, 12, 0, 11, 0, 6, 0, 3, 1, 10, 0, 9, 1, 13, 0, 9, 0, 9, 0, 14, 0, 14, 0, 6, 0, 15, 0, 14, 1, 11, 0, 16, 0, 17, 0, 16, 1, 16, 0, 13, 0, 14, 0, 6, 1, 14, 0, 6, 2 )
+nodes/fragment/0/position = Vector2( 1360, 180 )
+nodes/fragment/2/node = SubResource( 91 )
+nodes/fragment/2/position = Vector2( -1180, 140 )
+nodes/fragment/3/node = SubResource( 92 )
+nodes/fragment/3/position = Vector2( -980, 140 )
+nodes/fragment/5/node = SubResource( 94 )
+nodes/fragment/5/position = Vector2( 340, 240 )
+nodes/fragment/6/node = SubResource( 95 )
+nodes/fragment/6/position = Vector2( 485, 384 )
+nodes/fragment/7/node = SubResource( 96 )
+nodes/fragment/7/position = Vector2( -180, 20 )
+nodes/fragment/8/node = SubResource( 100 )
+nodes/fragment/8/position = Vector2( -320, 360 )
+nodes/fragment/9/node = SubResource( 101 )
+nodes/fragment/9/position = Vector2( -920, 400 )
+nodes/fragment/10/node = SubResource( 97 )
+nodes/fragment/10/position = Vector2( -300, 420 )
+nodes/fragment/11/node = SubResource( 98 )
+nodes/fragment/11/position = Vector2( -300, 520 )
+nodes/fragment/12/node = SubResource( 99 )
+nodes/fragment/12/position = Vector2( 120, 360 )
+nodes/fragment/13/node = SubResource( 102 )
+nodes/fragment/13/position = Vector2( -660, 260 )
+nodes/fragment/14/node = SubResource( 103 )
+nodes/fragment/14/position = Vector2( 753.055, 371.299 )
+nodes/fragment/15/node = SubResource( 104 )
+nodes/fragment/15/position = Vector2( 500, 520 )
+nodes/fragment/16/node = SubResource( 105 )
+nodes/fragment/16/position = Vector2( 160, 60 )
+nodes/fragment/17/node = SubResource( 106 )
+nodes/fragment/17/position = Vector2( -120, 200 )
+nodes/fragment/18/node = SubResource( 107 )
+nodes/fragment/18/position = Vector2( -160, -200 )
+nodes/fragment/19/node = SubResource( 108 )
+nodes/fragment/19/position = Vector2( 40, -200 )
+nodes/fragment/21/node = SubResource( 109 )
+nodes/fragment/21/position = Vector2( 960, 80 )
+nodes/fragment/22/node = SubResource( 110 )
+nodes/fragment/22/position = Vector2( 680, -100 )
+nodes/fragment/23/node = SubResource( 111 )
+nodes/fragment/23/position = Vector2( 872.936, -67.7776 )
+nodes/fragment/24/node = SubResource( 112 )
+nodes/fragment/24/position = Vector2( 1091.94, -55.7776 )
+nodes/fragment/25/node = SubResource( 113 )
+nodes/fragment/25/position = Vector2( 460, -40 )
+nodes/fragment/26/node = SubResource( 114 )
+nodes/fragment/26/position = Vector2( 20, -20 )
+nodes/fragment/27/node = SubResource( 115 )
+nodes/fragment/27/position = Vector2( 320, -220 )
+nodes/fragment/connections = PoolIntArray( 2, 0, 3, 0, 8, 0, 10, 0, 10, 0, 11, 0, 11, 0, 12, 0, 13, 0, 8, 0, 9, 0, 13, 1, 3, 0, 13, 0, 6, 0, 14, 0, 14, 0, 0, 5, 15, 0, 14, 1, 12, 0, 5, 1, 3, 1, 7, 2, 11, 0, 7, 0, 7, 0, 16, 0, 16, 0, 5, 0, 17, 0, 16, 1, 18, 0, 19, 0, 5, 0, 21, 1, 21, 0, 0, 1, 22, 0, 23, 0, 23, 0, 24, 0, 19, 1, 25, 0, 25, 0, 22, 0, 26, 0, 27, 1, 19, 0, 27, 0, 27, 0, 25, 1, 24, 0, 21, 0 )
+
+[sub_resource type="ShaderMaterial" id=90]
+shader = SubResource( 89 )
+shader_param/Deformation = 0.0
+shader_param/Intensity = 1.0
+shader_param/EmissionColor = Color( 0.25098, 0.952941, 0.360784, 1 )
+shader_param/EmissionStrength = 1.5
+
+[sub_resource type="Animation" id=116]
+resource_name = "Error"
+length = 0.3
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("suzy:material/0:shader_param/EmissionColor")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.04, 0.11, 0.14, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 0.376471, 0.101961, 1 ), Color( 1, 0.129412, 0.129412, 1 ), Color( 1, 0.313726, 0.129412, 1 ), Color( 1, 0.129412, 0.129412, 1 ), Color( 1, 0.313726, 0.129412, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("suzy:material/0:shader_param/EmissionColor2")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.04, 0.11, 0.14, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 0.741176, 0.341176, 1 ), Color( 1, 0.309804, 0.12549, 1 ), Color( 1, 0.741176, 0.341176, 1 ), Color( 1, 0.309804, 0.12549, 1 ), Color( 1, 0.741176, 0.341176, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("suzy:material/0:shader_param/Deformation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.04, 0.16, 0.21, 0.25, 0.26 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 0.1, 10.0, 0.02, 0.02, 10.0, 0.02 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("suzy:material/0:shader_param/EmissionStrength")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.04, 0.14 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 2.0, 8.0, 2.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Rays:material_override:shader_param/EmissionColor")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 0.203922, 0.203922, 1 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("suzy:material/0:shader_param/contraction")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.04, 0.12, 0.21, 0.25, 0.26 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 1.0, 1.0, 1.0, 1.0, 2.0, 1.0 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Rays:material_override:shader_param/Deformation")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 0.04, 0.06, 0.12, 0.21, 0.22, 0.26, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 0.757858, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0 ]
+}
+
+[sub_resource type="Animation" id=81]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("suzy:material/0:shader_param/Opacity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("suzy:material/0:shader_param/Deformation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.1 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("suzy:material/0:shader_param/Speed")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("suzy:material/0:shader_param/EmissionColor")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0.148438, 1, 0.342726, 1 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("suzy:material/0:shader_param/EmissionStrength")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 2.0 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Rays:material_override:shader_param/Intensity")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1.0 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Rays:material_override:shader_param/EmissionStrength")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1.5 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("suzy:material/0:shader_param/EmissionColor2")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0.760784, 1, 0.411765, 1 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Rays:material_override:shader_param/EmissionColor")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0.25098, 0.952941, 0.360784, 1 ) ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("suzy:material/0:shader_param/contraction")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1.0 ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("Rays:material_override:shader_param/Deformation")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="Animation" id=80]
+resource_name = "Start"
+length = 0.5
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("suzy:material/0:shader_param/Opacity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.04, 0.24 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.0, 1.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("suzy:material/0:shader_param/Deformation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.04, 0.13, 0.19 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 0.2, 0.2, 4.0, 0.07 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("suzy:material/0:shader_param/Speed")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.23, 0.29 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 4.0, 2.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("suzy:material/0:shader_param/EmissionStrength")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.08, 0.22, 0.31 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 8.0, 4.0, 4.0, 2.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Rays:material_override:shader_param/Intensity")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.04, 0.06, 0.07 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.0, 0.0, 1.0 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Rays:material_override:shader_param/EmissionStrength")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.11 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.5 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("suzy:material/0:shader_param/EmissionColor")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 0.11, 0.18 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0.396078, 0.396078, 0.396078, 1 ), Color( 0.396078, 0.396078, 0.396078, 1 ), Color( 0.148438, 1, 0.342726, 1 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("suzy:material/0:shader_param/EmissionColor2")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 0.07, 0.27 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0.396078, 0.396078, 0.396078, 1 ), Color( 0.396078, 0.396078, 0.396078, 1 ), Color( 0.760784, 1, 0.411765, 1 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Rays:material_override:shader_param/EmissionColor")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0.25098, 0.952941, 0.360784, 1 ) ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("suzy:material/0:shader_param/contraction")
+tracks/9/interp = 0
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 1.0, 2.0 ]
+}
+
+[sub_resource type="Curve" id=82]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.244898, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=83]
+curve = SubResource( 82 )
+
+[sub_resource type="ParticlesMaterial" id=84]
+lifetime_randomness = 1.0
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3( 0, 1, 0 )
+gravity = Vector3( 0, 0.1, 0 )
+tangential_accel = 0.01
+tangential_accel_random = 0.01
+damping = 0.01
+scale = 0.02
+scale_curve = SubResource( 83 )
+
+[sub_resource type="SpatialMaterial" id=85]
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+emission_enabled = true
+emission = Color( 0.670588, 1, 0.521569, 1 )
+emission_energy = 1.0
+emission_operator = 0
+emission_on_uv2 = false
+
+[sub_resource type="QuadMesh" id=86]
+material = SubResource( 85 )
+size = Vector2( 0.1, 0.1 )
+
+[node name="Spatial" type="Spatial"]
+script = ExtResource( 8 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 23 )
+
+[node name="CameraRig" parent="." instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.806364, 0 )
+target = NodePath("../CameraTarget")
+
+[node name="CameraTarget" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.806364, 0 )
+
+[node name="Rays" type="ImmediateGeometry" parent="."]
+material_override = SubResource( 90 )
+script = ExtResource( 5 )
+target_path = NodePath("../suzy")
+origin_path = NodePath("../Position")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Error = SubResource( 116 )
+anims/RESET = SubResource( 81 )
+anims/Start = SubResource( 80 )
+
+[node name="suzy" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.833076, 0.553159, 0, -0.553159, 0.833076, 0, 0.724035, 0 )
+mesh = ExtResource( 1 )
+material/0 = ExtResource( 4 )
+script = ExtResource( 6 )
+
+[node name="Particles" type="Particles" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.725545, 0 )
+amount = 64
+lifetime = 8.0
+process_material = SubResource( 84 )
+draw_pass_1 = SubResource( 86 )
+
+[node name="Position" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.11201, 0 )
+
+[node name="Control" type="MarginContainer" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -192.0
+margin_top = -158.0
+margin_right = -32.0
+margin_bottom = -32.0
+theme = ExtResource( 2 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 152.0
+margin_bottom = 118.0
+custom_constants/separation = 10
+alignment = 2
+
+[node name="Open" type="Button" parent="Control/VBoxContainer"]
+margin_right = 144.0
+margin_bottom = 30.0
+theme = ExtResource( 2 )
+text = "Start"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Close" type="Button" parent="Control/VBoxContainer"]
+margin_top = 40.0
+margin_right = 144.0
+margin_bottom = 70.0
+theme = ExtResource( 2 )
+text = "Shut down"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Error" type="Button" parent="Control/VBoxContainer"]
+margin_top = 80.0
+margin_right = 144.0
+margin_bottom = 110.0
+theme = ExtResource( 2 )
+text = "Error"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="Control/VBoxContainer/Open" to="." method="_on_Open_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/Close" to="." method="_on_Close_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/Error" to="." method="_on_Error_pressed"]
