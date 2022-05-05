@@ -1,7 +1,7 @@
 [gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Viewer/viewer_vignette.gd" type="Script" id=1]
-[ext_resource path="res://Viewer/vignettes/Screenshot from 2022-03-16 21-43-16.png" type="Texture" id=2]
+[ext_resource path="res://Viewer/vignettes/meteor_shower_vignette.png" type="Texture" id=2]
 [ext_resource path="res://RedHatDisplay-Medium.ttf" type="DynamicFontData" id=3]
 
 [sub_resource type="VisualShaderNodeVectorOp" id=8]
@@ -172,10 +172,11 @@ font_data = ExtResource( 3 )
 
 [node name="TextureButton" type="TextureButton"]
 material = SubResource( 6 )
-margin_right = 147.0
-margin_bottom = 64.0
-rect_min_size = Vector2( 0, 96 )
+margin_right = 367.0
+margin_bottom = 140.0
+rect_min_size = Vector2( 0, 140 )
 mouse_filter = 1
+size_flags_horizontal = 3
 texture_normal = ExtResource( 2 )
 expand = true
 stretch_mode = 6

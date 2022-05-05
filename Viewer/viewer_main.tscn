@@ -108,12 +108,12 @@ anchor_bottom = 1.0
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Pannel/HBoxContainer"]
 margin_right = 284.0
-margin_bottom = 720.0
+margin_bottom = 600.0
 size_flags_horizontal = 3
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Pannel/HBoxContainer/MarginContainer"]
 margin_right = 284.0
-margin_bottom = 720.0
+margin_bottom = 600.0
 theme = SubResource( 4 )
 follow_focus = true
 scroll_horizontal_enabled = false
@@ -126,7 +126,7 @@ custom_constants/separation = 0
 [node name="Anchor" type="Control" parent="CanvasLayer/Pannel/HBoxContainer"]
 margin_left = 288.0
 margin_right = 320.0
-margin_bottom = 720.0
+margin_bottom = 600.0
 rect_min_size = Vector2( 32, 0 )
 size_flags_vertical = 3
 
