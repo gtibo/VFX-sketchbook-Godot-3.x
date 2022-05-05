@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Screenshot from 2022-03-16 23-10-26.png-ae587908f71e1ddbc3b82625f881ffa3.stex"
+path="res://.import/hologram_vignette.png-7001b2fc6005ca72a648767ae6260e17.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Viewer/vignettes/Screenshot from 2022-03-16 23-10-26.png"
-dest_files=[ "res://.import/Screenshot from 2022-03-16 23-10-26.png-ae587908f71e1ddbc3b82625f881ffa3.stex" ]
+source_file="res://Viewer/vignettes/hologram_vignette.png"
+dest_files=[ "res://.import/hologram_vignette.png-7001b2fc6005ca72a648767ae6260e17.stex" ]
 
 [params]
 

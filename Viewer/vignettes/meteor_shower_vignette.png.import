@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Screenshot from 2022-03-16 21-43-16.png-906bb5d645d68e64444f8405336b7096.stex"
+path="res://.import/meteor_shower_vignette.png-50f1d0dafc5cf612bc6f7eee56e9d06b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Viewer/vignettes/Screenshot from 2022-03-16 21-43-16.png"
-dest_files=[ "res://.import/Screenshot from 2022-03-16 21-43-16.png-906bb5d645d68e64444f8405336b7096.stex" ]
+source_file="res://Viewer/vignettes/meteor_shower_vignette.png"
+dest_files=[ "res://.import/meteor_shower_vignette.png-50f1d0dafc5cf612bc6f7eee56e9d06b.stex" ]
 
 [params]
 

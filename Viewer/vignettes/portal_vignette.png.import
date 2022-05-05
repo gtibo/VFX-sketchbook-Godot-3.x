@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Screenshot from 2022-03-16 23-25-11.png-761ee578fb503249f4b333a732fb10c4.stex"
+path="res://.import/portal_vignette.png-ceec0cbbe98a7a634ede390b05c7ba8d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Viewer/vignettes/Screenshot from 2022-03-16 23-25-11.png"
-dest_files=[ "res://.import/Screenshot from 2022-03-16 23-25-11.png-761ee578fb503249f4b333a732fb10c4.stex" ]
+source_file="res://Viewer/vignettes/portal_vignette.png"
+dest_files=[ "res://.import/portal_vignette.png-ceec0cbbe98a7a634ede390b05c7ba8d.stex" ]
 
 [params]
 
