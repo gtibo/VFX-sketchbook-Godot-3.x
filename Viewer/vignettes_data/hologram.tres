@@ -1,10 +1,10 @@
 [gd_resource type="Resource" load_steps=3 format=2]
 
 [ext_resource path="res://Viewer/vignette_data_builder.gd" type="Script" id=1]
-[ext_resource path="res://Viewer/vignettes/magic_circle_vignette.png" type="Texture" id=2]
+[ext_resource path="res://Viewer/vignettes/hologram_vignette.png" type="Texture" id=2]
 
 [resource]
 script = ExtResource( 1 )
-title = "Magic circle"
+title = "Hologram"
 icon = ExtResource( 2 )
-main_scene = "res://Effects/magic_circle/magic_circle_main.tscn"
+main_scene = "res://Effects/hologram/main_hologram.tscn"

@@ -1,11 +1,10 @@
-[gd_resource type="Resource" load_steps=4 format=2]
+[gd_resource type="Resource" load_steps=3 format=2]
 
 [ext_resource path="res://Viewer/vignettes/metamorphose_vignette.png" type="Texture" id=1]
 [ext_resource path="res://Viewer/vignette_data_builder.gd" type="Script" id=2]
-[ext_resource path="res://Effects/ButterFly/butterfly_main.tscn" type="PackedScene" id=3]
 
 [resource]
 script = ExtResource( 2 )
 title = "Metamorphose"
 icon = ExtResource( 1 )
-main_scene = ExtResource( 3 )
+main_scene = "res://Effects/butterfly/butterfly_main.tscn"
