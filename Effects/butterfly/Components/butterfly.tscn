@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Effects/ButterFly/Components/butterfly.gd" type="Script" id=1]
-[ext_resource path="res://Effects/ButterFly/Materials/butterfly_wings.tres" type="Material" id=2]
-[ext_resource path="res://Effects/ButterFly/Meshes/butterfly.obj" type="ArrayMesh" id=3]
+[ext_resource path="res://Effects/butterfly/Components/butterfly.gd" type="Script" id=1]
+[ext_resource path="res://Effects/butterfly/Materials/butterfly_wings.tres" type="Material" id=2]
+[ext_resource path="res://Effects/butterfly/Meshes/butterfly.obj" type="ArrayMesh" id=3]
 
 [sub_resource type="SphereShape" id=2]
 radius = 0.1

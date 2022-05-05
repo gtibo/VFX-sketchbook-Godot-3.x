@@ -1,0 +1,20 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/butterfly.obj-adac8a6b27b710ce76a5576101a5a314.mesh"
+
+[deps]
+
+files=[ "res://.import/butterfly.obj-adac8a6b27b710ce76a5576101a5a314.mesh" ]
+
+source_file="res://Effects/butterfly/Meshes/butterfly.obj"
+dest_files=[ "res://.import/butterfly.obj-adac8a6b27b710ce76a5576101a5a314.mesh", "res://.import/butterfly.obj-adac8a6b27b710ce76a5576101a5a314.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286

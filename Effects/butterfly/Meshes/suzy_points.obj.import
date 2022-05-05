@@ -1,0 +1,20 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/suzy_points.obj-32bc0177a4749e9e4e8b765a0fce8820.mesh"
+
+[deps]
+
+files=[ "res://.import/suzy_points.obj-32bc0177a4749e9e4e8b765a0fce8820.mesh" ]
+
+source_file="res://Effects/butterfly/Meshes/suzy_points.obj"
+dest_files=[ "res://.import/suzy_points.obj-32bc0177a4749e9e4e8b765a0fce8820.mesh", "res://.import/suzy_points.obj-32bc0177a4749e9e4e8b765a0fce8820.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286

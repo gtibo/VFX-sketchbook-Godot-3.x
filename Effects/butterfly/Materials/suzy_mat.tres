@@ -23,8 +23,9 @@ uniform_name = "Brightness"
 constant = 0.8
 
 [sub_resource type="VisualShaderNodeGlobalExpression" id=3]
-size = Vector2( 751.811, 595.824 )
-expression = "vec2 random(vec2 uv) {
+size = Vector2( 949.091, 708.144 )
+expression = "// source https://godotshaders.com/snippet/voronoi/
+vec2 random(vec2 uv) {
 	return vec2(fract(sin(dot(uv.xy,
 		vec2(12.9898,78.233))) * 43758.5453123));
 }
@@ -101,6 +102,7 @@ uniform float Brightness;
 
 
 // GlobalExpression:0
+	// source https://godotshaders.com/snippet/voronoi/
 	vec2 random(vec2 uv) {
 		return vec2(fract(sin(dot(uv.xy,
 			vec2(12.9898,78.233))) * 43758.5453123));
@@ -223,7 +225,7 @@ void light() {
 
 }
 "
-graph_offset = Vector2( 94.1521, 346.988 )
+graph_offset = Vector2( -603.764, -344.144 )
 modes/depth_draw = 3
 nodes/vertex/0/position = Vector2( 1240, 20 )
 nodes/vertex/2/node = SubResource( 42 )
@@ -254,10 +256,11 @@ nodes/vertex/connections = PoolIntArray( 3, 0, 2, 0, 3, 0, 2, 1, 2, 0, 8, 2, 7, 
 nodes/fragment/0/position = Vector2( 1120, 20 )
 nodes/fragment/2/node = SubResource( 3 )
 nodes/fragment/2/position = Vector2( -920, 240 )
-nodes/fragment/2/size = Vector2( 751.811, 595.824 )
+nodes/fragment/2/size = Vector2( 949.091, 708.144 )
 nodes/fragment/2/input_ports = ""
 nodes/fragment/2/output_ports = ""
-nodes/fragment/2/expression = "vec2 random(vec2 uv) {
+nodes/fragment/2/expression = "// source https://godotshaders.com/snippet/voronoi/
+vec2 random(vec2 uv) {
 	return vec2(fract(sin(dot(uv.xy,
 		vec2(12.9898,78.233))) * 43758.5453123));
 }
