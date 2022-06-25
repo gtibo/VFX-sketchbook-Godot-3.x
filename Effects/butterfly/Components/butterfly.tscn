@@ -82,6 +82,3 @@ shape = SubResource( 2 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Appear = SubResource( 31 )
 anims/RESET = SubResource( 4 )
-
-[connection signal="area_entered" from="Zone" to="." method="_on_Zone_area_entered"]
-[connection signal="area_exited" from="Zone" to="." method="_on_Zone_area_exited"]

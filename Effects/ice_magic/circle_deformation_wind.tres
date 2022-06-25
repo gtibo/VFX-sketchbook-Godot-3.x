@@ -1,0 +1,38 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type spatial;
+render_mode unshaded;
+uniform sampler2D noise;
+
+uniform float deformation_amount = 0.0;
+
+float fresnel(float amount, vec3 normal, vec3 view)
+{
+	return pow((1.0 - clamp(dot(normalize(normal), normalize(view)), 0.0, 1.0 )), amount);
+}
+
+void fragment(){
+	
+	vec2 uv_move = vec2(UV.x, UV.y + TIME * 0.1);
+	
+	float noise_texture = texture(noise, uv_move).x;
+	float fresnel_amount = (1.0-fresnel(0.1, NORMAL, VIEW)) * sin(UV.y * 3.14);
+	float aberration_amount = fresnel_amount * noise_texture * deformation_amount;
+	
+	float screen_texture_r = texture(SCREEN_TEXTURE, SCREEN_UV + vec2(-0.01, 0.01) * aberration_amount, 2.0 * aberration_amount).r;
+	float screen_texture_g = texture(SCREEN_TEXTURE, SCREEN_UV + vec2(0.01, -0.01) * aberration_amount, 2.0 * aberration_amount).g;
+	float screen_texture_b = texture(SCREEN_TEXTURE, SCREEN_UV, 2.0 * aberration_amount).b;
+	
+	ALBEDO = vec3(screen_texture_r, screen_texture_g, screen_texture_b);
+}"
+
+[sub_resource type="OpenSimplexNoise" id=2]
+
+[sub_resource type="NoiseTexture" id=3]
+noise = SubResource( 2 )
+
+[resource]
+shader = SubResource( 1 )
+shader_param/deformation_amount = 0.0
+shader_param/noise = SubResource( 3 )

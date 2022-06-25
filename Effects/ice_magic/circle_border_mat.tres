@@ -1,0 +1,25 @@
+[gd_resource type="ShaderMaterial" load_steps=6 format=2]
+
+[ext_resource path="res://Effects/ice_magic/circle_border_shader.tres" type="Shader" id=1]
+
+[sub_resource type="OpenSimplexNoise" id=42]
+persistence = 1.0
+
+[sub_resource type="NoiseTexture" id=43]
+height = 16
+noise = SubResource( 42 )
+
+[sub_resource type="OpenSimplexNoise" id=44]
+
+[sub_resource type="NoiseTexture" id=45]
+height = 1
+noise = SubResource( 44 )
+
+[resource]
+render_priority = 1
+shader = ExtResource( 1 )
+shader_param/color_1 = Color( 0.313726, 1, 0.890196, 1 )
+shader_param/color_2 = Color( 0.243137, 0.709804, 1, 1 )
+shader_param/opacity = 1.0
+shader_param/noise = SubResource( 43 )
+shader_param/noise_2 = SubResource( 45 )

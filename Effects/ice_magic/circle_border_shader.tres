@@ -1,0 +1,37 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "shader_type spatial;
+render_mode cull_disabled, ambient_light_disabled;
+uniform sampler2D noise;
+uniform sampler2D noise_2;
+uniform vec4 color_1 : hint_color = vec4(1.0);
+uniform vec4 color_2 : hint_color = vec4(1.0);
+uniform float opacity : hint_range(0.0, 1.0) = 0.0;
+const float PI = 3.14;
+
+float fresnel(float amount, vec3 normal, vec3 view)
+{
+	return pow((1.0 - clamp(dot(normalize(normal), normalize(view)), 0.0, 1.0 )), amount);
+}
+
+void fragment(){
+	
+	vec2 loop_uv = vec2(
+		abs(sin((UV.x + TIME * 0.02) * PI)),
+		UV.y
+	);
+	
+	vec2 loop_uv_2 = vec2(
+		abs(sin((UV.x - TIME * 0.01) * PI)),
+		UV.y
+	);
+	
+	float noise_texture = smoothstep(0.1, 0.9, texture(noise, loop_uv).x);
+	float noise_2_texture = smoothstep(0.1, 0.8, texture(noise_2, loop_uv_2).x);
+	float alpha = sin(UV.y * PI);
+	
+	
+	EMISSION.rgb = mix(color_1.rgb, color_2.rgb, (noise_texture * noise_2_texture) ) * 1.0;
+	ALPHA = smoothstep(0.05, 0.9, UV.y * (noise_texture * noise_2_texture)) * alpha * ( 1.0 - fresnel(0.15, NORMAL, VIEW)) * opacity;
+}"

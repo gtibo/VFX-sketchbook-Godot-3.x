@@ -112,7 +112,7 @@ expression = "output = textureLod(SCREEN_TEXTURE,coord.xy, blur).rgb;
 "
 
 [sub_resource type="VisualShaderNodeExpression" id=97]
-size = Vector2( 744.8, 208.44 )
+size = Vector2( 795.2, 315 )
 expression = "output = textureLod(SCREEN_TEXTURE,coord.xy, blur).rgb;
 "
 
@@ -366,7 +366,7 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -678.231, -440 )
+graph_offset = Vector2( -288.354, -382.055 )
 modes/depth_draw = 3
 flags/ensure_correct_normals = true
 flags/unshaded = true
@@ -468,7 +468,7 @@ nodes/fragment/46/expression = "output = textureLod(SCREEN_TEXTURE,coord.xy, blu
 "
 nodes/fragment/47/node = SubResource( 97 )
 nodes/fragment/47/position = Vector2( 320, -140 )
-nodes/fragment/47/size = Vector2( 744.8, 208.44 )
+nodes/fragment/47/size = Vector2( 795.2, 315 )
 nodes/fragment/47/input_ports = "0,1,coord;1,0,blur;"
 nodes/fragment/47/output_ports = "0,1,output;"
 nodes/fragment/47/expression = "output = textureLod(SCREEN_TEXTURE,coord.xy, blur).rgb;

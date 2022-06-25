@@ -78,7 +78,9 @@ func crave_force():
 
 func separation_force():
 	var force = Vector3.ZERO
+	var others = $Zone.get_overlapping_areas()
 	for other in others:
+		other = other.owner
 		var direction_to_other = other.translation.direction_to(translation)
 		var distance_to_other = other.translation.distance_to(translation)
 		var radius = abs(zone_radius - other.zone_radius)
@@ -88,11 +90,3 @@ func separation_force():
 	if force.length() > 0:
 		force /= others.size()
 	return force
-	
-func _on_Zone_area_entered(area):
-	if area.owner.is_in_group("Boid"):
-		others.append(area.owner)
-
-func _on_Zone_area_exited(area):
-	if others.has(area.owner):
-		others.erase(area.owner)
