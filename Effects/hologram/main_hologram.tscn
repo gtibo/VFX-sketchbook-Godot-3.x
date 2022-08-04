@@ -6,7 +6,7 @@
 [ext_resource path="res://Effects/hologram/hologram_mat.tres" type="Material" id=4]
 [ext_resource path="res://Effects/hologram/Lines.gd" type="Script" id=5]
 [ext_resource path="res://Effects/hologram/Spin.gd" type="Script" id=6]
-[ext_resource path="res://Components/CameraRig.tscn" type="PackedScene" id=7]
+[ext_resource path="res://components/CameraRig.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Effects/hologram/main_hologram.gd" type="Script" id=8]
 
 [sub_resource type="PanoramaSky" id=22]

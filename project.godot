@@ -9,12 +9,24 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Spatial",
+"class": "fireball",
+"language": "GDScript",
+"path": "res://Effects/fireworks/fireball/fireball.gd"
+}, {
+"base": "Resource",
+"class": "firework_theme",
+"language": "GDScript",
+"path": "res://Effects/fireworks/themes/firework_themes_builder.gd"
+}, {
 "base": "Resource",
 "class": "vignette_data",
 "language": "GDScript",
 "path": "res://Viewer/vignette_data_builder.gd"
 } ]
 _global_script_class_icons={
+"fireball": "",
+"firework_theme": "",
 "vignette_data": ""
 }
 
@@ -34,8 +46,7 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
-quality/filters/anisotropic_filter_level=8
 quality/filters/use_nearest_mipmap_filter=true
-quality/filters/msaa=3
+quality/filters/msaa=2
 quality/filters/use_fxaa=true
 environment/default_environment="res://default_env.tres"

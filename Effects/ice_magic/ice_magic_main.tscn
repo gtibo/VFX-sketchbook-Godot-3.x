@@ -496,7 +496,7 @@ direction = Vector3( 0, 0, 0 )
 gravity = Vector3( 0, 0.005, 0 )
 radial_accel = 0.01
 tangential_accel = 0.1
-scale = 0.02
+scale = 0.01
 scale_random = 0.01
 scale_curve = SubResource( 33 )
 
@@ -509,7 +509,7 @@ particles_anim_loop = false
 [sub_resource type="QuadMesh" id=35]
 material = SubResource( 36 )
 
-[node name="Spatial" type="Spatial"]
+[node name="IceMagicCircle" type="Spatial"]
 script = ExtResource( 13 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -559,7 +559,7 @@ fov = 35.0
 
 [node name="Particles" type="Particles" parent="."]
 emitting = false
-amount = 800
+amount = 100
 lifetime = 10.0
 process_material = SubResource( 34 )
 draw_pass_1 = SubResource( 35 )

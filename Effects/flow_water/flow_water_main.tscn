@@ -4,7 +4,7 @@
 [ext_resource path="res://Effects/flow_water/meshes/tree.glb" type="PackedScene" id=2]
 [ext_resource path="res://Effects/flow_water/materials/water_mat.tres" type="Material" id=3]
 [ext_resource path="res://Effects/flow_water/materials/RiverMat.material" type="Material" id=4]
-[ext_resource path="res://Components/CameraRig.tscn" type="PackedScene" id=5]
+[ext_resource path="res://components/CameraRig.tscn" type="PackedScene" id=5]
 
 [sub_resource type="PanoramaSky" id=1]
 panorama = ExtResource( 1 )
