@@ -1,0 +1,87 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://Effects/fireworks/projectile/projectile.gd" type="Script" id=1]
+[ext_resource path="res://addons/Trail/trail_3d.gd" type="Script" id=2]
+[ext_resource path="res://Effects/fireworks/projectile/projectile_trail_mat.tres" type="Material" id=3]
+
+[sub_resource type="Curve" id=6]
+_data = [ Vector2( 0, 0 ), 0.0, 3.47984, 0, 0, Vector2( 0.264085, 0.3 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="SpatialMaterial" id=1]
+params_billboard_mode = 1
+params_billboard_keep_scale = true
+emission_enabled = true
+emission = Color( 1, 0.607843, 0, 1 )
+emission_energy = 2.0
+emission_operator = 0
+emission_on_uv2 = false
+
+[sub_resource type="Curve" id=2]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.5, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=10]
+curve = SubResource( 2 )
+
+[sub_resource type="ParticlesMaterial" id=4]
+direction = Vector3( 0, -1, 0 )
+gravity = Vector3( 0, -1, 0 )
+initial_velocity = 2.0
+initial_velocity_random = 0.01
+scale = 0.02
+scale_random = 0.01
+scale_curve = SubResource( 10 )
+
+[sub_resource type="QuadMesh" id=5]
+
+[sub_resource type="Shader" id=7]
+code = "shader_type spatial;
+
+void fragment(){
+	
+	float dist = 1.0 - distance(vec2(0.5, 0.5), UV);
+	float t = mod(TIME * 8.0, 3.14 * 2.0);
+	float fluc = ((1.0 + sin(t)) / 2.0) * 0.1;
+	ALPHA = smoothstep(0.7, 1.0, dist + fluc);
+	EMISSION = vec3(1.0) * 1.0;
+}
+
+void vertex()
+{
+	MODELVIEW_MATRIX = INV_CAMERA_MATRIX * mat4(CAMERA_MATRIX[0],CAMERA_MATRIX[1],CAMERA_MATRIX[2],WORLD_MATRIX[3]);
+}"
+
+[sub_resource type="ShaderMaterial" id=8]
+shader = SubResource( 7 )
+
+[sub_resource type="QuadMesh" id=9]
+size = Vector2( 0.5, 0.5 )
+
+[node name="Projectile" type="Spatial"]
+script = ExtResource( 1 )
+trail_mat = ExtResource( 3 )
+
+[node name="Anchor" type="Spatial" parent="."]
+
+[node name="Trail3D" type="ImmediateGeometry" parent="Anchor"]
+material_override = ExtResource( 3 )
+script = ExtResource( 2 )
+distance = 0.5
+width_profile = SubResource( 6 )
+
+[node name="Particles" type="Particles" parent="Anchor"]
+material_override = SubResource( 1 )
+amount = 40
+local_coords = false
+process_material = SubResource( 4 )
+draw_pass_1 = SubResource( 5 )
+
+[node name="Head" type="MeshInstance" parent="Anchor"]
+visible = false
+material_override = SubResource( 8 )
+mesh = SubResource( 9 )
+material/0 = null
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true

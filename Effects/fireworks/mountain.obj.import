@@ -1,0 +1,20 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/mountain.obj-454c3b5d12a09124eb5e59493c863722.mesh"
+
+[deps]
+
+files=[ "res://.import/mountain.obj-454c3b5d12a09124eb5e59493c863722.mesh" ]
+
+source_file="res://Effects/fireworks/mountain.obj"
+dest_files=[ "res://.import/mountain.obj-454c3b5d12a09124eb5e59493c863722.mesh", "res://.import/mountain.obj-454c3b5d12a09124eb5e59493c863722.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286

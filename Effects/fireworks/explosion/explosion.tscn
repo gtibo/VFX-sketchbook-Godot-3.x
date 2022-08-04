@@ -1,0 +1,52 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Effects/fireworks/explosion/explosion.gd" type="Script" id=1]
+[ext_resource path="res://Effects/fireworks/fireball/big_trail.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Effects/fireworks/fireball/fireball.tscn" type="PackedScene" id=3]
+
+[sub_resource type="SpatialMaterial" id=4]
+params_billboard_mode = 1
+params_billboard_keep_scale = true
+emission_enabled = true
+emission = Color( 1, 0.847059, 0.596078, 1 )
+emission_energy = 1.0
+emission_operator = 0
+emission_on_uv2 = false
+
+[sub_resource type="Curve" id=5]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.5, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=3]
+curve = SubResource( 5 )
+
+[sub_resource type="ParticlesMaterial" id=6]
+lifetime_randomness = 1.0
+direction = Vector3( 0, -1, 0 )
+spread = 180.0
+gravity = Vector3( 0, -0.5, 0 )
+initial_velocity = 10.0
+initial_velocity_random = 0.5
+damping = 0.05
+scale = 0.02
+scale_random = 0.04
+scale_curve = SubResource( 3 )
+
+[sub_resource type="QuadMesh" id=7]
+
+[node name="Explosion" type="Spatial"]
+script = ExtResource( 1 )
+big_trail = ExtResource( 2 )
+small_trail = ExtResource( 3 )
+
+[node name="Particles" type="Particles" parent="."]
+material_override = SubResource( 4 )
+emitting = false
+amount = 120
+one_shot = true
+explosiveness = 1.0
+local_coords = false
+process_material = SubResource( 6 )
+draw_pass_1 = SubResource( 7 )
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true

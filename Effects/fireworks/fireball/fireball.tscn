@@ -1,0 +1,68 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://addons/Trail/trail_3d.gd" type="Script" id=1]
+[ext_resource path="res://Effects/fireworks/fireball/fireball.gd" type="Script" id=2]
+[ext_resource path="res://Effects/fireworks/projectile/projectile_trail_mat.tres" type="Material" id=3]
+
+[sub_resource type="Shader" id=4]
+code = "shader_type spatial;
+render_mode ambient_light_disabled;
+
+uniform sampler2D noise;
+const float PI = 3.14;
+
+uniform vec4 first_color : hint_color = vec4(1.0);
+uniform vec4 second_color : hint_color = vec4(1.0);
+uniform float alpha = 1.0;
+
+void fragment(){
+	
+	float t = mod(TIME * 2.0, 1.0);
+	
+	vec2 UV_move = vec2(UV.x + t, UV.y);
+	
+	float n = texture(noise, UV_move).x;
+	
+	float n_s = smoothstep(0.0, 0.8, n * UV.x);
+	
+	float fade = UV.x * sin(UV.y  * PI) ;
+	
+	float a = smoothstep(0.0, 0.95, fade);
+	
+	ALPHA = a * UV.x * alpha;
+	
+	vec3 color = mix(first_color, second_color, UV.x).rgb;
+	ALBEDO = vec3(1.0);
+	EMISSION = color * 2.0 * UV.x;
+}"
+
+[sub_resource type="OpenSimplexNoise" id=2]
+period = 128.0
+persistence = 0.0
+
+[sub_resource type="NoiseTexture" id=3]
+seamless = true
+noise = SubResource( 2 )
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 4 )
+shader_param/first_color = Color( 1, 0.141176, 0, 1 )
+shader_param/second_color = Color( 1, 0.376471, 0, 1 )
+shader_param/alpha = 1.0
+shader_param/noise = SubResource( 3 )
+
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 0 ), 0.0, 5.16364, 0, 0, Vector2( 0.471831, 0.481818 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[node name="Fireball" type="Spatial"]
+script = ExtResource( 2 )
+trail_mat = ExtResource( 3 )
+
+[node name="Trail" type="ImmediateGeometry" parent="."]
+material_override = SubResource( 5 )
+script = ExtResource( 1 )
+segments = 6
+base_width = 0.2
+width_profile = SubResource( 1 )
+
+[node name="Tween" type="Tween" parent="."]

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://Effects/fireworks/themes/firework_themes_builder.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+first_color = Color( 0, 1, 0.0862745, 1 )
+second_color = Color( 0.768627, 1, 0.0509804, 1 )
+mult_color = Color( 0.0431373, 0.921569, 0.901961, 1 )
