@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Viewer/vignette_data_builder.gd" type="Script" id=1]
+[ext_resource path="res://Viewer/vignettes/ice_magic_circle_vignette.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+title = "Ice magic circle"
+icon = ExtResource( 2 )
+main_scene = "res://Effects/ice_magic/ice_magic_main.tscn"

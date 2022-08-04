@@ -5,6 +5,6 @@
 
 [resource]
 script = ExtResource( 1 )
-title = "Magic circle"
+title = "Invocation"
 icon = ExtResource( 2 )
 main_scene = "res://Effects/magic_circle/magic_circle_main.tscn"
