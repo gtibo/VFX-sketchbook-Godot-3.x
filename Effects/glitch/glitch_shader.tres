@@ -1,0 +1,66 @@
+[gd_resource type="ShaderMaterial" load_steps=6 format=2]
+
+[sub_resource type="Shader" id=15]
+code = "shader_type spatial;
+render_mode unshaded;
+
+uniform sampler2D color_gradient;
+uniform sampler2D noise;
+
+uniform float edge = 0.1;
+uniform float start = 0.5;
+
+// Random methods from : Patricio Gonzalez Vivo
+// https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83
+
+float rand(vec2 n) { 
+	return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
+}
+
+void fragment(){
+	
+	float n = rand(SCREEN_UV * TIME);
+	vec3 noise_color = vec3(smoothstep(0.2, 0.8, n * 0.5));
+	
+	float noise_mask = smoothstep(start - edge, start + edge, texture(noise, UV).x);
+	float t = round(TIME * 12.0);
+
+	float checker_red = rand(floor(vec2(cos(SCREEN_UV.y), sin(SCREEN_UV.x + t)) * 40.0) * t);
+	vec3 red_color = texture(color_gradient, vec2(mod(TIME * checker_red, 1.0),0.0)).rgb * 1.0;
+	
+	ALBEDO.rgb = (noise_color * 0.15) + mix(vec3(0.0), red_color, 
+		
+		smoothstep(0.9, 1.0, checker_red * .98)
+		
+	);
+	
+	float checker_1 = rand(floor(SCREEN_UV * vec2(1.0, 1.6) * 80.0) * t);
+	float mask = step(((noise_mask * (1.0- noise_mask)) * checker_1) + noise_mask, 0.5); 
+	ALPHA = mask;
+	ALPHA_SCISSOR = 0.5;
+}"
+
+[sub_resource type="Gradient" id=32]
+interpolation_mode = 1
+offsets = PoolRealArray( 0, 0.386139, 0.557756, 0.768977 )
+colors = PoolColorArray( 0, 0, 1, 1, 0, 1, 0, 1, 0.902802, 1, 0.0429688, 1, 1, 0, 0, 1 )
+
+[sub_resource type="GradientTexture" id=33]
+gradient = SubResource( 32 )
+width = 128
+
+[sub_resource type="OpenSimplexNoise" id=18]
+seed = 12
+period = 256.0
+persistence = 1.0
+
+[sub_resource type="NoiseTexture" id=19]
+seamless = true
+noise = SubResource( 18 )
+
+[resource]
+shader = SubResource( 15 )
+shader_param/edge = 0.133
+shader_param/start = 0.46
+shader_param/color_gradient = SubResource( 33 )
+shader_param/noise = SubResource( 19 )

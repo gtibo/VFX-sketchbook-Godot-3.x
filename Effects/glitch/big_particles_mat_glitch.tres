@@ -1,0 +1,42 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=31]
+code = "shader_type spatial;
+render_mode unshaded, depth_test_disable;
+
+varying float id;
+varying float rand_id;
+
+// Random function from : Patricio Gonzalez Vivo
+// https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83
+
+float randF(float n){return fract(sin(n) * 43758.5453123);}
+
+float rand(vec2 n) { 
+	return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
+}
+
+// Screen function from godot shaders 
+// https://godotshaders.com/snippet/blending-modes/
+
+vec3 screen(vec3 base, vec3 blend){
+	return 1.0 - (1.0 - base) * (1.0 - blend);
+}
+
+void vertex()
+{
+	MODELVIEW_MATRIX = INV_CAMERA_MATRIX * mat4(CAMERA_MATRIX[0],CAMERA_MATRIX[1],CAMERA_MATRIX[2],WORLD_MATRIX[3]);
+	id = float(INSTANCE_ID);
+	rand_id = randF(id);
+	VERTEX *= vec3(rand_id * 2.0);
+
+}
+void fragment(){
+	vec3 screen_color = texture(SCREEN_TEXTURE, SCREEN_UV + vec2(sin(TIME + id) * 0.05 * sin(UV.x * 3.14)) * 0.5).rgb;
+
+
+	ALBEDO = screen_color;
+}"
+
+[resource]
+shader = SubResource( 31 )

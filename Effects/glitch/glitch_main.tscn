@@ -1,0 +1,110 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://Meshs/suzy.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://HDRI/photo_studio_loft_hall_4k.hdr" type="Texture" id=2]
+[ext_resource path="res://Textures/filled_grid.png" type="Texture" id=3]
+[ext_resource path="res://Effects/glitch/glitch_shader.tres" type="Material" id=4]
+[ext_resource path="res://Effects/glitch/waving.gd" type="Script" id=5]
+[ext_resource path="res://components/CameraRig.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Effects/glitch/particles_mat_glitch.tres" type="Material" id=7]
+[ext_resource path="res://Effects/glitch/big_particles_mat_glitch.tres" type="Material" id=8]
+
+[sub_resource type="PanoramaSky" id=34]
+panorama = ExtResource( 2 )
+
+[sub_resource type="Environment" id=5]
+background_mode = 3
+background_sky = SubResource( 34 )
+ambient_light_energy = 0.5
+ambient_light_sky_contribution = 0.5
+fog_enabled = true
+fog_color = Color( 0, 0, 0, 1 )
+fog_depth_begin = 4.0
+fog_depth_end = 15.0
+tonemap_mode = 2
+tonemap_exposure = 0.8
+tonemap_white = 1.2
+ssao_enabled = true
+glow_enabled = true
+glow_intensity = 0.01
+
+[sub_resource type="SpatialMaterial" id=29]
+albedo_color = Color( 0.964706, 0.694118, 0.313726, 1 )
+metallic = 1.0
+roughness = 0.35
+
+[sub_resource type="ParticlesMaterial" id=24]
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3( 0, 1, 0 )
+spread = 0.0
+gravity = Vector3( 0, 10, 0 )
+
+[sub_resource type="QuadMesh" id=26]
+size = Vector2( 0.04, 0.3 )
+
+[sub_resource type="ParticlesMaterial" id=30]
+lifetime_randomness = 0.2
+emission_shape = 1
+emission_sphere_radius = 1.0
+gravity = Vector3( 0, 0, 0 )
+
+[sub_resource type="QuadMesh" id=33]
+material = ExtResource( 8 )
+size = Vector2( 2, 0.5 )
+
+[sub_resource type="PlaneMesh" id=22]
+size = Vector2( 30, 30 )
+
+[sub_resource type="SpatialMaterial" id=23]
+albedo_color = Color( 0.333333, 0.333333, 0.333333, 1 )
+albedo_texture = ExtResource( 3 )
+uv1_scale = Vector3( 6, 6, 10 )
+
+[node name="Glitchmain" type="Node"]
+
+[node name="World" type="Spatial" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="World"]
+environment = SubResource( 5 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="World"]
+transform = Transform( 0.918757, -0.329732, 0.21717, 0, 0.550044, 0.835136, -0.394824, -0.767287, 0.505356, 0, 0, 0 )
+shadow_enabled = true
+directional_shadow_blend_splits = true
+directional_shadow_normal_bias = 0.1
+
+[node name="Anchor" type="Spatial" parent="World"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0 )
+
+[node name="suzy" type="MeshInstance" parent="World/Anchor"]
+transform = Transform( 0.997186, 0.074974, 5.14937e-09, -0.0748103, 0.995008, -0.0660453, -0.00495169, 0.0658594, 0.997817, 0, -0.0991988, 0 )
+material_override = SubResource( 29 )
+material_overlay = ExtResource( 4 )
+mesh = ExtResource( 1 )
+skeleton = NodePath("../../..")
+script = ExtResource( 5 )
+
+[node name="SmallCut" type="Particles" parent="World/Anchor/suzy"]
+material_override = ExtResource( 7 )
+amount = 16
+lifetime = 0.2
+local_coords = false
+process_material = SubResource( 24 )
+draw_pass_1 = SubResource( 26 )
+
+[node name="BigCut" type="Particles" parent="World/Anchor/suzy"]
+amount = 2
+lifetime = 0.1
+process_material = SubResource( 30 )
+draw_pass_1 = SubResource( 33 )
+
+[node name="Ground" type="MeshInstance" parent="World"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )
+mesh = SubResource( 22 )
+skeleton = NodePath("../..")
+material/0 = SubResource( 23 )
+
+[node name="CameraRig" parent="World" instance=ExtResource( 6 )]
+transform = Transform( 0.819152, 0.0798264, -0.567994, 0, 0.990268, 0.139173, 0.573577, -0.114004, 0.81118, 0, 1.5, 0 )
+target = NodePath("../Anchor")

@@ -1,0 +1,63 @@
+[gd_resource type="ShaderMaterial" load_steps=6 format=2]
+
+[sub_resource type="Shader" id=27]
+code = "shader_type spatial;
+render_mode unshaded;
+
+uniform sampler2D gradient;
+uniform sampler2D color_gradient;
+varying float id;
+varying float rand_id;
+
+// Random function from : Patricio Gonzalez Vivo
+// https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83
+
+float randF(float n){return fract(sin(n) * 43758.5453123);}
+
+float rand(vec2 n) { 
+	return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
+}
+
+// Screen function from godot shaders 
+// https://godotshaders.com/snippet/blending-modes/
+
+vec3 screen(vec3 base, vec3 blend){
+	return 1.0 - (1.0 - base) * (1.0 - blend);
+}
+
+void vertex()
+{
+	MODELVIEW_MATRIX = INV_CAMERA_MATRIX * mat4(CAMERA_MATRIX[0],CAMERA_MATRIX[1],CAMERA_MATRIX[2],WORLD_MATRIX[3]);
+	id = float(INSTANCE_ID);
+	rand_id = randF(id);
+	VERTEX *= vec3(rand_id * 2.0);
+
+}
+void fragment(){
+	vec3 screen_color = texture(SCREEN_TEXTURE, SCREEN_UV + vec2(0.0, sin(TIME + id) * 0.05) * 0.5).rgb;
+	float intensity = texture(gradient, vec2(rand_id,0.0)).x;
+	vec3 color = texture(color_gradient, vec2(mod(rand_id + TIME * 0.5, 1.0),0.0)).rgb;
+
+	ALBEDO = screen(screen_color, color * intensity * (1.0 - UV.y));
+}"
+
+[sub_resource type="Gradient" id=32]
+offsets = PoolRealArray( 0, 0.5, 1 )
+colors = PoolColorArray( 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1 )
+
+[sub_resource type="GradientTexture" id=33]
+gradient = SubResource( 32 )
+width = 128
+
+[sub_resource type="Gradient" id=30]
+offsets = PoolRealArray( 0.85, 0.95 )
+
+[sub_resource type="GradientTexture" id=31]
+gradient = SubResource( 30 )
+width = 128
+
+[resource]
+render_priority = 1
+shader = SubResource( 27 )
+shader_param/gradient = SubResource( 31 )
+shader_param/color_gradient = SubResource( 33 )
